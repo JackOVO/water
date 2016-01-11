@@ -16,6 +16,10 @@ export class EntityFactory {
     this[_dataService] = dataService;
   }
 
+  pack(entity) {
+
+  }
+
   /**
    * 根据主键获取数据
    * @param  {String} id  主键值

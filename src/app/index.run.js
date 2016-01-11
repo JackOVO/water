@@ -7,7 +7,7 @@ export function runBlock($log, dataService) {
   'ngInject';
 
   // 数据服务配置
-  dataService.setBaseUrl('http://localhost:5324/admin');
+  dataService.setBaseUrl('http://localhost:5323/admin');
   dataService.setRequestMapping({
     user: {}
   });
