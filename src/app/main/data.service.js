@@ -5,27 +5,36 @@
  */
 
 let _$http = Symbol(); // 1
-let _baseUrl = 'http://localhost:5323/admin'; // 2
+let _$window = Symbol();
+
+let _errorService = null;
+let _baseUrl = 'http://localhost:5324/admin'; // 2
 let _requestMapping = {
   _default: {
     prefix: 'user',
     suffix: '.do',
     add: 'add',
+    get: 'find',
     upd: 'update',
     del: 'delete',
-    get: 'findCode',
-    list: 'list'
-  },
-  user: {
     list: 'listPage'
   }
 };
 
 export class DataService {
-  constructor($http) {
+  constructor($http, $window, errorService) {
     'ngInject';
 
     this[_$http] = $http;
+    this[_$window] = $window;
+    _errorService = errorService;
+  }
+
+  // 提供外部配置
+  setBaseUrl(baseUrl) { _baseUrl = baseUrl; }
+  setRequestMapping(requestMapping) {
+    var reqMap = angular.extend({}, _requestMapping, requestMapping);
+    _requestMapping = reqMap;
   }
 
   /**
@@ -36,12 +45,12 @@ export class DataService {
    * @return {Promise}        返回响应的承诺
    */
   get(aim, action, params) {
-    let url = createRequestUrl(aim, action);
+    let url = _createRequestUrl(aim, action);
     let config = { params: params };
 
     return this[_$http].get(url, config)
-      .then(completeCallBack)
-      .catch(failedCallBack);
+      .then(_completeCallBack)
+      .catch(_failedCallBack);
   }
 
   /**
@@ -52,7 +61,7 @@ export class DataService {
    * @return {Promise}        返回响应的承诺
    */
   post(aim, action, data) {
-    let url = createRequestUrl(aim, action);
+    let url = _createRequestUrl(aim, action);
     let config = {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
@@ -70,22 +79,22 @@ export class DataService {
     };
 
     return this[_$http].post(url, data, config)
-      .then(completeCallBack)
-      .catch(failedCallBack);
+      .then(_completeCallBack)
+      .catch(_failedCallBack);
   }
 
   /**
-   * 从服务器下载文件
-   * @param  {[type]} aim    [description]
-   * @param  {[type]} action [description]
-   * @param  {[type]} params [description]
+   * 从服务器下载文件, 创建a的方式
+   * @param  {String} aim    创建请求地址中的目标
+   * @param  {String} action 创建请求地址中的动作
+   * @param  {Object} params 请求的参数
    * @return {[type]}        [description]
    */
   download(aim, action, params) {
-    let url = createRequestUrl(aim, action);
+    let url = _createRequestUrl(aim, action);
     url = url + '?' + $.param(params);
 
-    window.open(url);
+    this[_$window].open(url);
   }
 }
 
@@ -95,7 +104,7 @@ export class DataService {
  * @param  {[type]} action 请求动作通常为get, add, upd, del, download
  * @return {[type]}        返回请求的地址
  */
-function createRequestUrl(aim, action) {
+function _createRequestUrl(aim, action) {
   let url = '',
       baseUrl = _baseUrl,
       aimConfig = _requestMapping[aim],
@@ -104,33 +113,52 @@ function createRequestUrl(aim, action) {
   if (aim === 'default') {
     url = action;
   } else if (typeof(aimConfig) !== 'undefined') {
-    let prefix = aimConfig.prefix || aim;
     let path = aimConfig[action] || defConfig[action];
+    let prefix = aimConfig.prefix || aim;
     let suffix = aimConfig.suffix || defConfig.suffix;
 
     url = baseUrl + '/' + prefix + '/' + path + suffix;
   } else {
-    return new Error('data.service', '未定义的目标配置!');
+    throw new Error('data.service, 未定义的目标配置!');
   }
 
   return url;
 }
 
-function completeCallBack(response) {
-  console.info(response);
+/**
+ * 请求成功回调, 即200数据第一层处理
+ * @return {[type]} [description]
+ */
+function _completeCallBack(response) {
+  _errorService.interception(response);
+  let data = response.data;
+  // Intercept service
+  return data;
 }
 
-function failedCallBack(error) {
-  console.info(error);
+/**
+ * 请求服务器, 失败后处理(注意是失败, 不是失败响应$q)
+ * @return {[type]} [description]
+ */
+function _failedCallBack(error) {
+
+  // 非状态码200的处理
+  switch (error.status) {
+    case 600: break;
+    case 650: break;
+    default:
+      throw new Error('data.service, 服务器状态码:' + error.status);
+  }
 }
 
 // 下载js生成内容
 // function downloadFile(fileName, content){
-//     var aLink = document.createElement('a');
-//     var blob = new Blob([content]);
-//     var evt = document.createEvent("HTMLEvents");
-//     evt.initEvent("click", false, false);//initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
-//     aLink.download = fileName;
-//     aLink.href = URL.createObjectURL(blob);
-//     aLink.dispatchEvent(evt);
+//   var aLink = document.createElement('a');
+//   var blob = new Blob([content]);
+//   var evt = document.createEvent("HTMLEvents");
+//   //initEvent 不加后两个参数在FF下会报错, 感谢 Barret Lee 的反馈
+//   evt.initEvent("click", false, false);
+//   aLink.download = fileName;
+//   aLink.href = URL.createObjectURL(blob);
+//   aLink.dispatchEvent(evt);
 // }

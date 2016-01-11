@@ -1,13 +1,15 @@
 /**
- * 主控制器
+ * 主页控制器
  */
 
 export class MainController {
   constructor(dataService) {
     'ngInject';
 
-    let params = {page: '你好', array: [1, 2, 3]};
-    // dataService.get('user', 'list', params).then();
+    // let params = {page: '你好', array: [1, 2, 3]};
+    dataService.get('user', 'list').then(function(data) {
+console.log(data);
+    });
     // dataService.post('user', 'list', params).then();
     // dataService.download('user', 'list', params);
   }

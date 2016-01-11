@@ -1,0 +1,21 @@
+<!-- 登录页 -->
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <input type="text" ng-model="loginVM.user.loginName">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <input type="password" ng-model="loginVM.user.password">
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-lg-offset-3">
+      <button class="col-lg-12" ng-click="loginVM.signIn();">登录</button>
+    </div>
+  </div>
+</div>
