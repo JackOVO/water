@@ -4,15 +4,6 @@
 
 import { EntityFactory } from '../main/entity.factory';
 
-// class BaseModel {
-//   constructor(subClass, create) {
-//     subClass.create = create;
-//     // this.create = create;
-//     // this.mapping = mapping;
-//     // this.streamline = streamline;
-//   }
-// }
-
 class Admin {
   constructor(name, password) {
 

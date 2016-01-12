@@ -11,7 +11,6 @@ export class AdminService {
 
   login(name, password) {
     var admin = this.adminFactory.create(name, password);
-console.log(admin);
-    // this.adminFactory.query(admin);
+    this.adminFactory.query(admin, 'login');
   }
 }

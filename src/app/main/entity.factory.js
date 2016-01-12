@@ -3,22 +3,22 @@
  */
 
 let _aim = Symbol();
-let _object = Symbol();
+let _cla = Symbol();
 let _primaryKey = Symbol();
 let _dataService = Symbol();
 
 export class EntityFactory {
-  constructor(aim, object, primaryKey, dataService) {
+  constructor(aim, cla, primaryKey, dataService) {
 
     this[_aim] = aim;
-    this[_object] = object;
+    this[_cla] = cla;
     this[_primaryKey] = primaryKey;
     this[_dataService] = dataService;
   }
 
   // pack(source) {
-  //   for (let mkey in this[_object].mapping) {
-  //     let mval = this[_object].mapping[mkey];
+  //   for (let mkey in this[_cla].mapping) {
+  //     let mval = this[_cla].mapping[mkey];
 
   //     if (typeof(source[mval]) !== 'undefined') {
   //       source[mkey] = source[mval]; // 换名
@@ -29,15 +29,27 @@ export class EntityFactory {
   
 
   undo(entity) {
+    // 通过map处理一下键
     return entity;
   }
 
+  /**
+   * 提供创建实体的接口
+   * 推荐通过类的create方法创建实体
+   * 会根据类的属性来判断使用什么方法创建实体
+   * 在使用的时候要尽量知道会使用哪个方法创建
+   * @param  {...[type]} args 参数列表, 解构也可以
+   * @return {cla}         创建的实体
+   */
+  create(...args) {
+    let cla = this[_cla];
 
-  create() {
-// console.log(this[_object].create)
-//     var admin = new this[_object](args[0], args[1]);
-// console.info(this[_object].create);
-//     return admin;
+    if (angular.isFunction(cla.create)) {
+      return cla.create.apply(null, args);
+    } else {
+      // http://stackoverflow.com/questions/1606797/use-of-apply-with-new-operator-is-this-possible
+      return new (Function.prototype.bind.apply(cla, [null, ...args]));
+    }
   }
 
   /**
@@ -59,7 +71,7 @@ export class EntityFactory {
 
   /**
    * 根据对象属性查询
-   * @param  {Object} entity 类对象
+   * @param  {cla} entity 类对象
    * @param  {String} action 可选其他动作
    * @return {Promise}       后台数据响应承诺
    */
@@ -89,7 +101,7 @@ export class EntityFactory {
 
   /**
    * 添加实体, 会通过undo方法处理
-   * @param  {Object} entity 添加的对象
+   * @param  {cla} entity 添加的对象
    * @return {Promise}       消息承诺
    */
   add(entity) {
@@ -104,7 +116,7 @@ export class EntityFactory {
 
   /**
    * 修改实体属性, 会通过undo方法处理
-   * @param  {Object} entity  修改的实体
+   * @param  {cla} entity  修改的实体
    * @return {Promise}        消息的承诺
    */
   update(entity) {

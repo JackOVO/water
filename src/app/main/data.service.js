@@ -113,11 +113,13 @@ function _createRequestUrl(aim, action) {
   if (aim === 'default') {
     url = action;
   } else if (typeof(aimConfig) !== 'undefined') {
+
+    baseUrl = aimConfig.base || baseUrl;
     let path = aimConfig[action] || defConfig[action];
-    let prefix = aimConfig.prefix || aim;
+    let prefix = typeof(aimConfig.prefix) == 'undefined' ? aim : aimConfig.prefix;
     let suffix = aimConfig.suffix || defConfig.suffix;
 
-    url = baseUrl + '/' + prefix + '/' + path + suffix;
+    url = baseUrl + '/' + (prefix?prefix+'/':'') + path + suffix;
   } else {
     throw new Error('data.service, 未定义的目标配置!');
   }
