@@ -7,6 +7,16 @@ let _object = Symbol();
 let _primaryKey = Symbol();
 let _dataService = Symbol();
 
+class BaseModel {
+  constructor(create) {
+
+    this.create = create;
+    this.mapping = {
+
+    };
+  }
+}
+
 export class EntityFactory {
   constructor(aim, object, primaryKey, dataService) {
 
@@ -16,8 +26,15 @@ export class EntityFactory {
     this[_dataService] = dataService;
   }
 
-  pack(entity) {
+  pack(source) {
+    for (let mkey in this[_object].mapping) {
+      let mval = this[_object].mapping[mkey];
 
+      if (typeof(source[mval]) !== 'undefined') {
+        source[mkey] = source[mval];
+        delete source[mval];
+      }
+    }
   }
 
   /**
