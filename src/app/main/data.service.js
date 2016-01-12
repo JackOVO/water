@@ -30,7 +30,7 @@ export class DataService {
     _errorService = errorService;
   }
 
-  // 提供外部配置
+  // 提供外部配置接口
   setBaseUrl(baseUrl) { _baseUrl = baseUrl; }
   setRequestMapping(requestMapping) {
     var reqMap = angular.extend({}, _requestMapping, requestMapping);

@@ -3,16 +3,19 @@
  */
 
 export class LoginController {
-  constructor() {
+  constructor(adminService) {
+    'ngInject';
 
-    this.user = {
-      loginName: 'admin',
-      password: 'xxxxxx'
-    };
+    this.adminService = adminService;
+    this.name = 'name';
+    this.password = 'password';
   }
 
   signIn() {
-    console.log(this.user);
+    let name = this.name;
+    let password = this.password;
+
+    this.adminService.login(name, password);
   }
 }
 
