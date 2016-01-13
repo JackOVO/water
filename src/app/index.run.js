@@ -9,6 +9,7 @@ export function runBlock($log, dataService) {
   // 数据服务配置
   dataService.setBaseUrl('http://localhost:5324/admin');
   dataService.setRequestMapping({
+    user: {},
     admin: {
       prefix: '',
       login: 'login',

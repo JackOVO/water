@@ -3,19 +3,26 @@
  */
 
 export class LoginController {
-  constructor(adminService) {
+  constructor($state, adminService) {
     'ngInject';
 
+    this.$state = $state;
+    this.loginName = 'admin';
+    this.password = 'admin123';
     this.adminService = adminService;
-    this.name = 'name';
-    this.password = 'password';
   }
 
   signIn() {
-    let name = this.name;
+    let that = this;
     let password = this.password;
+    let loginName = this.loginName;
 
-    this.adminService.login(name, password);
+    this.adminService.login(loginName, password).then((admin) => {
+      that.adminService.admin = admin;
+      that.$state.go('home');
+    }, (msg) => {
+      that.adminService.showToastr(msg, 'error', '登录失败');
+    });
   }
 }
 

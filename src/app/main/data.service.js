@@ -66,7 +66,7 @@ export class DataService {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
       },
-      transformRequest: function(obj) {
+      transformRequest: (obj) => {
         // 以下处理数组变为 array=1&array=2&array=3
         return $.param(obj);
 
@@ -121,7 +121,7 @@ function _createRequestUrl(aim, action) {
 
     url = baseUrl + '/' + (prefix?prefix+'/':'') + path + suffix;
   } else {
-    throw new Error('data.service, 未定义的目标配置!');
+    throw new Error('data.service 未定义的目标配置-' + aim);
   }
 
   return url;

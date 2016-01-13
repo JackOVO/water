@@ -2,6 +2,26 @@
  * 实体工厂基类
  */
 
+import {Paging, Message} from './model';
+
+/**
+ * 根据响应数据属性创建响应的类型元数据
+ * Page, Array, Entity, Message
+ * @param  {Object} res 后台响应
+ * @return {Object}     自定义类型描述数据
+ */
+function _createResTypeClass(res) {
+  if (typeof(res.message) !== 'undefined') {
+    let suc = res.success;
+    let data = res.data;
+    let content = res.message;
+
+    return new Message(suc, content, data);
+  } else {
+    return res;
+  }
+}
+
 let _aim = Symbol();
 let _cla = Symbol();
 let _primaryKey = Symbol();
@@ -16,21 +36,49 @@ export class EntityFactory {
     this[_dataService] = dataService;
   }
 
-  // pack(source) {
-  //   for (let mkey in this[_cla].mapping) {
-  //     let mval = this[_cla].mapping[mkey];
+  /**
+   * 同undo, 只不过是反向转换, 都需要更改
+   * @param  {[type]} source [description]
+   * @return {[type]}        [description]
+   */
+  pack(source) {
+    let cla = this[_cla];
 
-  //     if (typeof(source[mval]) !== 'undefined') {
-  //       source[mkey] = source[mval]; // 换名
-  //       delete source[mval]; // 删除原属性
-  //     }
-  //   }
-  // }
-  
+    for (let key in cla.mapping) {
+      let conf = cla.mapping[key];
+      let dkey = conf;
 
+      // 换名
+      if (typeof(source[dkey]) !== 'undefined') {
+        source[key] = source[dkey];
+        delete source[dkey];
+      }
+    }
+
+    return this.create.apply(this, [source]);
+  }
+
+  /**
+   * 不只是换名, 还应该可以迭代换名, 并可以对值进行过滤处理
+   * @param  {[type]} entity [description]
+   * @return {[type]}        [description]
+   */
   undo(entity) {
-    // 通过map处理一下键
-    return entity;
+    let cla = this[_cla],
+        result = angular.extend({}, entity);
+
+    for (let key in cla.mapping) {
+      let conf = cla.mapping[key];
+      let dkey = conf;
+
+      // 换名
+      if (typeof(result[key]) !== 'undefined') {
+        result[dkey] = result[key];
+        delete result[key];
+      }
+    }
+
+    return result;
   }
 
   /**
@@ -64,8 +112,8 @@ export class EntityFactory {
 
     params[pkey] = id;
 
-    return this[_dataService].get(aim, 'get', params).then((source) => {
-      return source;
+    return this[_dataService].get(aim, 'get', params).then((res) => {
+      return res;
     });
   }
 
@@ -76,11 +124,20 @@ export class EntityFactory {
    * @return {Promise}       后台数据响应承诺
    */
   query(entity, action = 'query') {
-    let aim = this[_aim],
+    let that = this,
+        aim = this[_aim],
         params = this.undo(entity);
 
-    return this[_dataService].get(aim, action, params).then((source) => {
-      return source;
+    return this[_dataService].get(aim, action, params).then((res) => {
+      let obj = _createResTypeClass(res);
+
+      if (obj instanceof Message) {
+        obj.data = that.pack(obj.data);
+      } else {
+        obj = that.pack(obj);
+      }
+
+      return obj;
     });
   }
 
@@ -94,8 +151,8 @@ export class EntityFactory {
   search(page, size, options) {
     let aim = this[_aim];
 
-    return this[_dataService].get(aim, 'list', options).then((source) => {
-      return source;
+    return this[_dataService].get(aim, 'list', options).then((res) => {
+      return res;
     });
   }
 
