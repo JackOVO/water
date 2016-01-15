@@ -22,6 +22,7 @@
     </nav>
   </alte-header>
 
+  <div ng-controller="SidebarController as sidebar">
   <alte-sidebar>
 
     <!-- Sidebar user panel -->
@@ -47,10 +48,12 @@
     <!-- /.search form -->
 
     <!-- Sidebar Menu -->
-    <alt-side-menu></alt-side-menu>
+    <alte-side-menu
+      data="sidebar.menuData"
+      callback="sidebar.menuClick"></alte-side-menu>
     <!-- /.sidebar-menu -->
-
   </alte-sidebar>
+  </div>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -59,8 +62,8 @@
       <h1 style="height:26px;">面板页</h1>
       <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i>面包屑</a></li>
-        <!-- <li><a href="#">X1</a></li>
-        <li class="active">X12</li> -->
+        <li><a href="#">X1</a></li>
+        <li class="active">X12</li>
       </ol>
     </section>
 

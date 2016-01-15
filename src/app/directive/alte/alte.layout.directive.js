@@ -72,11 +72,31 @@ export function HeaderDriective() {
   return directive;
 }
 // 切换按钮声明, 切换侧边栏按钮
-export function toggleBtnDriective() {
+export function ToggleBtnDriective() {
   let directive = {
-    link: function(scope, element) {
+    link: function(scope, element, attrs) {
+      let body = $('body');
+      let openClass = 'sidebar-open',
+          collapseClass = 'sidebar-collapse';
+      let screenSize = attrs.screenSize || 768;
+
       element.on('click', function() {
-        
+        //Enable sidebar push menu
+        if ($(window).width() > (screenSize - 1)) {
+          if (body.hasClass(collapseClass)) {
+            body.removeClass(collapseClass);
+          } else {
+            body.addClass(collapseClass);
+          }
+        } 
+        //Handle sidebar push menu for small screens
+        else {
+          if (body.hasClass(openClass)) {
+            body.removeClass(openClass).removeClass(collapseClass);
+          } else {
+            body.addClass(openClass);
+          }
+        }
       });
     }
   };
@@ -84,23 +104,6 @@ export function toggleBtnDriective() {
   return directive;
 }
 
-
-// //Enable sidebar push menu
-// if ($(window).width() > (screenSizes.sm - 1)) {
-//   if ($("body").hasClass('sidebar-collapse')) {
-//     $("body").removeClass('sidebar-collapse').trigger('expanded.pushMenu');
-//   } else {
-//     $("body").addClass('sidebar-collapse').trigger('collapsed.pushMenu');
-//   }
-// }
-// //Handle sidebar push menu for small screens
-// else {
-//   if ($("body").hasClass('sidebar-open')) {
-//     $("body").removeClass('sidebar-open').removeClass('sidebar-collapse').trigger('collapsed.pushMenu');
-//   } else {
-//     $("body").addClass('sidebar-open').trigger('expanded.pushMenu');
-//   }
-// }
 
 // 布局侧边栏
 export function SidebarDriective() {

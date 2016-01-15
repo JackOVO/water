@@ -8,14 +8,16 @@ import { DataService } from './main/data.service';
 import { ErrorService } from './main/error.service';
 import { MainController } from './main/main.controller';
 
-import './admin/admin.module'; // 管理员模块
 import './directive/directive.module'; // 指令模块
+import './sidebar/sidebar.module'; // 侧边栏模块
+import './admin/admin.module'; // 管理员模块
 
 let rely = [
   'ui.router',
   'toastr',
 
   'water.directive',
+  'water.sidebar',
   'water.admin'
 ];
 
