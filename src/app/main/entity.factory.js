@@ -12,8 +12,8 @@ import {Paging, Message} from './model';
  */
 function _createResTypeClass(res) {
   if (typeof(res.message) !== 'undefined') {
-    let suc = res.success;
     let data = res.data;
+    let suc = res.success;
     let content = res.message;
 
     return new Message(suc, content, data);
@@ -38,6 +38,7 @@ export class EntityFactory {
 
   /**
    * 同undo, 只不过是反向转换, 都需要更改
+   * 单层换名
    * @param  {[type]} source [description]
    * @return {[type]}        [description]
    */
@@ -51,8 +52,9 @@ export class EntityFactory {
       // 换名
       if (typeof(source[dkey]) !== 'undefined') {
         source[key] = source[dkey];
-        delete source[dkey];
+        if (key !== dkey) { delete source[dkey]; }
       }
+
     }
 
     return this.create.apply(this, [source]);
@@ -93,7 +95,7 @@ export class EntityFactory {
     let cla = this[_cla];
 
     if (angular.isFunction(cla.create)) {
-      return cla.create.apply(null, args);
+      return cla.create.apply(this, args);
     } else {
       // http://stackoverflow.com/questions/1606797/use-of-apply-with-new-operator-is-this-possible
       return new (Function.prototype.bind.apply(cla, [null, ...args]));
@@ -114,6 +116,24 @@ export class EntityFactory {
 
     return this[_dataService].get(aim, 'get', params).then((res) => {
       return res;
+    });
+  }
+
+  /**
+   * 获取全部, 单层过滤处理
+   * @return {Promise} 数组承诺
+   */
+  all() {
+    let _this = this,
+        aim = this[_aim];
+
+    return this[_dataService].get(aim, 'all').then((res) => {
+      let array = [];
+      for (let index in res) {
+        let item = _this.pack(res[index]);
+        array.push(item);
+      }
+      return array;
     });
   }
 
@@ -152,6 +172,7 @@ export class EntityFactory {
     let aim = this[_aim];
 
     return this[_dataService].get(aim, 'list', options).then((res) => {
+console.log(res);
       return res;
     });
   }

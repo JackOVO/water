@@ -3,18 +3,20 @@
  */
 
 export class SidebarController {
-  constructor() {
-    this.menuData = [
-      {type: 'header', text: 'HEADER'},
-      {id: 1, key: 'user', text: '用户管理', icon: 'user'},
-      {id: 3, key: 'project', text: '项目管理', icon: 'coffee'},
-      {id: 4, key: 'invest', text: '投资管理', icon: 'line-chart'},
-      {id: 2, key: 'banner', text: '轮播管理', icon: 'file-picture-o'}
-    ];
-  }
+  constructor($scope, menuService) {
+    'ngInject';
 
-  menuClick(pary, isc, isv) {
-    let node = this;
-    console.log(node, pary, isc, isv);
+    // 注册回调
+    // menuService.register('all', (menuData) => {
+    //   this.menuData = menuData;
+    // });
+
+    // 请求数据
+    menuService.all();
+
+    // 点击发射通知
+    this.menuClick = function(node, pary) {
+      $scope.$emit('sideBarMenuOnClick', node.key, pary);
+    };
   }
 }

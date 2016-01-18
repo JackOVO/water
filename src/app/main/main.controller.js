@@ -3,50 +3,35 @@
  */
 
 export class MainController {
-  constructor(dataService) {
+  constructor($scope, $state) {
     'ngInject';
+    let _this = this;
+    this.$state = $state;
 
-    // let params = {page: '你好', array: [1, 2, 3]};
-    dataService.get('user', 'list').then(function(data) {
-console.log(data);
+    // 侧边栏菜单点击通知
+    $scope.$on('sideBarMenuOnClick', (e, key, pkey) => {
+      _this.sideBarMenuClickAssociate(key, pkey);
     });
-    // dataService.post('user', 'list', params).then();
-    // dataService.download('user', 'list', params);
+  }
+
+  // 菜单点击关联处理
+  sideBarMenuClickAssociate(key, pkey) {
+    let keys = key.split(':');
+    key = keys[keys.length - 1];
+
+console.log('menuKey----->', key);
+
+    // 点击项key判断
+    let params = {};
+    switch(key) {
+      case 'user':
+      case 'baseInfo':
+        params = {aim: key, t: 'Test'};
+        this.$state.go('home.single', params);
+      break;
+        params = {aim: key, page: 1}
+        this.$state.go('home.list', params);
+      break;
+    }
   }
 }
-
-// export class MainController {
-//   constructor ($timeout, webDevTec, toastr) {
-//     'ngInject';
-
-//     this.awesomeThings = [];
-//     this.classAnimation = '';
-//     this.creationDate = 1451577885748;
-//     this.toastr = toastr;
-
-//     this.activate($timeout, webDevTec);
-
-//     // 数据结构解析或屏蔽
-
-//   }
-
-//   activate($timeout, webDevTec) {
-//     this.getWebDevTec(webDevTec);
-//     $timeout(() => {
-//       this.classAnimation = 'rubberBand';
-//     }, 4000);
-//   }
-
-//   getWebDevTec(webDevTec) {
-//     this.awesomeThings = webDevTec.getTec();
-
-//     angular.forEach(this.awesomeThings, (awesomeThing) => {
-//       awesomeThing.rank = Math.random();
-//     });
-//   }
-
-//   showToastr() {
-//     this.toastr.info('Fork <a href="https://github.com/Swiip/generator-gulp-angular" target="_blank"><b>generator-gulp-angular</b></a>');
-//     this.classAnimation = '';
-//   }
-// }

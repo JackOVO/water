@@ -25,7 +25,7 @@ export function AlteSideMenuDirective() {
         sideMenu.create(element, data);
         sideMenu.bindingToggleFn(element);
         sideMenu.onClickCallback = function(node, pary, isc, isv) {
-          if (scope.callback()) { scope.callback().call(node, pary, isc, isv);}
+          if (scope.callback()) { scope.callback()(node, pary, isc, isv);}
         };
       });
     }
@@ -139,6 +139,8 @@ let sideMenu = {
 
     parent.on('click', 'li a', (e) => {
       let $this = $(e.target);
+      if ($this.is('span')) { $this = $this.parent(); }
+
       let checkElement = $this.next();
       let isChildren = checkElement.is('.treeview-menu');
       let isVisible = checkElement.is(':visible');

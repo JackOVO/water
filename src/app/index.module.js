@@ -11,6 +11,7 @@ import { MainController } from './main/main.controller';
 import './directive/directive.module'; // 指令模块
 import './sidebar/sidebar.module'; // 侧边栏模块
 import './admin/admin.module'; // 管理员模块
+import './user/user.module'; // 用户模块
 
 let rely = [
   'ui.router',
@@ -18,7 +19,8 @@ let rely = [
 
   'water.directive',
   'water.sidebar',
-  'water.admin'
+  'water.admin',
+  'water.user'
 ];
 
 angular
