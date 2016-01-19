@@ -6,6 +6,7 @@ import { routerConfig } from './index.route';
 
 import { DataService } from './main/data.service';
 import { ErrorService } from './main/error.service';
+import { GlobalService } from './main/global.service';
 import { MainController } from './main/main.controller';
 
 import './directive/directive.module'; // 指令模块
@@ -30,6 +31,7 @@ angular
   .run(runBlock)
   .service('dataService', DataService)
   .service('errorService', ErrorService)
+  .service('globalService', GlobalService)
   .controller('MainController', MainController);
 
 

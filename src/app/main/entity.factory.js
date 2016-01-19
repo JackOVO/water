@@ -22,7 +22,6 @@ function _createResTypeClass(res) {
   }
 }
 
-let _aim = Symbol();
 let _cla = Symbol();
 let _primaryKey = Symbol();
 let _dataService = Symbol();
@@ -30,7 +29,7 @@ let _dataService = Symbol();
 export class EntityFactory {
   constructor(aim, cla, primaryKey, dataService) {
 
-    this[_aim] = aim;
+    this.aim = aim;
     this[_cla] = cla;
     this[_primaryKey] = primaryKey;
     this[_dataService] = dataService;
@@ -109,7 +108,7 @@ export class EntityFactory {
    */
   getById(id) {
     let params = {},
-        aim = this[_aim],
+        aim = this.aim,
         pkey = this[_primaryKey];
 
     params[pkey] = id;
@@ -125,7 +124,7 @@ export class EntityFactory {
    */
   all() {
     let _this = this,
-        aim = this[_aim];
+        aim = this.aim;
 
     return this[_dataService].get(aim, 'all').then((res) => {
       let array = [];
@@ -144,17 +143,17 @@ export class EntityFactory {
    * @return {Promise}       后台数据响应承诺
    */
   query(entity, action = 'query') {
-    let that = this,
-        aim = this[_aim],
+    let _this = this,
+        aim = this.aim,
         params = this.undo(entity);
 
     return this[_dataService].get(aim, action, params).then((res) => {
       let obj = _createResTypeClass(res);
 
       if (obj instanceof Message) {
-        obj.data = that.pack(obj.data);
+        obj.data = _this.pack(obj.data);
       } else {
-        obj = that.pack(obj);
+        obj = _this.pack(obj);
       }
 
       return obj;
@@ -169,11 +168,24 @@ export class EntityFactory {
    * @return {Promise}        分页列表响应承诺
    */
   search(page, size, options) {
-    let aim = this[_aim];
+    let _this = this,
+        aim = this.aim;
+    options = angular.extend({pageSize: size, pageNumber: page}, options);
+
+    if (typeof(options.order) !== 'undefined') {
+      options.orderProperty = options.order.pro;
+      options.orderDirection = options.order.dir;
+      delete options.order;
+    }
 
     return this[_dataService].get(aim, 'list', options).then((res) => {
-console.log(res);
-      return res;
+      let paging = new Paging([], page, size, res.total);
+
+      for (let index in res.rows) {
+        let source = _this.pack(res.rows[index]);
+        paging.data.push(source);
+      }
+      return paging;
     });
   }
 
@@ -183,7 +195,7 @@ console.log(res);
    * @return {Promise}       消息承诺
    */
   add(entity) {
-    let aim = this[_aim],
+    let aim = this.aim,
         params = this.undo(entity);
 
     return this[_dataService].get(aim, 'add', params).then((res) => {
@@ -198,7 +210,7 @@ console.log(res);
    * @return {Promise}        消息的承诺
    */
   update(entity) {
-    let aim = this[_aim],
+    let aim = this.aim,
         params = this.undo(entity);
 
     return this[_dataService].get(aim, 'upd', params).then((res) => {
@@ -213,7 +225,7 @@ console.log(res);
    * @return {Promise}       消息的承诺
    */
   delete(...ids) {
-    let aim = this[_aim],
+    let aim = this.aim,
         params = {[this[_primaryKey]]: ids[0]};
 
     // 当参数个数为2时, 以第1个参数为后台参数名, 第二个参数为id的值

@@ -17,7 +17,7 @@ let _requestMapping = {
     get: 'find',
     upd: 'update',
     del: 'delete',
-    list: 'listPage'
+    list: 'findPage'
   }
 };
 

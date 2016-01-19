@@ -37,6 +37,11 @@ $topbar-bg-color: #5AADBB;
   }
 }
 
+/**datatable**/
+.dt-body-center {
+  text-align: center;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

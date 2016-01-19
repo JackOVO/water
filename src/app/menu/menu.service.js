@@ -25,6 +25,8 @@ export class MenuService extends BusinessFactory {
   all() {
     let _this = this;
     return this.menuFactory.all().then((array) => {
+
+      // 后台key前台映射处理
       _this.iteration(array, function(node) {
         if (_this.keyMapping[node.key]) {
           node.key = _this.keyMapping[node.key];

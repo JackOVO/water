@@ -13,7 +13,10 @@ export class Message {
 
 // 分页模型
 export class Paging {
-  constructor() {
-
+  constructor(data = [], page = 0, size = 0, total = 0) {
+    this.data = data;
+    this.page = page;
+    this.size = size;
+    this.total = total;
   }
 }

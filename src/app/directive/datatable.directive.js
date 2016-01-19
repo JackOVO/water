@@ -10,6 +10,7 @@ export function DataTableDirective($compile) {
   let directive = {
     replace: true,
     scope: {
+      'defs': '=', // 针对列动作配置, 以及操作列控制
       'paging': '=',
       'columns': '=',
       'checkeds': '=', // 多选选中关联
@@ -75,14 +76,13 @@ export function DataTableDirective($compile) {
             // 求页码
             let count = data.start + 1;
             let page = parseInt(count / data.length) + (count % data.length);
+
             data.page = page;
-            scope.draughtRequest()(data); // 绘制请求
+            scope.draughtRequest()(data, page); // 绘制请求
           }
         }
       };
 
-      let lastIndex = setting.columns.length - 1;
-      let myrender = setting.columns[lastIndex].myrender;
       setting.order = setting.order || [];
       setting.columnDefs = setting.columnDefs || [];
 
@@ -98,7 +98,6 @@ export function DataTableDirective($compile) {
           width: '12px',
           orderable: false,
           className: 'dt-body-center',
-
           createdCell: (td, cellData, rowData) => {
             let cbox = $(`<input type="checkbox" value="${rowData.id || ''}">`);
             cbox.appendTo($(td).empty()).click(function(e) {
@@ -113,6 +112,47 @@ export function DataTableDirective($compile) {
             });
           }
         });
+      }
+
+      // 添加操作列
+      if (typeof(scope.defs) !== 'undefined') {
+
+        // 目标列按钮配置
+        if (typeof(scope.defs.specific) !== 'undefined') {
+
+          for (let key in scope.defs.specific) {
+            setting.columnDefs.push({
+              targets: key-0,
+              createdCell: (td, cellData, rowData) => {
+                let button = scope.defs.specific[key](rowData);
+                let html = createEveLinkHtml(cellData, [button]);
+                html = $compile(html)(scope.defs.ctrlScope);
+                $(td).empty().append(html);
+              }
+            });
+          }
+        }
+
+        // 操作列按钮配置
+        if (scope.defs.buttons.length) {
+          let copy = setting.columns.concat();
+          let operCol = {
+            data: null,  title: '操作',
+            orderable: false, className: 'dt-body-center'
+          };
+
+          copy.push(operCol);
+          setting.columns = copy;
+
+          setting.columnDefs.push({
+            targets: setting.columns.length - 1,
+            createdCell: (td, cellData, rowData) => {
+              let html = createEveLinkHtml(rowData, scope.defs.buttons);
+              html = $compile(html)(scope.defs.ctrlScope);
+              $(td).empty().append(html);
+            }
+          });
+        }
       }
 
       // 添加事件方法
@@ -142,6 +182,52 @@ export function DataTableDirective($compile) {
       callback.call(that, row, data, index);
     });
   }
+
+  // 创建事件链接html
+  function createEveLinkHtml(data, buttons) {
+    let html = [];
+    for (let index in buttons) {
+      let btn = buttons[index];
+
+      let text = btn.text;
+      let type = btn.type || 'btn';
+      let clas = btn.clas || 'default';
+      let action = angular.isFunction(btn.action)?btn.action(data):btn.action;
+
+      switch(type) {
+        case 'btn':
+          html.push(`<button class="btn btn-${clas} btn-xs" ng-click="${action}">${text}</button>`);
+          break;
+        default:
+          html.push(`<a href="javascript:;" ng-click="${action}">${text}</a>`);
+          break;
+      }
+    }
+
+    return html.join(' ');
+  }
+
+  // 扩展
+  $.fn.dataTableExt.oApi.fnDisplayStart = (oSettings, iStart,bRedraw ) => {
+    if (typeof bRedraw == 'undefined') { bRedraw = true; }
+    oSettings._iDisplayStart = iStart;
+    if (oSettings.oApi._fnCalculateEnd) { oSettings.oApi._fnCalculateEnd(oSettings); }
+    if (bRedraw) { oSettings.oApi._fnDraw(oSettings); }
+  };
+
+  $.fn.dataTableExt.oApi.fnLengthChange = (oSettings, iDisplay) => {
+    oSettings._iDisplayLength = iDisplay;
+    oSettings.oApi._fnCalculateEnd(oSettings);
+    /* If we have space to show extra rows (backing up from the end point - then do so */
+    if (oSettings._iDisplayEnd == oSettings.aiDisplay.length) {
+      oSettings._iDisplayStart = oSettings._iDisplayEnd - oSettings._iDisplayLength;
+      if (oSettings._iDisplayStart < 0) { oSettings._iDisplayStart = 0; }
+    }
+   
+    if (oSettings._iDisplayLength == -1) { oSettings._iDisplayStart = 0; }
+    //oSettings.oApi._fnDraw( oSettings );
+    if (oSettings.aanFeatures.l) { $('select', oSettings.aanFeatures.l).val(iDisplay); }
+  };
 
   return directive;
 }
