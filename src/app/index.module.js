@@ -16,6 +16,8 @@ import './user/user.module'; // 用户模块
 
 let rely = [
   'ui.router',
+  'ui.select',
+  'ngDialog',
   'toastr',
 
   'water.directive',

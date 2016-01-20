@@ -63,19 +63,19 @@ export class DataService {
   post(aim, action, data) {
     let url = _createRequestUrl(aim, action);
     let config = {
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
-      },
-      transformRequest: (obj) => {
-        // 以下处理数组变为 array=1&array=2&array=3
-        return $.param(obj);
+// headers: {
+//   'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8;'
+// },
+// transformRequest: (obj) => {
+//   // 以下处理数组变为 array=1&array=2&array=3
+//   return $.param(obj);
 
-        // 以下处理数组变为 array: 1,2,3
-        // var str = [];
-        // for(var p in obj)
-        // str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        // return str.join("&");
-      }
+//   // 以下处理数组变为 array: 1,2,3
+//   // var str = [];
+//   // for(var p in obj)
+//   // str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+//   // return str.join("&");
+// }
     };
 
     return this[_$http].post(url, data, config)

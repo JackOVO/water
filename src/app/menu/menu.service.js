@@ -5,10 +5,10 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class MenuService extends BusinessFactory {
-  constructor(toastr, $rootScope, menuFactory) {
+  constructor(toastr, $rootScope, dialogService, menuFactory) {
     'ngInject';
 
-    super(toastr, $rootScope, menuFactory, 10);
+    super(toastr, $rootScope, dialogService, menuFactory);
     this.keyMapping = {}; // 前后数据key映射
     this.menuFactory = menuFactory;
   }

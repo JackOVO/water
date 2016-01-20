@@ -5,18 +5,27 @@
 let _toastr = Symbol();
 let _$rootScope = Symbol();
 let _entityFactory = Symbol();
+let _dialogService = Symbol();
 
 export class BusinessFactory {
-  constructor(toastr, $rootScope, entityFactory, size = 9) {
+  constructor(toastr, $rootScope, dialogService, entityFactory, size = 9) {
     this.size = size;
+
     this[_toastr] = toastr;
     this[_$rootScope] = $rootScope;
+    this[_dialogService] = dialogService;
     this[_entityFactory] = entityFactory;
     this.registrationRecord = {}; // 记录
   }
 
   clearOrder() { this.order = undefined; }
   setOrder(order) { this.order = order; }
+  dialog(conf, content) {
+    return this[_dialogService].open(conf, content);
+  }
+  confirm(title, content) {
+    return this[_dialogService].confirm(title, content);
+  }
 
   /**
    * 全局通知
@@ -60,7 +69,6 @@ export class BusinessFactory {
    */
   search(page, size = this.size, options = {}) {
     let _this = this;
-
     if (typeof(this.order) !== 'undefined') {
       options.order = this.order;
     }
@@ -88,30 +96,15 @@ export class BusinessFactory {
 
     this[_toastr][operation](`<p>${msg}</p>`, title);
   }
+
+  /**
+   * 刷新列表
+   * @param  {Object} msg  应该是消息对象
+   * @param  {[type]} page 刷新的页码
+   */
+  refreshList(msg, page = 1) {
+    let oper = msg.success?'success':'error';
+    this.search(page);
+    this.showToastr(msg.msg, oper);
+  }
 }
-
-// /**
-//  * 注册请求方法的成功回调
-//  * @param  {Stirng}   fname    方法名
-//  * @param  {Function} callback 回调
-//  * @return {Number}            已注册数
-//  */
-// register(fname, callback) {
-//   let fnArray = this.registrationRecord[fname] || [];
-//   fnArray.push(callback);
-//   this.registrationRecord[fname] = fnArray;
-//   return fnArray.length;
-// }
-
-// /**
-//  * 执行绑定的注册回调
-//  * @param  {Stirng} fname 方法名
-//  * @return {[type]}       [description]
-//  */
-// execute(fname, result) {
-//   let fnArray = this.registrationRecord[fname] || [];
-//   for (let index in fnArray) {
-//     fnArray[index](result);
-//   }
-//   return result;
-// }

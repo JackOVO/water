@@ -6,9 +6,13 @@
 import './alte/alte.directive.module';
 
 import { DataTableDirective } from './datatable.directive';
+import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
+import { DialogService } from './dialog.service';
 
 angular
   .module('water.directive', ['water.directive.alte'])
   .service('dataTableService', DataTableService)
-  .directive('datatable', DataTableDirective);
+  .service('dialogService', DialogService)
+  .directive('datatable', DataTableDirective)
+  .directive('modalBody', ModalbodyDriective);

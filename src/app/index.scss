@@ -42,6 +42,59 @@ $topbar-bg-color: #5AADBB;
   text-align: center;
 }
 
+/**弹出框覆盖**/
+.my-ngdialog {
+  padding-top: 50px;
+  padding-bottom: 0;
+}
+.my-ngdialog .ngdialog-content {
+  background: none;
+}
+.my-ngdialog .modal-content {
+  width: 535px;
+  margin: 0 auto;
+  border-radius: 0;
+}
+.my-ngdialog .ngdialog-close {
+  display: none;
+}
+.confirm .modal-content{
+  width: 400px;
+}
+.my-ngdialog button.close:focus {
+  outline: none;
+}
+
+/**ui-select**/
+.ui-select-bootstrap>.ui-select-choices {
+    border: 1px solid #3c8dbc;
+    border-radius: 0;
+}
+.ui-select-container .btn.ui-select-toggle {
+  border-radius: 0;
+  background-color: #FFFFFF;
+}
+
+.ui-select-container {
+  .btn-default:hover, .btn-default:active, .btn-default.hover {
+    border-color: #ddd;
+    background-color: #FFFFFF;
+  }
+
+  .ui-select-match:focus {
+    outline: 0;
+  }
+
+ 
+
+  &:focus { outline: 0; }
+}
+
+.ui-select-match.btn-default-focus {
+  outline: 0;
+  box-shadow: none;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

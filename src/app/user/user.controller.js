@@ -7,12 +7,13 @@ export class UserController {
     'ngInject';
     let _this = this;
     this.paging = null;
+    this.userService = userService;
     this.columns = userService.columns();
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '改', action: ({userCode}) => `vm.edit(${userCode})`},
-        {text: '删', clas: 'danger', action: ({userCode}) => `vm.del(${userCode})`}
+        {text: '改',action: ({userCode}) => `vm.edit(${userCode})`},
+        {text: '删',clas: 'danger',action: ({userCode}) => `vm.del(${userCode})`}
       ],
       specific: userService.dataTableColumnSpecific
     };
@@ -38,21 +39,28 @@ export class UserController {
     });
   }
 
-  edit(code) {
-    alert('修改');
+  // 添加用户
+  add() {
+    this.userService.openEditPage();
   }
 
+  // 编辑用户
+  edit(code) {
+    this.userService.openEditPage(code);
+  }
+
+  // 删除用户
   del(code) {
     alert('删除');
   }
 
   // 绑定微信
-  bindWechat(code) {
-    alert('绑定');
+  bindWechat(code, name) {
+    this.userService.openWechatQRImg(code, name);
   }
 
   // 解绑微信
-  unBindWechat(code) {
-    alert('解绑');
+  unBindWechat(code, name) {
+    this.userService.unbindWechat(code, name);
   }
 }

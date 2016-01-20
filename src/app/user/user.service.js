@@ -5,10 +5,11 @@
  import { BusinessFactory } from '../main/business.factory';
 
 export class UserService extends BusinessFactory {
-  constructor(toastr, $rootScope, userFactory, dataTableService) {
+  constructor(toastr,$rootScope,dialogService,userFactory,dataTableService) {
    'ngInject';
 
-   super(toastr, $rootScope, userFactory, 2);
+   super(toastr, $rootScope, dialogService, userFactory, 2);
+   this.userFactory = userFactory;
    this.dataTableService = dataTableService;
    this.dataTableColumns = dataTableColumns;
    this.dataTableColumnSpecific = dataTableColumnSpecific;
@@ -27,6 +28,59 @@ export class UserService extends BusinessFactory {
     this.dataTableColumns[4].render = this.dataTableService.flagRender;
     return this.dataTableColumns;
   }
+
+  openEditPage() {
+    let conf = {title: '添加用户'};
+    let content = {
+      data: {
+        user: {},
+        roles: [],
+        subjects: []
+      },
+      inputs: [
+        {name: '用户名称', model: 'user.userName'},
+        {name: '登录名称', model: 'user.loginName'},
+        {type: 'password', name: '登录密码', model: 'user.password'},
+        {type: 'select', source: 'subjects',
+         name: '所属公司', model: 'user.subjectCode'},
+        {type: 'select', source: 'roles',
+         name: '所属角色', model: 'user.roleCode'},
+        {type: 'select', source: 'enables',
+         name: '状态标识', model: 'user.enableFlag'},
+        {name: '备注', model: 'user.remark'}
+      ]
+    };
+    super.dialog(conf, content);
+  }
+
+  // 打开二维码图片
+  openWechatQRImg(userCode, loginName) {
+    // 后台应该给图片大小或者描述
+    let conf = {
+      button: false,
+      width: '330px',
+      title: '绑定微信(' + loginName + ')'
+    };
+
+    this.userFactory.getWechatQRUrl(userCode).then((url) => {
+      let content = '<img src="' + url + '">'+
+      '<p style="text-align:center;" class="text-muted">扫一扫干点啥?</p>';
+      super.dialog(conf, content);
+    });
+  }
+
+  // 解绑微信
+  unbindWechat(userCode, loginName) {
+    let _this = this;
+    let title = '解绑微信(' + loginName + ')';
+    let content = '<p>确认解绑吗?</p>';
+
+    super.confirm(title, content).then(() => {
+      _this.userFactory.unbindWechat(userCode).then((msg) => {
+        _this.refreshList(msg);
+      });
+    });
+  }
 }
 
 // 列定义
@@ -41,17 +95,17 @@ let dataTableColumns = [
 
 // 特殊列处理
 let dataTableColumnSpecific = {
-  5: ({userCode, bandedWechat, wechatInfo}) => {
+  5: ({userCode, loginName, bandedWechat, wechatInfo}) => {
     let button = {};
     if (bandedWechat === false) {
       button = {
         text: '绑定微信',
-        action: `vm.bindWechat('${userCode}')`
+        action: `vm.bindWechat('${userCode}', '${loginName}')`
       };
     } else {
       button = {
         type: 'a', text: `${wechatInfo}`,
-        action: `vm.unBindWechat('${userCode}')`
+        action: `vm.unBindWechat('${userCode}', '${loginName}')`
       };
     }
     return button;

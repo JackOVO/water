@@ -13,7 +13,10 @@ export function runBlock($log, dataService, menuService) {
       prefix: '',
       all: 'menus'
     },
-    user: {},
+    user: {
+      unWechatQR: 'unbindWechatAccount',
+      wechatQR: 'generateWechatAuthQRCode'
+    },
     subject: {
       my: 'my'
     },
