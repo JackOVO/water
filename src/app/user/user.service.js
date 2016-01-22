@@ -41,26 +41,50 @@ export class UserService extends BusinessFactory {
   }
 
   // 打开编辑页添加依赖数据
-  openEditPage(scope) {
+  openEditPage(scope, code) {
+    let title = '增加用户',
+        pwd = Math.random();
+
     let binding = {
       user: this.userFactory.create(),
       enables: this.statusService.getCombobox('flag'),
       subjects: this.subjectService.getCombobox(),
       roles: []
     };
-      
-    let inputs = [
-      {name: '用户名称', model: 'user.userName'},
+
+    // 存在code即识别为编辑状态
+    if (code) {
+      title = '修改用户';
+      binding.user = this.userFactory.getById(code).then((user) =>{
+        user.password = pwd;
+        return user;
+      });
+    }
+    
+    let inputs = [{name: '用户名称', model: 'user.userName'},
       {name: '登录名称', model: 'user.loginName'},
       {name: '登录密码', model: 'user.password', type: 'password'},
-      {name: '所属公司', model: 'user.subjectCode',
-       type: 'select', source: 'subjects', m2: 'user.subjectName'},
+      {name: '所属公司', model: 'user.subjectCode', type: 'select',
+       source: 'subjects', m2: 'user.subjectCode', def: '请选择所属公司'},
       {name: '所属角色', model: 'user.roleCode', type: 'select',
-        source: 'roles', m2: 'user.roleName'},
+       source: 'roles', m2: 'user.roleCode', def: '请选择所属角色'},
       {name: '状态标识', model: 'user.enableFlag', type: 'select',
-        source: 'enables'},
-      {name: '备注', model: 'user.remark', type: 'textarea'}
-    ];
+       source: 'enables', def: '请选择状态标识'},
+      {name: '备注', model: 'user.remark', type: 'textarea'}];
+    
+    // let inputs = [
+    //   {name: '用户名称', model: 'user.userName'},
+    //   {name: '登录名称', model: 'user.loginName'},
+    //   {name: '登录密码', model: 'user.password', type: 'password'},
+    //   {name: '所属公司', model: 'user.subjectCode',
+    //    type: 'select', source: 'subjects', m2: 'user.subjectName',
+    //     def: '请选择所属的公司'},
+    //   {name: '所属角色', model: 'user.roleCode', type: 'select',
+    //     source: 'roles', m2: 'user.roleName'},
+    //   {name: '状态标识', model: 'user.enableFlag', type: 'select',
+    //     source: 'enables'},
+    //   {name: '备注', model: 'user.remark', type: 'textarea'}
+    // ];
 
     // 公司角色级联
     scope.$watch('user.subjectCode', (subjectCode) => {
@@ -73,8 +97,13 @@ export class UserService extends BusinessFactory {
       });
     });
 
-    super.openEditDialog('添加用户', inputs, binding, scope).then(({user}) => {
-      super.add(user);
+    super.openEditDialog(title, inputs, binding, scope).then(({user}) => {
+      if (typeof(user.userCode) !== 'undefined') {
+        if (pwd === user.password) { delete user.password; }
+        super.update(user);
+      } else {
+        super.add(user);
+      }
     });
   }
 

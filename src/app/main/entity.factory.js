@@ -214,8 +214,9 @@ export class EntityFactory {
     let aim = this.aim,
         params = this.undo(entity);
 
-    return this[_dataService].get(aim, 'upd', params).then((res) => {
-      return res;
+    return this[_dataService].post(aim, 'upd', params).
+      then(({success, message}) => {
+        return new Message(success, message);
     });
   }
 

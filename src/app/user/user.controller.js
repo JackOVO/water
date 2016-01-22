@@ -12,14 +12,14 @@ export class UserController {
     this.columns = userService.columns();
     this.defs = {
       ctrlScope: $scope,
-      buttons: [
-        {text: '改', action: ({userCode}) => `vm.edit('${userCode}')`},
-        {
-          text: '删',
-          clas: 'danger',
-          action: ({userCode, loginName}) => `vm.del('${userCode}', '${loginName}')`
-        }
-      ],
+      buttons: [{
+        text: '改',
+        action: ({userCode:u, loginName:l}) => `vm.edit('${u}', '${l}')`
+      },{
+        text: '删',
+        clas: 'danger',
+        action: ({userCode:u, loginName:l}) => `vm.edit('${u}', '${l}')`
+      }],
       specific: userService.dataTableColumnSpecific
     };
 
@@ -52,7 +52,8 @@ export class UserController {
 
   // 编辑用户
   edit(code) {
-    this.userService.openEditPage(code);
+    let scope = this.$scope;
+    this.userService.openEditPage(scope, code);
   }
 
   // 删除用户

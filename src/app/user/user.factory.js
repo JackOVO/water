@@ -9,6 +9,7 @@ class User {
   constructor() {
     this.userType = 'B_USER'; // 固定用户类型
     this.enableFlag = 'Enable';
+    this.subjectName = 'xxx';
   }
 }
 User.mapping = {};

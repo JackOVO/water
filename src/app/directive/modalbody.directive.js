@@ -41,19 +41,20 @@ function createInputsHtml(inputs) {
         name = inputs[i].name,
         model = inputs[i].model,
         m2 = inputs[i].m2,
+        def = inputs[i].def || '', // 组合框默认提示值
         inputHtml = '';
 
     switch(type) {
       case 'select':
         let source = inputs[i].source;
-
+// {{${m2?m2+'=':''}$select.selected.text}} XXX 绑定名称的位置在元素属性上第一次会有无法选中的问题
         inputHtml = `<div class="form-group">
           <label class="col-sm-2 control-label">${name}</label>
           <div class="col-sm-10">
             <ui-select theme="bootstrap" ng-model="${model}"
               search-enabled="true">
-              <ui-select-match placeholder="{{${m2?m2+'=':''}$select.selected.text}}">
-                {{$select.selected.text}}
+              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
+                {{${m2?m2+'=':''}$select.selected.text}}
               </ui-select-match>
               <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
                 <div ng-bind="o.text"></div>

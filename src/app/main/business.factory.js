@@ -46,7 +46,7 @@ export class BusinessFactory {
     for (let key in binding) {
       // 绑定一个承诺数据
       if (binding[key].then) {
-        binding[key].then((data) => { scope[key] = data; });
+        binding[key].then((data) => { scope[key] = data; console.info(key); });
       } else {
         scope[key] = binding[key];
       }
@@ -99,6 +99,19 @@ export class BusinessFactory {
   add(entity) {
     let _this = this;
     return this[_entityFactory].add(entity).then((msg) => {
+      _this.refreshList(msg);
+      return msg;
+    });
+  }
+
+  /**
+   * 编辑实体
+   * @param  {Object} entity 实体数据
+   * @return {Promise}       消息承诺
+   */
+  update(entity) {
+    let _this = this;
+    return this[_entityFactory].update(entity).then((msg) => {
       _this.refreshList(msg);
       return msg;
     });

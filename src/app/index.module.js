@@ -9,6 +9,8 @@ import { ErrorService } from './main/error.service';
 import { GlobalService } from './main/global.service';
 import { MainController } from './main/main.controller';
 
+import { PassWordFilter } from './main/filters';
+
 import './directive/directive.module'; // 指令模块
 import './sidebar/sidebar.module'; // 侧边栏模块
 import './status/status.module'; // 状态类数据模块
@@ -33,6 +35,7 @@ angular
   .config(routerConfig)
   .config(config)
   .run(runBlock)
+  .filter('pwd', () => PassWordFilter)
   .service('dataService', DataService)
   .service('errorService', ErrorService)
   .service('globalService', GlobalService)
