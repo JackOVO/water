@@ -14,11 +14,12 @@ export function ModalbodyDriective($compile) {
     link: function(scope, element) {
 
       scope.$watch('content', (content) => {
+console.log(content);
         if (!content) { return; }
 
         if (angular.isObject(content)) {
           let html = createInputsHtml(content.inputs);
-          content = $compile(html)(content.ctrlScope);
+          content = $compile(html)(content.scope);
         }
 
         element.append(content);
@@ -56,6 +57,14 @@ function createInputsHtml(inputs) {
                 <div ng-bind="o.text"></div>
               </ui-select-choices>
             </ui-select>
+          </div>
+        </div>`;
+        break;
+      case 'textarea':
+        inputHtml = `<div class="form-group">
+          <label class="col-sm-2 control-label">${name}</label>
+          <div class="col-sm-10">
+            <textarea class="form-control" ng-model="${model}" rows="4" placeholder="..." style="resize: none;"/>
           </div>
         </div>`;
         break;

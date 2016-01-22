@@ -19,13 +19,14 @@ export class DialogService {
   open(conf = {}, content) {
     let dialog = null;
     let defer = this.$q.defer();
+    let result = content.scope || '没有作用域'; // - -|||
 
     let data = {
       content: content || '',
       title: conf.title || '标题',
       button: conf.button || true,
-      cancel: () => { defer.reject(); dialog.close(); },
-      confirm: () => { defer.resolve(); dialog.close(); }
+      cancel: () => { defer.reject(result); dialog.close(); },
+      confirm: () => { defer.resolve(result); dialog.close(); }
     };
     if (conf.width) { data.width = conf.width; }
     if (typeof(conf.button) !== 'undefined') { data.button = conf.button; }
@@ -36,13 +37,6 @@ export class DialogService {
       template: 'app/template/dialog.html',
       closeByDocument: conf.closeByDocument || true
     };
-    // 存在内容配置的话, 添加独立作用域
-    if (angular.isObject(data.content)) {
-      options.controller = ($scope) => {
-        'ngInject';
-        data.content.ctrlScope = $scope;
-      }
-    }
 
     dialog = this.ngDialog.open(options);
     return defer.promise;

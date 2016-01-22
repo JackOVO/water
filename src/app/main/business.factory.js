@@ -26,6 +26,32 @@ export class BusinessFactory {
   confirm(title, content) {
     return this[_dialogService].confirm(title, content);
   }
+  
+  /**
+   * 编辑类对话框封装, 主要是外层数据绑定的配置
+   * @param  {String} title   标题
+   * @param  {Array} inputs   输入元素配置
+   * @param  {Object} binding 绑定依赖数据描述
+   * @param  {Scope} scope    可选的依赖作用域, 用于指令生成
+   * @return {Promise}        对话框确定取消承诺
+   */
+  editDialog(title = '编辑框框', inputs, binding, scope) {
+
+    // 创建独立作用域
+    scope = scope || this[_$rootScope].$new(true);
+    let conf = { title: title },
+        content = { scope: scope, inputs: inputs };
+    for (let key in binding) {
+      // 绑定一个承诺数据
+      if (binding[key].then) {
+        binding[key].then((data) => { scope[key] = data; });
+      } else {
+        scope[key] = binding[key];
+      }
+    }
+
+    return this[_dialogService].open(conf, content);
+  }
 
   /**
    * 全局通知

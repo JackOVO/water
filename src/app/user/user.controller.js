@@ -7,6 +7,7 @@ export class UserController {
     'ngInject';
     let _this = this;
     this.paging = null;
+    this.$scope = $scope;
     this.userService = userService;
     this.columns = userService.columns();
     this.defs = {
@@ -41,7 +42,8 @@ export class UserController {
 
   // 添加用户
   add() {
-    this.userService.openEditPage();
+    let scope = this.$scope;
+    this.userService.openEditPage(scope);
   }
 
   // 编辑用户

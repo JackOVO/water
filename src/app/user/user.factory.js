@@ -19,6 +19,8 @@ User.create = function(...args) {
       }
     }
     return user;
+  } else {
+    return new User();
   }
 };
 

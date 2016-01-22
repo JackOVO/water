@@ -29,28 +29,27 @@ export class UserService extends BusinessFactory {
     return this.dataTableColumns;
   }
 
-  openEditPage() {
-    let conf = {title: '添加用户'};
-    let content = {
-      data: {
-        user: {},
-        roles: [],
-        subjects: []
-      },
-      inputs: [
-        {name: '用户名称', model: 'user.userName'},
-        {name: '登录名称', model: 'user.loginName'},
-        {type: 'password', name: '登录密码', model: 'user.password'},
-        {type: 'select', source: 'subjects',
-         name: '所属公司', model: 'user.subjectCode'},
-        {type: 'select', source: 'roles',
-         name: '所属角色', model: 'user.roleCode'},
-        {type: 'select', source: 'enables',
-         name: '状态标识', model: 'user.enableFlag'},
-        {name: '备注', model: 'user.remark'}
-      ]
+  // 打开编辑页添加依赖数据
+  openEditPage(scope) {
+    let binding = {
+      user: this.userFactory.create()
     };
-    super.dialog(conf, content);
+    let inputs = [
+      {name: '用户名称', model: 'user.userName'},
+      {name: '登录名称', model: 'user.loginName'},
+      {name: '登录密码', model: 'user.password', type: 'password'},
+      {name: '所属公司', model: 'user.subjectCode', type: 'select',
+        source: 'subjects'},
+      {name: '所属角色', model: 'user.roleCode', type: 'select',
+        source: 'roles'},
+      {name: '状态标识', model: 'user.enableFlag', type: 'select',
+        source: 'enables'},
+      {name: '备注', model: 'user.remark', type: 'textarea'}
+    ];
+
+    super.editDialog('添加用户', inputs, binding, scope).then(({user}) => {
+console.log(user);
+    });
   }
 
   // 打开二维码图片
