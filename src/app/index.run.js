@@ -14,11 +14,15 @@ export function runBlock($log, dataService, menuService) {
       all: 'menus'
     },
     user: {
+      add: 'add',
       unWechatQR: 'unbindWechatAccount',
       wechatQR: 'generateWechatAuthQRCode'
     },
     subject: {
-      my: 'my'
+      all: 'subjectList'
+    },
+    role: {
+      findBy: 'findBySubject'
     },
     admin: {
       prefix: '',

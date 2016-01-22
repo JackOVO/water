@@ -14,11 +14,13 @@ export function ModalbodyDriective($compile) {
     link: function(scope, element) {
 
       scope.$watch('content', (content) => {
-console.log(content);
         if (!content) { return; }
 
         if (angular.isObject(content)) {
           let html = createInputsHtml(content.inputs);
+content.scope.xxx = function(text) {
+  console.info(text);
+};
           content = $compile(html)(content.scope);
         }
 
@@ -38,7 +40,7 @@ function createInputsHtml(inputs) {
     let type = inputs[i].type,
         name = inputs[i].name,
         model = inputs[i].model,
-
+        m2 = inputs[i].m2,
         inputHtml = '';
 
     switch(type) {
@@ -50,10 +52,10 @@ function createInputsHtml(inputs) {
           <div class="col-sm-10">
             <ui-select theme="bootstrap" ng-model="${model}"
               search-enabled="true">
-              <ui-select-match placeholder="{{$select.selected.text}}">
-                  {{$select.selected.text}}
+              <ui-select-match placeholder="{{${m2?m2+'=':''}$select.selected.text}}">
+                {{$select.selected.text}}
               </ui-select-match>
-              <ui-select-choices repeat="o.value as o in ${source}">
+              <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
                 <div ng-bind="o.text"></div>
               </ui-select-choices>
             </ui-select>

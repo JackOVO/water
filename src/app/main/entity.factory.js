@@ -66,8 +66,7 @@ export class EntityFactory {
    */
   undo(entity) {
     let cla = this[_cla],
-        result = angular.extend({}, entity);
-
+        result = angular.extend({}, entity); 
     for (let key in cla.mapping) {
       let conf = cla.mapping[key];
       let dkey = conf;
@@ -122,14 +121,15 @@ export class EntityFactory {
    * 获取全部, 单层过滤处理
    * @return {Promise} 数组承诺
    */
-  all() {
+  all(pack) {
     let _this = this,
         aim = this.aim;
+    pack = pack || this.pack;
 
     return this[_dataService].get(aim, 'all').then((res) => {
       let array = [];
       for (let index in res) {
-        let item = _this.pack(res[index]);
+        let item = pack.call(_this, res[index]);
         array.push(item);
       }
       return array;
@@ -198,8 +198,9 @@ export class EntityFactory {
     let aim = this.aim,
         params = this.undo(entity);
 
-    return this[_dataService].get(aim, 'add', params).then((res) => {
-      return res;
+    return this[_dataService].post(aim, 'add', params).
+      then(({success, message}) => {
+        return new Message(success, message);
     });
   }
 
@@ -233,8 +234,9 @@ export class EntityFactory {
       params = {[ids[0]]: ids[1]};
     }
 
-    return this.dataService.get(aim, 'del', params).then((res) => {
-      return res;
+    return this.dataService.post(aim, 'del', params).
+      then(({success, message}) => {
+        return new Message(success, message);
     });
   }
 }

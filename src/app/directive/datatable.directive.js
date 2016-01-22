@@ -63,6 +63,7 @@ export function DataTableDirective($compile) {
         serverSide: true,
         columns: columns,
         searching: false,
+        ordering: false,
         language: language,
         lengthChange: false,
         info: attrs.info !== 'false',

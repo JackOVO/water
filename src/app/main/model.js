@@ -2,11 +2,39 @@
  * 响应类封装定义
  */
 
+// 常用方法抽取, 在实体工厂类中的提供创建对象的方法
+export function createObjectFn(Proto) {
+  return function(...args) {
+    // 过滤属性
+    Proto.futility = Proto.futility || [];
+
+    if (angular.isObject(args[0])) {
+      var obj = new Proto();
+      for (let key in args[0]) {
+        if (Proto.futility.indexOf(key) === -1) {
+          obj[key] = args[0][key];
+        }
+      }
+      return obj;
+    } else {
+      return new Proto();
+    }
+  };
+}
+
+// 组合框选项
+export class Options {
+  constructor(value, text) {
+    this.text = text;
+    this.value = value;
+  }
+}
+
 // 消息模型
 export class Message {
-  constructor(succes, content, data) {
+  constructor(success, content, data) {
     this.data = data;
-    this.succes = succes;
+    this.success = success;
     this.content = content;
   }
 }

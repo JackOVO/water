@@ -13,8 +13,12 @@ export class UserController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '改',action: ({userCode}) => `vm.edit(${userCode})`},
-        {text: '删',clas: 'danger',action: ({userCode}) => `vm.del(${userCode})`}
+        {text: '改', action: ({userCode}) => `vm.edit('${userCode}')`},
+        {
+          text: '删',
+          clas: 'danger',
+          action: ({userCode, loginName}) => `vm.del('${userCode}', '${loginName}')`
+        }
       ],
       specific: userService.dataTableColumnSpecific
     };
@@ -52,8 +56,8 @@ export class UserController {
   }
 
   // 删除用户
-  del(code) {
-    alert('删除');
+  del(code, name) {
+    this.userService.del(code, name);
   }
 
   // 绑定微信

@@ -2,6 +2,8 @@
  * 列表管理类业务工厂基类
  */
 
+import { Options } from './model';
+
 let _toastr = Symbol();
 let _$rootScope = Symbol();
 let _entityFactory = Symbol();
@@ -20,10 +22,10 @@ export class BusinessFactory {
 
   clearOrder() { this.order = undefined; }
   setOrder(order) { this.order = order; }
-  dialog(conf, content) {
+  openDialog(conf, content) {
     return this[_dialogService].open(conf, content);
   }
-  confirm(title, content) {
+  confirmDialog(title, content) {
     return this[_dialogService].confirm(title, content);
   }
   
@@ -35,7 +37,7 @@ export class BusinessFactory {
    * @param  {Scope} scope    可选的依赖作用域, 用于指令生成
    * @return {Promise}        对话框确定取消承诺
    */
-  editDialog(title = '编辑框框', inputs, binding, scope) {
+  openEditDialog(title = '编辑框框', inputs, binding, scope) {
 
     // 创建独立作用域
     scope = scope || this[_$rootScope].$new(true);
@@ -73,16 +75,45 @@ export class BusinessFactory {
   }
 
   /**
-   * 全部数据, 不同类型的处理?
-   * @return {Array} 数组承诺
+   * 获取组合框下拉数据
+   * @param  {String} valueKey 值对应的key
+   * @param  {String} textKey  文本对应的key
+   * @return {Array}           Opionts的数据
    */
-  all() {
-    let _this = this;
-
+  getCombobox(valueKey, textKey) {
+    let result = [];
     return this[_entityFactory].all().then((array) => {
-      return array;
-    }).then((array) => {
-      return _this.globalNotice('all', array);
+      for (let index in array) {
+        let item = array[index];
+        let options = new Options(item[valueKey], item[textKey]);
+        result.push(options);
+      }
+      return result;
+    });
+  }
+
+  /**
+   * 添加一条数据
+   * @param {Object} entity 数据实体
+   */
+  add(entity) {
+    let _this = this;
+    return this[_entityFactory].add(entity).then((msg) => {
+      _this.refreshList(msg);
+      return msg;
+    });
+  }
+
+  /**
+   * 根据code删除, code在继承中定义
+   * @param  {String} code 主键的值
+   * @return {Promise}     消息的承诺
+   */
+  del(code) {
+    let _this = this;
+    return this[_entityFactory].delete(code).then((msg) => {
+      _this.refreshList(msg);
+      return msg;
     });
   }
 
@@ -129,8 +160,8 @@ export class BusinessFactory {
    * @param  {[type]} page 刷新的页码
    */
   refreshList(msg, page = 1) {
-    let oper = msg.success?'success':'error';
+    let oper = msg.success === true ? 'success' : 'error';
     this.search(page);
-    this.showToastr(msg.msg, oper);
+    this.showToastr(msg.content, oper);
   }
 }

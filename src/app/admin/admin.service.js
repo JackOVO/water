@@ -20,7 +20,7 @@ export class AdminService extends BusinessFactory {
     let admin = this.adminFactory.create(loginName, password);
 
     return this.adminFactory.query(admin, 'login').then((msg) => {
-      if (msg.succes === true) {
+      if (msg.success === true) {
         return msg.data;
       } else {
         return that.$q.reject(msg.content);
