@@ -2,12 +2,13 @@
  * 弹出内容指令
  */
 
-export function ModalbodyDriective($compile) {
+export function ModalbodyDriective($compile, $sce) {
   'ngInject';
 
   let directive = {
     scope: {
-      content: '='
+      content: '=',
+      formValid: '='
     },
     replace: true,
     template: '<div></div>',
@@ -17,15 +18,29 @@ export function ModalbodyDriective($compile) {
         if (!content) { return; }
 
         if (angular.isObject(content)) {
+
+          // 监听验证
+          content.scope.$watch('form.$valid', (valid) => {
+            scope.formValid = valid;
+          });
+
+          content.scope.test = (name = '此项', error) => {
+            let errorKey = null;
+            for (let key in error) {errorKey = key;}
+            return {
+              required: name + '为必填项.',
+              minlength: name + '不能少于多少字.'
+            }[errorKey];
+          }
+
           let html = createInputsHtml(content.inputs);
-content.scope.xxx = function(text) {
-  console.info(text);
-};
           content = $compile(html)(content.scope);
         }
 
         element.append(content);
       });
+
+
     }
   };
 
@@ -34,15 +49,18 @@ content.scope.xxx = function(text) {
 
 // 根据配置生成input
 function createInputsHtml(inputs) {
-  let html = '';
-// class="form-horizontal"
+  let html = '<form name="form" novalidate>';
+// class="form-horizontal" verification:[]
   for (let i in inputs) {
     let type = inputs[i].type,
         name = inputs[i].name,
         model = inputs[i].model,
         m2 = inputs[i].m2,
         def = inputs[i].def || '', // 组合框默认提示值
+        verification = inputs[i].verification || [], // 验证
         inputHtml = '';
+
+    if (inputs[i].required === true) { verification.push('required'); }
 
     switch(type) {
       case 'select':
@@ -77,13 +95,21 @@ function createInputsHtml(inputs) {
         inputHtml = `<div class="form-group">
           <label class="col-sm-2 control-label">${name}</label>
           <div class="col-sm-10">
-            <input type="${type||'text'}" class="form-control" ng-model="${model}"/>
+            <input name="${model}" type="${type||'text'}" class="form-control" autocomplete="off"
+              ng-model="${model}"
+
+              ${verification.join(' ')}
+              tooltip-trigger="focus"
+              tooltip-class="error-tooltip"
+              tooltip-placement="auto bottom-left"
+              uib-tooltip="{{test('${name}', form['${model}'].$error)}}"
+              tooltip-is-open="form['${model}'].$dirty && form['${model}'].$invalid"/>
           </div>
         </div>`;
         break;
     }
-
+//tooltip-enable="form['${model}'].$invalid" tooltip-is-open="true" {{test(form['${model}'].$error)}}
     html += inputHtml;
   }
-  return html;
+  return html + '</form>';
 }

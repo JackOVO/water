@@ -61,30 +61,18 @@ export class UserService extends BusinessFactory {
       });
     }
     
-    let inputs = [{name: '用户名称', model: 'user.userName'},
-      {name: '登录名称', model: 'user.loginName'},
-      {name: '登录密码', model: 'user.password', type: 'password'},
+    let inputs = [
+      {name: '用户名称', model: 'user.userName', required: true,
+        verification: ['ng-minlength=5']},
+      {name: '登录名称', model: 'user.loginName', required: true},
+      {name: '登录密码', model: 'user.password', type: 'password', required: true},
       {name: '所属公司', model: 'user.subjectCode', type: 'select',
-       source: 'subjects', m2: 'user.subjectCode', def: '请选择所属公司'},
+       source: 'subjects', m2: 'user.subjectName', def: '请选择所属公司'},
       {name: '所属角色', model: 'user.roleCode', type: 'select',
-       source: 'roles', m2: 'user.roleCode', def: '请选择所属角色'},
+       source: 'roles', m2: 'user.roleName', def: '请选择所属角色'},
       {name: '状态标识', model: 'user.enableFlag', type: 'select',
        source: 'enables', def: '请选择状态标识'},
       {name: '备注', model: 'user.remark', type: 'textarea'}];
-    
-    // let inputs = [
-    //   {name: '用户名称', model: 'user.userName'},
-    //   {name: '登录名称', model: 'user.loginName'},
-    //   {name: '登录密码', model: 'user.password', type: 'password'},
-    //   {name: '所属公司', model: 'user.subjectCode',
-    //    type: 'select', source: 'subjects', m2: 'user.subjectName',
-    //     def: '请选择所属的公司'},
-    //   {name: '所属角色', model: 'user.roleCode', type: 'select',
-    //     source: 'roles', m2: 'user.roleName'},
-    //   {name: '状态标识', model: 'user.enableFlag', type: 'select',
-    //     source: 'enables'},
-    //   {name: '备注', model: 'user.remark', type: 'textarea'}
-    // ];
 
     // 公司角色级联
     scope.$watch('user.subjectCode', (subjectCode) => {

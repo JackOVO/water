@@ -18,10 +18,14 @@ import './admin/admin.module'; // 管理员模块
 import './user/user.module'; // 用户模块
 
 let rely = [
+  'ngSanitize',
   'ui.router',
   'ui.select',
   'ngDialog',
   'toastr',
+
+  'ui.bootstrap.tpls',
+  'ui.bootstrap.tooltip',
 
   'water.directive',
   'water.sidebar',

@@ -1,4 +1,5 @@
-<div class="modal-content"
+<!-- valid: 验证字段通过form-valid引出 -->
+<div class="modal-content" ng-init="valid"
     style="{{ngDialogData.width?'width:'+ngDialogData.width:''}}">
   <div class="modal-header">
     <button type="button" class="close"
@@ -7,12 +8,13 @@
   </div>
   <div class="modal-body form-horizontal">
     <modal-body
-      content="ngDialogData.content"></modal-body><!-- 填出框内容指令 -->
+      content="ngDialogData.content"
+      form-valid="valid"></modal-body><!-- 填出框内容指令 -->
   </div>
   <div class="modal-footer" ng-if="ngDialogData.button != false">
     <button type="button" class="btn btn-default pull-left"
       ng-click="ngDialogData.cancel()">取消</button>
     <button type="button" class="btn btn-primary"
-      ng-click="ngDialogData.confirm()">确认</button>
+      ng-click="ngDialogData.confirm()" ng-disabled="!valid">确认</button>
   </div>
 </div>

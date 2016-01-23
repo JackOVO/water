@@ -46,7 +46,7 @@ export class BusinessFactory {
     for (let key in binding) {
       // 绑定一个承诺数据
       if (binding[key].then) {
-        binding[key].then((data) => { scope[key] = data; console.info(key); });
+        binding[key].then((data) => { scope[key] = data; });
       } else {
         scope[key] = binding[key];
       }
