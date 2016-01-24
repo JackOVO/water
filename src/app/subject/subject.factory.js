@@ -18,4 +18,9 @@ export class SubjectFactory extends EntityFactory {
 
     super('subject', Subject, 'id', dataService);
   }
+
+  // 封装一下映射关系
+  getCombobox() {
+    return super.getCombobox('code', 'name');
+  }
 }

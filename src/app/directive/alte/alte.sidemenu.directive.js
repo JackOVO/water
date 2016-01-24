@@ -76,7 +76,7 @@ let sideMenu = {
   },
   // 创建节点
   createNode(node, pid) {
-    let {id, childs} = node;
+    let {id, children} = node;
     let title = this.createTitle(node),
         controller = $('<li class="treeview">');
 
@@ -85,19 +85,19 @@ let sideMenu = {
     // 添加节点id和数据的映射
     this.addNodeMappingItem(node, controller, pid);
 
-    if (childs && childs.length !== 0) {
+    if (children && children.length !== 0) {
       var icon = this.createIcon('angle-left').addClass('pull-right');
       title.append(icon);
-      controller.append(this.createChilds(node));
+      controller.append(this.createChildren(node));
     }
     return controller;
   },
   // 创建子项
-  createChilds({id, childs}) {
+  createChildren({id, children}) {
     let _this = this;
     let controller = $('<ul class="treeview-menu">');
 
-    angular.forEach(childs, function(node) {
+    angular.forEach(children, function(node) {
       let elem = _this.createNode(node, id);
       controller.append(elem);
     });

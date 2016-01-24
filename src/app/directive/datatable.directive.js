@@ -124,6 +124,7 @@ export function DataTableDirective($compile) {
           for (let key in scope.defs.specific) {
             setting.columnDefs.push({
               targets: key-0,
+              className: 'dt-body-center',
               createdCell: (td, cellData, rowData) => {
                 let button = scope.defs.specific[key](rowData);
                 let html = createEveLinkHtml(cellData, [button]);
@@ -205,7 +206,7 @@ export function DataTableDirective($compile) {
       }
     }
 
-    return html.join(' ');
+    return html.join('');
   }
 
   // 扩展

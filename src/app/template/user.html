@@ -14,8 +14,13 @@
         defs="vm.defs"
         paging="vm.paging"
         columns="vm.columns"
+        row-click-notice="vm.onTableClick"
         draught-request="vm.turn"></datatable>
     </div>
-    <div class="col-sm-4">2</div>
+    <div class="col-sm-4" ng-controller="UserMachineController as mvm">
+      <ztree idkey="id" name="machineTree"
+        data="mvm.children"
+        checkeds="vm.machineCheckeds"></ztree>
+    </div>
   </div>
 </div>

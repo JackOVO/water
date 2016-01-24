@@ -10,9 +10,4 @@ export class SubjectService extends BusinessFactory {
 
     super(toastr, $rootScope, dialogService, subjectFactory);
   }
-
-  // 在封装一下
-  getCombobox() {
-    return super.getCombobox('code', 'name');
-  }
 }

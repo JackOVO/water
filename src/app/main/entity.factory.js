@@ -2,7 +2,7 @@
  * 实体工厂基类
  */
 
-import {Paging, Message} from './model';
+import {Options, Paging, Message} from './model';
 
 /**
  * 根据响应数据属性创建响应的类型元数据
@@ -82,6 +82,59 @@ export class EntityFactory {
   }
 
   /**
+   * 打包树结构的数据
+   * @param  {Array}    data      元树结构数组
+   * @param  {Function} packFn    解析方法
+   * @param  {String}   childKey  子节点的key
+   * @return {Array}              树结构数组
+   */
+  packTree(data, packFn = this.pack, childKey = 'children') {
+    let result = [];
+    for (let index in data) {
+      let item = packFn.call(this, data[index]);
+      if (item[childKey].length) {
+        item[childKey] = this.packTree(item[childKey], packFn, childKey);
+      }
+      result.push(item);
+    }
+    return result;
+  }
+
+  /**
+   * 打包数组结构的数据
+   * mapfn提供二次转换的功能, 为不同形式的指令提供数据
+   * 比方说combobox[{k, v}]
+   * @param  {Array}  data  元数据数组
+   * @param  {Object} mapfn 提供在打包对象后的二次封装({k, v}) => {'k': k, 'v': v}
+   * @return {Array}        打包后的数据组
+   */
+  packArray(array, mapfn) {
+    let result = [];
+    for (let index in array) {
+      let item = this.pack(array[index]);
+      if (angular.isFunction(mapfn)) { item = mapfn(item); }
+      result.push(item);
+    }
+    return result;
+  }
+
+  /**
+   * 二次封装对象, 作为不同形式下数据模型
+   * 比方说combobox数据
+   * @param  {Array}  array 打包完对象的映射关系
+   * @param  {Object} mapfn 以下是combobox指令的打包方法
+   * @return {Array}        二次打包后的数据组
+   */
+  packObject(array,
+    mapfn = ({value, name}) => {
+      return {'v': value, 'n': name};
+    }) {
+
+    let result = this.packArray(array, mapfn);
+    return result;
+  }
+
+  /**
    * 提供创建实体的接口
    * 推荐通过类的create方法创建实体
    * 会根据类的属性来判断使用什么方法创建实体
@@ -118,31 +171,12 @@ export class EntityFactory {
   }
 
   /**
-   * 获取全部, 单层过滤处理
-   * @return {Promise} 数组承诺
-   */
-  all(pack) {
-    let _this = this,
-        aim = this.aim;
-    pack = pack || this.pack;
-
-    return this[_dataService].get(aim, 'all').then((res) => {
-      let array = [];
-      for (let index in res) {
-        let item = pack.call(_this, res[index]);
-        array.push(item);
-      }
-      return array;
-    });
-  }
-
-  /**
    * 根据对象属性查询
-   * @param  {cla} entity 类对象
+   * @param  {cla}    entity 类对象
    * @param  {String} action 可选其他动作
    * @return {Promise}       后台数据响应承诺
    */
-  query(entity, action = 'query') {
+  query(entity, action = 'query', resolve) {
     let _this = this,
         aim = this.aim,
         params = this.undo(entity);
@@ -152,6 +186,16 @@ export class EntityFactory {
 
       if (obj instanceof Message) {
         obj.data = _this.pack(obj.data);
+      } else if(obj instanceof Array) { // 数组是通过resolve判断解析方式
+
+        if (!angular.isFunction(resolve)) {
+          switch(resolve) {
+            case 'packTree': return _this.packTree(obj);
+            case 'packObject': return _this.packObject(obj);
+            default: return _this.packArray(obj);
+          }
+        } else { return resolve.call(_this, obj); }
+
       } else {
         obj = _this.pack(obj);
       }
@@ -180,11 +224,8 @@ export class EntityFactory {
 
     return this[_dataService].get(aim, 'list', options).then((res) => {
       let paging = new Paging([], page, size, res.total);
+      paging.data = _this.packArray(res.rows);
 
-      for (let index in res.rows) {
-        let source = _this.pack(res.rows[index]);
-        paging.data.push(source);
-      }
       return paging;
     });
   }
@@ -238,6 +279,21 @@ export class EntityFactory {
     return this.dataService.post(aim, 'del', params).
       then(({success, message}) => {
         return new Message(success, message);
+    });
+  }
+
+  /**
+   * 获取组合框下拉数据, 基类封装, 子类实现一下
+   * @param  {String} vKey   值对应的key
+   * @param  {String} tKey   文本对应的key
+   * @param  {Object} params 文本对应的key
+   * @return {Array}         Opionts的数据
+   */
+  getCombobox(vKey, tKey, params = null) {
+    return this.query(params, 'combobox', (data) => {
+      return this.packObject(data, (item) => {
+        return new Options(item[vKey], item[tKey]);
+      });
     });
   }
 }

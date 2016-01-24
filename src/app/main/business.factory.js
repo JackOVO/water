@@ -75,21 +75,14 @@ export class BusinessFactory {
   }
 
   /**
-   * 获取组合框下拉数据
-   * @param  {String} valueKey 值对应的key
-   * @param  {String} textKey  文本对应的key
-   * @return {Array}           Opionts的数据
+   * 获取组合框下拉数据, 以下方法只为基类服务层提供实现接口
+   * 映射关系应该在实体工厂层封装好
+   * @param  {String} vKey 值对应的key
+   * @param  {String} tKey 文本对应的key
+   * @return {Array}       Opionts的数据
    */
-  getCombobox(valueKey, textKey) {
-    let result = [];
-    return this[_entityFactory].all().then((array) => {
-      for (let index in array) {
-        let item = array[index];
-        let options = new Options(item[valueKey], item[textKey]);
-        result.push(options);
-      }
-      return result;
-    });
+  getCombobox() {
+    return this[_entityFactory].getCombobox('vKey', 'tKey');
   }
 
   /**

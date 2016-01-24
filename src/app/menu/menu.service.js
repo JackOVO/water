@@ -2,6 +2,7 @@
  * 菜单服务
  */
 
+import { Tree } from '../main/model';
 import { BusinessFactory } from '../main/business.factory';
 
 export class MenuService extends BusinessFactory {
@@ -18,39 +19,18 @@ export class MenuService extends BusinessFactory {
     this.keyMapping = mapping;
   }
 
-  /**
-   * 全部数据, 不同类型的处理?
-   * @return {Array} 数组承诺
-   */
-  all() {
+  // 获取侧边栏菜单数据
+  getSideMenuData() {
     let _this = this;
-    return this.menuFactory.all().then((array) => {
-
-      // 后台key前台映射处理
-      _this.iteration(array, function(node) {
+    return this.menuFactory.getTree().then((children) => {
+      Tree.traversal(children, (node) => {
         if (_this.keyMapping[node.key]) {
           node.key = _this.keyMapping[node.key];
         }
       });
-      return array;
-    }).then((array) => {
-      return _this.globalNotice('all', array);
+      return children;
+    }).then((children) => {
+      return _this.globalNotice('getSideMenuData', children);
     });
-  }
-
-  /**
-   * 遍历树结构
-   * @param  {Array}   array     节点数组
-   * @param  {Function} callback 处理回调
-   */
-  iteration(array, callback) {
-    let _this = this;
-    for (let index in array) {
-      let item = array[index];
-      callback(item);
-      if (item.childs.length) {
-        _this.iteration(item.childs, callback);
-      }
-    }
   }
 }

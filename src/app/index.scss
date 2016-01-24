@@ -36,10 +36,21 @@ $topbar-bg-color: #5AADBB;
     width: 50px;
   }
 }
+/**bootstrap**/
+button.btn {
+  border-radius: 0;
+}
+.btn:focus, .btn:active:focus, .btn.active:focus, .btn.focus, .btn:active.focus, .btn.active.focus {
+  outline: 0;
+}
+
 /**from input**/
 .form-control, .form-control:focus {
   border-radius: 0;
   box-shadow: none;
+}
+.pagination > li:first-child > a, .pagination > li:last-child > a {
+  border-radius: 0;
 }
 
 /**ng verification**/
@@ -56,6 +67,15 @@ $topbar-bg-color: #5AADBB;
 /**datatable**/
 .dt-body-center {
   text-align: center;
+}
+table.dataTable thead > tr > th {
+  padding-right: 8px;
+}
+.table > tbody > tr:nth-of-type(odd) {
+  background-color: #f9f9f9;
+}
+.table-hover>tbody>tr:hover {
+  background-color: #f7f7f7;
 }
 
 /**弹出框覆盖**/
@@ -101,14 +121,17 @@ $topbar-bg-color: #5AADBB;
     outline: 0;
   }
 
- 
-
   &:focus { outline: 0; }
 }
 
 .ui-select-match.btn-default-focus {
   outline: 0;
   box-shadow: none;
+}
+
+/**toastr**/
+div.toast {
+  border-radius: 0;
 }
 
 /**

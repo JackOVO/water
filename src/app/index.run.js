@@ -11,6 +11,7 @@ export function runBlock($log, dataService, menuService) {
   dataService.setRequestMapping({
     menu: {
       prefix: '',
+      tree: 'menus',
       all: 'menus'
     },
     user: {
@@ -19,10 +20,15 @@ export function runBlock($log, dataService, menuService) {
       wechatQR: 'generateWechatAuthQRCode'
     },
     subject: {
-      all: 'subjectList'
+      combobox: 'subjectList'
     },
     role: {
-      findBy: 'findBySubject'
+      // comboboxBySubjectCode: 'findBySubject'
+      combobox: 'findBySubject'
+    },
+    machine: {
+      prefix: 'vendingmachine',
+      treeByUserCode: 'listTreeVM'
     },
     admin: {
       prefix: '',
@@ -37,5 +43,5 @@ export function runBlock($log, dataService, menuService) {
     'admin:user:userMgr': 'user'
   });
 
-  $log.debug('runBlock end');
+  $log.debug('服务, 开!');
 }

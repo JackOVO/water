@@ -30,6 +30,27 @@ export class Options {
   }
 }
 
+// 树节点
+export class Tree {
+  constructor(id, name, childs = []) {
+    this.id = id;
+    this.name = name;
+    this.childs = childs;
+  }
+}
+Tree.traversal = (data, hole, childKey = 'children') => {
+  if (angular.isFunction(hole)) {
+    for (let index in data) {
+      let node = data[index];
+      hole(node);
+      if (node[childKey].length) {
+        Tree.traversal(node[childKey], hole, childKey);
+      }
+    }
+  }
+  return data;
+}
+
 // 消息模型
 export class Message {
   constructor(success, content, data) {

@@ -10,12 +10,17 @@ class Role {
 }
 Role.mapping = {};
 Role.futility = [];
-Role.create =  createObjectFn(Role);
+Role.create = createObjectFn(Role);
 
 export class RoleFactory extends EntityFactory {
   constructor(dataService) {
     'ngInject';
 
     super('role', Role, 'id', dataService);
+  }
+
+  //封装, 需要subjectCode
+  getCombobox(code) {
+    return super.getCombobox('code', 'name', {subjectCode: code});
   }
 }

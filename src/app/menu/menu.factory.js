@@ -2,33 +2,22 @@
  * 菜单实体工厂
  */
 
+import { createObjectFn } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
 class Menu {
-  constructor(id, text, childs) {
+  constructor(id, text, children) {
     this.id = id;
     this.text = text;
-    this.childs = childs;
+    this.children = children;
   }
 }
 
 Menu.mapping = {
-  key: 'permission',
-  childs: 'children'
+  key: 'permission'
 };
 Menu.futility = ['sortBy', 'checked', 'url', 'parentId'];
-Menu.create = function(...args) {
-
-  if (angular.isObject(args[0])) {
-    var menu = new Menu();
-    for (let key in args[0]) {
-      if (Menu.futility.indexOf(key) === -1) {
-        menu[key] = args[0][key];
-      }
-    }
-    return menu;
-  }
-};
+Menu.create = createObjectFn(Menu);
 
 export class MenuFactory extends EntityFactory {
   constructor(dataService) {
@@ -37,36 +26,13 @@ export class MenuFactory extends EntityFactory {
      super('menu', Menu, 'id', dataService);
   }
 
-  /**
-   * 二次处理, 基类方法只会处理第一层
-   * 不理会树结构
-   * @return {Array} 数组承诺
-   */
-  all() {
-    let _this = this,
-        childKey = 'childs';
+  // 包装基类解析换个参数
+  treeResolve(data) {
+    return super.packTree(data, this.pack, 'children');
+  }
 
-    // 迭代处理
-    function iteration(childrens) {
-      let array = [];
-      for (let index in childrens) {
-        let menu = _this.pack(childrens[index]);
-        array.push(menu);
-
-        if (menu[childKey] && menu[childKey].length) {
-          iteration(menu[childKey]);
-        }
-      }
-      return array;
-    }
-
-    // 基类请求一层处理
-    return super.all().then(function(array) {
-      for (let index in array) {
-        let menu = array[index];
-        menu[childKey] = iteration(menu[childKey]);
-      }
-      return array;
-    });
+  // 获取树菜单
+  getTree() {
+    return super.query(null, 'tree', this.treeResolve).then((tree) => tree);
   }
 }
