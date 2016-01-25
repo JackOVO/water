@@ -276,7 +276,7 @@ export class EntityFactory {
       params = {[ids[0]]: ids[1]};
     }
 
-    return this.dataService.post(aim, 'del', params).
+    return this[_dataService].post(aim, 'del', params).
       then(({success, message}) => {
         return new Message(success, message);
     });

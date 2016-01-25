@@ -37,9 +37,15 @@ console.info('menuKey----->', key);
     let params = {};
     switch(key) {
       case 'user':
+      case 'role':
       case 'baseInfo':
         params = {aim: key, t: 'Test'};
         this.$state.go('home.single', params);
+      break;
+      case 'order':
+      case 'operate':
+        params = {aim: key, page: 1};
+        this.$state.go('home.list', params);
       break;
         // params = {aim: key, page: 1}
         // this.$state.go('home.list', params);

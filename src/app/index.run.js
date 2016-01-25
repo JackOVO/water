@@ -14,22 +14,39 @@ export function runBlock($log, dataService, menuService) {
       tree: 'menus',
       all: 'menus'
     },
+    // 用户
     user: {
-      add: 'add',
+      wechatQR: 'generateWechatAuthQRCode',
       unWechatQR: 'unbindWechatAccount',
-      wechatQR: 'generateWechatAuthQRCode'
+      updMachine: 'modifyUserMachineResource'
     },
+    // 公司
     subject: {
       combobox: 'subjectList'
     },
+    // 角色
     role: {
       // comboboxBySubjectCode: 'findBySubject'
-      combobox: 'findBySubject'
+      tree: 'findRoleResource',
+      combobox: 'findBySubject',
+      updCompetence: 'modifyRoleResource'
     },
+    // 机器
     machine: {
       prefix: 'vendingmachine',
       treeByUserCode: 'listTreeVM'
     },
+    // 权限
+    competence: {
+      // 后台api模块划分不明确
+      treeByRoleCode: {aim: 'role', action: 'tree'}
+    },
+    // 运营
+    operate: {
+      prefix: 'machineOperation'
+    },
+    // 订单
+    order: {},
     admin: {
       prefix: '',
       login: 'login',
@@ -39,8 +56,11 @@ export function runBlock($log, dataService, menuService) {
 
   // 菜单映射key
   menuService.setMenuKeyMapping({
+    'admin:shopMgr:machineOpr': 'operate',
+    'admin:shopMgr:orderMgr': 'order',
     'admin:user:baseInfo': 'baseInfo',
-    'admin:user:userMgr': 'user'
+    'admin:user:userMgr': 'user',
+    'admin:user:roleMgr': 'role'
   });
 
   $log.debug('服务, 开!');

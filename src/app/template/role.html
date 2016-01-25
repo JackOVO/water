@@ -1,8 +1,8 @@
 <div class="box">
   <div class="box-header with-border">
-    <h3 class="box-title">用户列表</h3>
+    <h3 class="box-title">角色列表</h3>
     <div class="pull-right box-tools">
-      <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增用户</button>
+      <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增角色</button>
       <!-- <i class="fa fa-plus"></i>  -->
     </div>
   </div>
@@ -16,20 +16,20 @@
         row-click-notice="vm.onTableClick"
         draught-request="vm.turn"></datatable>
     </div>
-    <div class="col-sm-4" ng-controller="UserMachineController as mvm">
-      <div class="row" ng-if="mvm.children">
+    <div class="col-sm-4">
+      <div class="row" ng-if="vm.children">
         <div class="box-header">
-          <h4 class="box-title">数据权限 <small ng-bind="vm.loginName"></small></h4>
+          <h4 class="box-title">功能权限 <small ng-bind="vm.roleName"></small></h4>
           <div class="pull-right box-tools" style="right:0;">
             <button class="btn btn-primary btn-xs"
               ng-disabled="!vm.isEdited"
-              ng-click="vm.updResource()">更新权限</button>
+              ng-click="vm.updCompetence()">更新权限</button>
           </div>
         </div>
         <div class="box-body" style="margin-top: -10px;">
           <ztree idkey="id" name="machineTree"
-            data="mvm.children"
-            checkeds="vm.machineCheckeds"></ztree>
+            data="vm.children"
+            checkeds="vm.checkeds"></ztree>
           </div>
         </div>
     </div>

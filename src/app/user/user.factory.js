@@ -2,7 +2,7 @@
  * 用户实体工厂
  */
 
-import { createObjectFn } from '../main/model';
+import { createObjectFn, Message } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
 class User {
@@ -48,6 +48,23 @@ export class UserFactory extends EntityFactory {
 
     return this.dataService.get(aim, 'wechatQR', params).then((url) => {
       return url;
+    });
+  }
+
+  /**
+   * 更新机器权限
+   * @param  {String} userCode 用户code
+   * @param  {Array}  checkeds 选中的机器id
+   * @return {Promise}         消息承诺
+   */
+  updMachineResource(userCode, checkeds) {
+    let aim = this.aim;
+    // let params = {userCode: userCode, machineCodes: checkeds.join(',')};
+    let params = {userCode: userCode, machineCodes: checkeds};
+
+    return this.dataService.post(aim, 'updMachine', params).
+      then(({success, message}) => {
+      return new Message(success, message);
     });
   }
 }

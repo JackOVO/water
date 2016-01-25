@@ -26,6 +26,7 @@ export function DataTableDirective($compile) {
       let table = element.children('.table');
       let columns = scope.columns || [{'data': null, 'title': '囧rz'}];
       let tableChangeCallBack = null; // 从ajax方法中得出的变更表格回调
+      rowCallbackEventArray = [];
 
       // 监听数据变化, 通过ajax回调改变数据, 额.
       scope.$watch('paging', (paging) => {
@@ -151,7 +152,11 @@ export function DataTableDirective($compile) {
             createdCell: (td, cellData, rowData) => {
               let html = createEveLinkHtml(rowData, scope.defs.buttons);
               html = $compile(html)(scope.defs.ctrlScope);
-              $(td).empty().append(html);
+              $(td).empty().append(html).click((e) => {
+                if ($(e.target).is('button')) {
+                  e.stopPropagation();
+                }
+              });
             }
           });
         }
@@ -180,6 +185,11 @@ export function DataTableDirective($compile) {
   // 默认行回调
   function rowCallback(row, data, index) {
     var that = this;
+
+    $(row).click(function() {
+      $(this).addClass('row_selected').siblings().removeClass('row_selected');
+    });
+
     angular.forEach(rowCallbackEventArray, (callback) => {
       callback.call(that, row, data, index);
     });
@@ -210,6 +220,7 @@ export function DataTableDirective($compile) {
   }
 
   // 扩展
+
   $.fn.dataTableExt.oApi.fnDisplayStart = (oSettings, iStart,bRedraw ) => {
     if (typeof bRedraw == 'undefined') { bRedraw = true; }
     oSettings._iDisplayStart = iStart;
@@ -230,6 +241,8 @@ export function DataTableDirective($compile) {
     //oSettings.oApi._fnDraw( oSettings );
     if (oSettings.aanFeatures.l) { $('select', oSettings.aanFeatures.l).val(iDisplay); }
   };
+
+  $.fn.dataTableExt.sErrMode = 'console';
 
   return directive;
 }

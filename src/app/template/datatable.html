@@ -1,0 +1,18 @@
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title" ng-bind="vm.title"></h3>
+    <div class="pull-right box-tools">
+      <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增用户</button>
+      <!-- <i class="fa fa-plus"></i>  -->
+    </div>
+  </div>
+
+  <div class="box-body">
+    <datatable 
+      defs="vm.defs"
+      paging="vm.paging"
+      columns="vm.columns"
+      row-click-notice="vm.onTableClick"
+      draught-request="vm.turn"></datatable>
+  </div>
+</div>

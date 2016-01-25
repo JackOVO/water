@@ -5,7 +5,6 @@
 import { SubjectFactory } from './subject.factory';
 import { SubjectService } from './subject.service';
 
-
 angular
   .module('water.subject', [])
   .service('subjectFactory', SubjectFactory)

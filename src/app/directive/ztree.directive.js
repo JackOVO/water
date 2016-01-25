@@ -41,8 +41,6 @@ export function zTreeDirective() {
           },
           callback: {
             onClick: (e, treeId, node) => {
-              // console.info(treeId, node);
-              // if (scope.nclick) { scope.nclick()(node); }
               ztree.checkNode(node, null, false, true);
             },
             onCheck: createOnCheckCallBack(attrs.name, idKey, scope)
@@ -51,6 +49,11 @@ export function zTreeDirective() {
 
         ztree = $.fn.zTree.init(element, setting, data);
         ztree.expandAll(true);
+
+        // 第一次, 就将选中的返回
+        if (typeof(scope.checkeds) !== 'undefined') {
+          scope.checkeds = fillCheckedData(ztree, idKey);
+        }
       });
     }
   };
@@ -59,17 +62,21 @@ export function zTreeDirective() {
   function createOnCheckCallBack(ztreeId, idKey, scope) {
 
     if (typeof(scope.checkeds) !== 'undefined') {
-      return () => { //e, treeId, node
+      return (e, treeId, node) => { //e, treeId, node
         let ztree = $.fn.zTree.getZTreeObj(ztreeId);
-        let checkeds = [];
-        let nodes = ztree.getCheckedNodes(true);
-
-        for (let index in nodes) { checkeds.push(nodes[index][idKey]); }
-        scope.checkeds = checkeds;
+        scope.checkeds = fillCheckedData(ztree, idKey);
         scope.$apply();
       };
     }
     return () => {};
+  }
+
+  // 填充选中数据
+  function fillCheckedData(ztree, idKey) {
+    let checkeds = [];
+    let nodes = ztree.getCheckedNodes(true);
+    for (let index in nodes) { checkeds.push(nodes[index][idKey]); }
+    return checkeds;
   }
 
   return directive;

@@ -3,10 +3,13 @@
  */
 
 export class GlobalService {
-  constructor(userService) {
+  constructor(userService, roleService, orderService, operateService) {
     'ngInject';
 
     this.us = userService;
+    this.ro = roleService;
+    this.order = orderService;
+    this.operate = operateService;
   }
 
   /**
@@ -17,12 +20,14 @@ export class GlobalService {
   initPageDataByAction(aim) {
     switch(aim) {
       case 'user': this.us.init(); break;
+      case 'role': this.ro.init(); break;
     }
   }
 
   refreshListByAction(aim, page) {
     switch(aim) {
-      case 'role': this.xx.search(page); break;
+      case 'order': this.order.search(page); break;
+      case 'operate': this.operate.search(page); break;
     }
   }
 }

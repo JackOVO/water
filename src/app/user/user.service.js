@@ -11,6 +11,7 @@ export class UserService extends BusinessFactory {
               userFactory,
               roleService,
               statusService,
+              machineService,
               subjectService,
               dataTableService) {
               'ngInject';
@@ -20,6 +21,7 @@ export class UserService extends BusinessFactory {
    this.roleService = roleService;
    this.statusService = statusService;
    this.subjectService = subjectService;
+   this.machineService = machineService;
 
    this.dataTableService = dataTableService;
    this.dataTableColumns = dataTableColumns;
@@ -95,7 +97,17 @@ export class UserService extends BusinessFactory {
     });
   }
 
-  // 下载关联
+  // 更新机器资源
+  updMachineResource(userCode, checkeds) {
+    return this.userFactory.updMachineResource(userCode, checkeds).
+      then((msg) => {
+        let o = msg.success === true ? 'success' : 'error';
+        super.showToastr(msg.content, o);
+        return msg.success;
+    });
+  }
+
+  // 删除在封装
   del(userCode, loginName) {
     let title = '删除用户(' + loginName + ')';
     let content = '<p>确认删除该用户吗?</p>';

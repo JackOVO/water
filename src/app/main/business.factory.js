@@ -2,8 +2,6 @@
  * 列表管理类业务工厂基类
  */
 
-import { Options } from './model';
-
 let _toastr = Symbol();
 let _$rootScope = Symbol();
 let _entityFactory = Symbol();
