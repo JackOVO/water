@@ -3,19 +3,19 @@
  */
 
 export class GlobalService {
-  constructor(userService, roleService, orderService, operateService) {
+  constructor(userService, roleService, orderService, operateService, aisleService) {
     'ngInject';
 
     this.us = userService;
     this.ro = roleService;
     this.order = orderService;
+    this.aisle = aisleService;
     this.operate = operateService;
   }
 
   /**
    * 特殊模块单页初始化数据
    * @param  {String} aim 目标
-   * @return {[type]}     [description]
    */
   initPageDataByAction(aim) {
     switch(aim) {
@@ -24,10 +24,27 @@ export class GlobalService {
     }
   }
 
+  /**
+   * 刷新列表类数据
+   * @param  {String} aim  目标
+   * @param  {String} id   查询的唯一属性值
+   */
   refreshListByAction(aim, page) {
     switch(aim) {
       case 'order': this.order.search(page); break;
       case 'operate': this.operate.search(page); break;
+    }
+  }
+
+  /**
+   * 刷新子项的列表类数据
+   * @param  {String} aim  目标
+   * @param  {String} id   查询的唯一属性值
+   * @param  {Number} page 可选页码
+   */
+  refreshChildListByAction(aim, id) {
+    switch(aim) {
+      case 'aisle': this.aisle.getAll(id); break;
     }
   }
 }

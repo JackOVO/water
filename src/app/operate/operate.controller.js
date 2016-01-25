@@ -15,7 +15,7 @@ export class OperateController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '货道', action: ({userCode:u}) => `vm.edit('${u}')`},
+        {text: '货道', action: ({serNum:sn}) => `vm.goAisle('${sn}')`},
         {text: '日志', action: ({userCode:u, loginName:l}) => `vm.del('${u}', '${l}')`}]
     };
 
@@ -32,6 +32,9 @@ export class OperateController {
       });
     };
 
-console.info('---');
+    // 跳到货到列表
+    this.goAisle = (sn) => {
+      $state.go('home.child', {pAim: 'operate', aim: 'aisle', id: sn});
+    }
   }
 }

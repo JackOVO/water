@@ -33,6 +33,13 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
       templateUrl: 'app/template/datatable.html',
       controllerProvider: createControllerName,
       controllerAs: 'vm'
+    })
+    .state('home.child', {
+      url: ':pAim/:aim/:id',
+      resolve: { stateParams: ($stateParams) => $stateParams },
+      templateUrl: 'app/template/child-datatable.html',
+      controllerProvider: createControllerName,
+      controllerAs: 'vm'
     });
 
   $urlRouterProvider.otherwise('/');

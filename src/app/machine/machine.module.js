@@ -7,7 +7,7 @@ import { MachineService } from './machine.service';
 import { UserMachineController } from './usermachine.controller';
 
 angular
-  .module('water.machine', [])
+  .module('water.machine', ['water.aisle'])
   .service('machineFactory', MachineFactory)
   .service('machineService', MachineService)
   .controller('UserMachineController', UserMachineController);

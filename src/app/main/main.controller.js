@@ -23,6 +23,9 @@ export class MainController {
         globalService.refreshListByAction(aim, page);
       } else if ($state.is('home.single')) {
         globalService.initPageDataByAction(aim);
+      } else if ($state.is('home.child')) {
+        let {aim, id} = params;
+        globalService.refreshChildListByAction(aim, id);
       }
     });
   }

@@ -43,7 +43,12 @@ export function runBlock($log, dataService, menuService) {
     },
     // 运营
     operate: {
-      prefix: 'machineOperation'
+      prefix: 'machineOperation',
+      aisleList: 'listAisle'
+    },
+    // 货道
+    aisle: {
+      all: {aim: 'operate', action: 'aisleList'}
     },
     // 订单
     order: {},
