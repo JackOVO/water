@@ -27,6 +27,8 @@ import './user/user.module'; // 用户模块
 import './role/role.module'; // 角色模块
 import './log/log.module'; // 日志模块
 
+import './index.locale'; // 本地化
+
 let rely = [
   'ngSanitize',
   'ui.router',
@@ -34,16 +36,14 @@ let rely = [
   'ngDialog',
   'toastr',
 
-  'ui.bootstrap.tpls',
-  'ui.bootstrap.tooltip',
-
   'water.directive',
   'water.sidebar',
   'water.operate',
   'water.status',
   'water.admin',
   'water.order',
-  'water.user'
+  'water.user',
+  'ngLocale'
 ];
 
 angular

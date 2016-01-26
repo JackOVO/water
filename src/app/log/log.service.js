@@ -5,14 +5,20 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class LogService extends BusinessFactory {
-  constructor(toastr, $rootScope, dialogService, logFactory) {
+  constructor(toastr, $rootScope, dialogService, logFactory, aisleService) {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, logFactory, 1);
     this.machineCode = null;
     this.logFactory = logFactory;
+    this.aisleService = aisleService;
 
     this.dataTableColumns = dataTableColumns;
+  }
+
+  // 获取货道的combobox, 由于要machineCode参数, 所以要封装一下
+  getAisleCombobox() {
+    return this.aisleService.getCombobox(this.machineCode);
   }
 
   // 包装搜索

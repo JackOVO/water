@@ -13,7 +13,7 @@ import { zTreeDirective } from './ztree.directive';
 import { DialogService } from './dialog.service';
 
 angular
-  .module('water.directive', ['water.directive.alte'])
+  .module('water.directive', ['water.directive.alte', 'ui.bootstrap.tpls', 'ui.bootstrap.tooltip', 'ui.bootstrap.datepicker'])
   .service('dataTableService', DataTableService)
   .service('dialogService', DialogService)
   .directive('ztree', zTreeDirective)

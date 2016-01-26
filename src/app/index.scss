@@ -147,6 +147,17 @@ div.toast {
   border-radius: 0;
 }
 
+/**datepicker**/
+.uib-datepicker-popup.dropdown-menu {
+  border-radius: 0;
+}
+table.uib-daypicker:focus {
+  outline: 0;
+}
+table.uib-daypicker .btn{
+  border: 0;
+}
+
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

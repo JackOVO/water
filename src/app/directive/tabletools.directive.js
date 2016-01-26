@@ -76,6 +76,22 @@ export function TableBoolsDirective($compile) {
             </span>
           </div>`;
         break;
+        case 'datepicker':
+          input = `<p class="input-group" ng-init="dt${index}">
+              <input type="text" class="form-control" placeholder="${pholder}"
+                ng-model="$search.${valKey}"
+                uib-datepicker-popup
+                format-day-title="yyyy - MM"
+                alt-input-formats="yyyy-MM-dd"
+                is-open="dt${index}.isOpen"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default"
+                  ng-click="dt${index}.isOpen = !dt${index}.isOpen">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>`;
+          break;
       }
       if (clas) { input = '<div class="'+ clas +'">' + input + '</div>';}
       html += input;
@@ -86,21 +102,3 @@ export function TableBoolsDirective($compile) {
 
   return directive;
 }
-
-// <div class="input-group-btn" ng-class="{'open':oc.selOpen}">
-// <button type="button" class="btn dropdown-toggle ng-binding" ng-click="oc.toggle()">商品名称 <span class="fa fa-caret-down"></span></button>
-// <ul class="dropdown-menu" style="left:0;">
-// <li><a href="javascript:;" ng-click="oc.setType('sn')">订单编号</a></li>
-// <li><a href="javascript:;" ng-click="oc.setType('consignee')">客户名称</a></li>
-// <li><a href="javascript:;" ng-click="oc.setType('full_name')">商品名称</a></li>
-// </ul>
-// </div>
-// 
-// 
-
-
-/*
-  <div class="input-group-btn">
-    <button type="button" class="btn dropdown-toggle">商品名称 <span class="fa fa-caret-down"></span></button>
-  </div>
-*/

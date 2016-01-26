@@ -19,24 +19,29 @@ export class LogController {
     $scope.$on('logSearch', (e, paging) => {
       this.paging = paging;
 console.info(paging);
+
+      // 获取货道查询条件
+      logService.getAisleCombobox().then((array) => {
+        this.aisles = array;
+      });
     });
 
     // 搜索工具条配置
     this.tools = {
       inputs: [{
-        type: 'select', valKey: 'xxxxx', source: 'vm.products',
+        type: 'select', valKey: 'productCode', source: 'vm.products',
         clas: 'col-md-2', placeholder: '选择商品'
       }, {
-        type: 'select', valKey: 'xxxxx2', source: 'vm.products',
+        type: 'select', valKey: 'aisleCode', source: 'vm.aisles',
         clas: 'col-md-2', placeholder: '选择货道'
       }, {
-        type: 'select', valKey: 'xxxxx3', source: 'vm.products',
+        type: 'datepicker', valKey: 'supplyStartDate',
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
-        type: 'select', valKey: 'xxxxx4', source: 'vm.products',
+        type: 'datepicker', valKey: 'supplyEndDate',
         clas: 'col-md-2', placeholder: '结束时间'
       }, {
-        type: 'search', valKey: 'searchValue',
+        type: 'search', valKey: 'createdBy',
         reset: 'vm.reset', search: 'vm.search',
         clas: 'col-md-4',
         placeholder: '按补货人查询'
@@ -52,11 +57,21 @@ console.info(paging);
     productService.getCombobox().then((array) => {
       this.products = array;
     });
+
   }
 
   // 搜索
   search(sobj) {
-    sobj.searchProperty = 'created_by';
+    sobj = angular.extend({}, sobj);
+    // sobj.searchProperty = 'created_by';
+    let fmt = 'yyyy-MM-dd';
+    if(sobj.supplyEndDate){
+      sobj.supplyEndDate =sobj.supplyEndDate.format(fmt);
+    }
+    if(sobj.supplyStartDate){
+      sobj.supplyStartDate = sobj.supplyStartDate.format(fmt);
+    }
+console.info(sobj);
     this.logService.search(undefined, 1, undefined, sobj);
   }
 }

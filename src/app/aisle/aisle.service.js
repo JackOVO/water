@@ -86,6 +86,11 @@ export class AisleService extends BusinessFactory {
       return _this.globalNotice('all', array);
     });
   }
+
+  // 获取combobox封装
+  getCombobox(machineCode) {
+    return this.aisleFactory.getCombobox(machineCode);
+  }
 }
 
 // 列定义

@@ -31,4 +31,15 @@ export class AisleFactory extends EntityFactory {
 
     return this.query(params, 'all');
   }
+
+  /**
+   * 获取货到列表combobox
+   * @param  {String} code 机器的code
+   * @return {Promise}     列表承诺
+   */
+  getCombobox(code) {
+    let params = {'machineCode': code};
+
+    return super.getCombobox('aisleCode', 'aisleCode', params);
+  }
 }
