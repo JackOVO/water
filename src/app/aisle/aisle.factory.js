@@ -21,13 +21,13 @@ export class AisleFactory extends EntityFactory {
 
   /**
    * 获取机器的货道
-   * @param  {String} sn   机器序列号
+   * @param  {String} code 机器的code
    * @param  {Number} page 页码
    * @param  {Number} size 每页显示数
    * @return {Promise}     列表承诺
    */
-  getAllByMachineSn(sn) {
-    let params = {'machineSN': sn};
+  getAllByMachineCode(code) {
+    let params = {'machineCode': code};
 
     return this.query(params, 'all');
   }

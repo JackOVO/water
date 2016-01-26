@@ -7,7 +7,7 @@ import { AisleService } from './aisle.service';
 import { AisleController } from './aisle.controller';
 
 angular
-  .module('water.aisle', [])
+  .module('water.aisle', ['water.product'])
   .service('aisleFactory', AisleFactory)
   .service('aisleService', AisleService)
   .controller('AisleController', AisleController);

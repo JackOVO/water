@@ -49,6 +49,7 @@ export function DataTableDirective($compile) {
           otable.fnDisplayStart(start, false);
           otable.fnLengthChange(size, false);
         } else {
+          console.info(paging);
           window.alert('?x?');
         }
 
@@ -68,7 +69,7 @@ export function DataTableDirective($compile) {
         language: language,
         lengthChange: false,
         info: attrs.info !== 'false',
-        paging: attrs.paging !== 'false',
+        paging: attrs.p !== 'false',
         pagingType: 'full_numbers',
 
         rowCallback: rowCallback,

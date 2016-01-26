@@ -2,7 +2,7 @@
  * 弹出内容指令
  */
 
-export function ModalbodyDriective($compile, $sce) {
+export function ModalbodyDriective($compile) {
   'ngInject';
 
   let directive = {
@@ -75,7 +75,7 @@ function createInputsHtml(inputs) {
                 {{${m2?m2+'=':''}$select.selected.text}}
               </ui-select-match>
               <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
-                <div ng-bind="o.text"></div>
+                <div ng-bind="o.text || 'null'"></div>
               </ui-select-choices>
             </ui-select>
           </div>

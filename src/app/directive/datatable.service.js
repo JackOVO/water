@@ -3,12 +3,15 @@
  */
 
 export class DataTableService {
-  constructor() {
+  constructor() {}
 
+  // 启用状态渲染(用户)
+  enableflagRender(data) {
+    return (data === 'Enable' ? '启用' : '禁用');
   }
 
-  // 启用状态渲染
-  flagRender(data) {
-    return (data === 'Enable' ? '启用' : '禁用');
+  // 删除状态渲染(商品)
+  delFlagRender(data) {
+    return (data == 1 ? '已删除' : '未删除');
   }
 }

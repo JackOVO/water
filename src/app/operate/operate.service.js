@@ -8,7 +8,7 @@ export class OperateService extends BusinessFactory {
   constructor(toastr, $rootScope, dialogService, operateFactory) {
     'ngInject';
 
-    super(toastr, $rootScope, dialogService, operateFactory, 1);
+    super(toastr, $rootScope, dialogService, operateFactory);
     this.dataTableColumns = dataTableColumns;
   }
 }

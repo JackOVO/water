@@ -133,6 +133,7 @@ export class BusinessFactory {
     if (typeof(this.order) !== 'undefined') {
       options.order = this.order;
     }
+    // 要在内部保存搜索选项
 
     return this[_entityFactory].search(page, size, options).then((paging) => {
       return paging;

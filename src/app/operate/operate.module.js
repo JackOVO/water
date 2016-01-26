@@ -7,7 +7,7 @@ import { OperateService } from './operate.service';
 import { OperateController } from './operate.controller';
 
 angular
-  .module('water.operate', [])
+  .module('water.operate', ['water.log'])
   .service('operateFactory', OperateFactory)
   .service('operateService', OperateService)
   .controller('OperateController', OperateController);

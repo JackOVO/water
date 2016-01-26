@@ -38,7 +38,7 @@ export class UserService extends BusinessFactory {
 
   // 附加列处理
   columns() {
-    this.dataTableColumns[4].render = this.dataTableService.flagRender;
+    this.dataTableColumns[4].render = this.dataTableService.enableflagRender;
     return this.dataTableColumns;
   }
 

@@ -3,14 +3,23 @@
  */
 
 export class GlobalService {
-  constructor(userService, roleService, orderService, operateService, aisleService) {
+  constructor(
+    logService,
+    userService,
+    roleService,
+    orderService,
+    operateService,
+    productService,
+    aisleService) {
     'ngInject';
 
     this.us = userService;
     this.ro = roleService;
+    this.log = logService;
     this.order = orderService;
     this.aisle = aisleService;
     this.operate = operateService;
+    this.product = productService;
   }
 
   /**
@@ -32,6 +41,7 @@ export class GlobalService {
   refreshListByAction(aim, page) {
     switch(aim) {
       case 'order': this.order.search(page); break;
+      case 'product': this.product.search(page); break;
       case 'operate': this.operate.search(page); break;
     }
   }
@@ -44,6 +54,7 @@ export class GlobalService {
    */
   refreshChildListByAction(aim, id) {
     switch(aim) {
+      case 'log': this.log.search(id, 1); break;
       case 'aisle': this.aisle.getAll(id); break;
     }
   }

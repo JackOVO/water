@@ -261,7 +261,6 @@ export class EntityFactory {
     });
   }
 
-
   /**
    * 删除指定主键的实体, 根据参数数量判断多个删除
    * @param  {...[type]} ids id数组 | id | key, [id1, id2]

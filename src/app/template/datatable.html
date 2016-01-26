@@ -2,12 +2,15 @@
   <div class="box-header with-border">
     <h3 class="box-title" ng-bind="vm.title"></h3>
     <div class="pull-right box-tools">
-      <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增用户</button>
+      <button class="btn btn-primary btn-sm" ng-repeat="btn in vm.btns"></button>
+<!--       <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增用户</button> -->
       <!-- <i class="fa fa-plus"></i>  -->
     </div>
   </div>
 
   <div class="box-body">
+    <table-tools ng-if="vm.tools"
+      conf-name="vm.tools"></table-tools>
     <datatable 
       defs="vm.defs"
       paging="vm.paging"

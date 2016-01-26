@@ -47,6 +47,7 @@ console.info('menuKey----->', key);
       break;
       case 'order':
       case 'operate':
+      case 'product':
         params = {aim: key, page: 1};
         this.$state.go('home.list', params);
       break;

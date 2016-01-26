@@ -5,6 +5,7 @@
 // adminTle相关指令模块
 import './alte/alte.directive.module';
 
+import { TableBoolsDirective } from './tabletools.directive';
 import { DataTableDirective } from './datatable.directive';
 import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
@@ -17,4 +18,5 @@ angular
   .service('dialogService', DialogService)
   .directive('ztree', zTreeDirective)
   .directive('datatable', DataTableDirective)
-  .directive('modalBody', ModalbodyDriective);
+  .directive('modalBody', ModalbodyDriective)
+  .directive('tableTools', TableBoolsDirective);

@@ -44,24 +44,43 @@ export function runBlock($log, dataService, menuService) {
     // 运营
     operate: {
       prefix: 'machineOperation',
-      aisleList: 'listAisle'
+      deleteAisle: 'deleteAisle',
+      updateAisle: 'updateAisle',
+      aisleList: 'listAisle',
+      addAisle: 'addAisle',
+      getAisle: 'find'
     },
     // 货道
     aisle: {
-      all: {aim: 'operate', action: 'aisleList'}
+      upd: {aim: 'operate', action: 'updateAisle'},
+      del: {aim: 'operate', action: 'deleteAisle'},
+      all: {aim: 'operate', action: 'aisleList'},
+      add: {aim: 'operate', action: 'addAisle'},
+      get: {aim: 'operate', action: 'getAisle'}
     },
     // 订单
     order: {},
+    // 商品
+    product: {
+      'combobox': 'findAll'
+    },
+    // 日志
+    log: {
+      prefix: 'machineProductLog',
+      list: 'srv_machine_goods_replenish_log'
+    },
     admin: {
       prefix: '',
       login: 'login',
       base: 'http://localhost:5324'
+      // machineOperation/deleteAisle.do
     }
   });
 
   // 菜单映射key
   menuService.setMenuKeyMapping({
     'admin:shopMgr:machineOpr': 'operate',
+    'admin:shopMgr:goodsMgr': 'product',
     'admin:shopMgr:orderMgr': 'order',
     'admin:user:baseInfo': 'baseInfo',
     'admin:user:userMgr': 'user',
