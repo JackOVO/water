@@ -8,8 +8,9 @@ export class LogService extends BusinessFactory {
   constructor(toastr, $rootScope, dialogService, logFactory, aisleService) {
     'ngInject';
 
-    super(toastr, $rootScope, dialogService, logFactory, 1);
+    super(toastr, $rootScope, dialogService, logFactory);
     this.machineCode = null;
+    this.searchObject = {};
     this.logFactory = logFactory;
     this.aisleService = aisleService;
 
@@ -21,12 +22,21 @@ export class LogService extends BusinessFactory {
     return this.aisleService.getCombobox(this.machineCode);
   }
 
+  // 路由初始化
+  init(code) {
+    this.search(code, 1, this.size, {});
+  }
+
   // 包装搜索
-  search(code = this.machineCode, page, size = this.size, options) {
+  search(code = this.machineCode,
+    page, size = this.size,
+    params = this.searchObject) {
+
     let _this = this;
     this.machineCode = code;
+    this.searchObject = params;
 
-    return this.logFactory.searchByMachineCode(code, page, size, options)
+    return this.logFactory.searchByMachineCode(code, page, size, params)
       .then((paging) => {
         return _this.globalNotice('search', paging);
     });

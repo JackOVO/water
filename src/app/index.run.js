@@ -34,7 +34,8 @@ export function runBlock($log, dataService, menuService) {
     // 机器
     machine: {
       prefix: 'vendingmachine',
-      treeByUserCode: 'listTreeVM'
+      treeByUserCode: 'listTreeVM',
+      combobox: 'findVendingMachineAll'
     },
     // 权限
     competence: {
@@ -60,7 +61,9 @@ export function runBlock($log, dataService, menuService) {
       get: {aim: 'operate', action: 'getAisle'}
     },
     // 订单
-    order: {},
+    order: {
+      download: 'download'
+    },
     // 商品
     product: {
       'combobox': 'findAll'
@@ -69,6 +72,14 @@ export function runBlock($log, dataService, menuService) {
     log: {
       prefix: 'machineProductLog',
       list: 'srv_machine_goods_replenish_log'
+    },
+    // 统计
+    statistics: {
+      prefix: 'salestats',
+      byProduct: 'getOfftake',
+      byMachine: 'getOrderCountPage',
+      byPDdownload: 'download_1',
+      byMDownload: 'download_2'
     },
     admin: {
       prefix: '',
@@ -80,10 +91,11 @@ export function runBlock($log, dataService, menuService) {
 
   // 菜单映射key
   menuService.setMenuKeyMapping({
+    'admin:shopMgr:saleStats': 'statistics',
     'admin:shopMgr:machineOpr': 'operate',
     'admin:shopMgr:goodsMgr': 'product',
-    'admin:shopMgr:orderMgr': 'order',
     'admin:user:baseInfo': 'baseInfo',
+    'admin:shopMgr:orderMgr': 'order',
     'admin:user:userMgr': 'user',
     'admin:user:roleMgr': 'role'
   });

@@ -14,6 +14,7 @@ import { PassWordFilter } from './main/filters';
 import './status/status.module'; // 状态类数据模块
 
 import './competence/competence.module'; // 权限模块
+import './statistics/statistics.module'; // 统计模块
 import './directive/directive.module'; // 指令模块
 import './sidebar/sidebar.module'; // 侧边栏模块
 import './operate/operate.module'; // 运营模块
@@ -36,6 +37,7 @@ let rely = [
   'ngDialog',
   'toastr',
 
+  'water.statistics',
   'water.directive',
   'water.sidebar',
   'water.operate',

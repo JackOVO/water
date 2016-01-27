@@ -53,6 +53,11 @@ console.info(paging);
       logService.search(undefined, page);
     };
 
+    // 清空
+    this.reset = () => {
+      logService.search(undefined, 1, undefined, {});
+    };
+
     // 获取商品
     productService.getCombobox().then((array) => {
       this.products = array;

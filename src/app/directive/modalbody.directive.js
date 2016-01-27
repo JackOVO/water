@@ -34,6 +34,9 @@ export function ModalbodyDriective($compile) {
           }
 
           let html = createInputsHtml(content.inputs);
+          content.scope.setUploadFn = (uploadFn) => {
+            content.scope.uploadFn = uploadFn;
+          };
           content = $compile(html)(content.scope);
         }
 
@@ -89,7 +92,17 @@ function createInputsHtml(inputs) {
           </div>
         </div>`;
         break;
+      case 'upload':
+        let upName = inputs[i].upName;
+        inputHtml = `<div class="form-group">
+          <label class="col-sm-2 control-label">${name}</label>
+          <div class="col-sm-10">
+            <upload files="files" val="${model}" name="${upName}" set-upload-fn="setUploadFn"></upload>
+          </div>
+        </div>`;
+        break;
       case 'text':
+      case 'number':
       case 'passwrod':
       default:
         inputHtml = `<div class="form-group">

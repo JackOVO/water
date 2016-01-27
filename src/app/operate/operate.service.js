@@ -9,7 +9,19 @@ export class OperateService extends BusinessFactory {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, operateFactory);
+    this.searchObject = {}; // 搜索添加缓存分页用
     this.dataTableColumns = dataTableColumns;
+  }
+
+  // 初始化, 清空搜索条件
+  init(page) {
+    this.search(page, this.size, {});
+  }
+
+  // 搜索条件保存
+  search(page, size = this.size, params = this.searchObject) {
+    this.searchObject = params;
+    return super.search(page, size, params);
   }
 }
 

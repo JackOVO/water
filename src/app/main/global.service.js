@@ -10,6 +10,7 @@ export class GlobalService {
     orderService,
     operateService,
     productService,
+    statisticsService,
     aisleService) {
     'ngInject';
 
@@ -20,6 +21,7 @@ export class GlobalService {
     this.aisle = aisleService;
     this.operate = operateService;
     this.product = productService;
+    this.statistics = statisticsService;
   }
 
   /**
@@ -30,6 +32,7 @@ export class GlobalService {
     switch(aim) {
       case 'user': this.us.init(); break;
       case 'role': this.ro.init(); break;
+      case 'statistics': this.statistics.init(); break;
     }
   }
 
@@ -40,9 +43,9 @@ export class GlobalService {
    */
   refreshListByAction(aim, page) {
     switch(aim) {
-      case 'order': this.order.search(page); break;
+      case 'order': this.order.init(page); break;
       case 'product': this.product.search(page); break;
-      case 'operate': this.operate.search(page); break;
+      case 'operate': this.operate.init(page); break;
     }
   }
 
@@ -54,7 +57,7 @@ export class GlobalService {
    */
   refreshChildListByAction(aim, id) {
     switch(aim) {
-      case 'log': this.log.search(id, 1); break;
+      case 'log': this.log.init(id); break;
       case 'aisle': this.aisle.getAll(id); break;
     }
   }

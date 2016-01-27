@@ -85,6 +85,19 @@ export class DataService {
   }
 
   /**
+   * 对jquery-upload上传的封装, 需要指令配合
+   * @param  {String} aim         操作目标
+   * @param  {String} action      操作动作
+   * @param  {[type]} data        form参数
+   * @param  {Function} uploadFn  上传方法
+   * @return {Promise}            响应承诺
+   */
+  upload(aim, action, data, uploadFn) {
+    let url = _createRequestUrl(aim, action);
+    return uploadFn(url, data);
+  }
+
+  /**
    * 从服务器下载文件, 创建a的方式
    * @param  {String} aim    创建请求地址中的目标
    * @param  {String} action 创建请求地址中的动作
@@ -92,8 +105,9 @@ export class DataService {
    * @return {[type]}        [description]
    */
   download(aim, action, params) {
+    let z = $.param(params);
     let url = _createRequestUrl(aim, action);
-    url = url + '?' + $.param(params);
+    url = url + (z ? '?' + z : z);
 
     this[_$window].open(url);
   }

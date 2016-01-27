@@ -66,5 +66,4 @@ export class OperateController {
     this.$state.go('.', {page: 1}, {notify: false});
     this.operateService.search(1, undefined, sobj);
   }
-
 }

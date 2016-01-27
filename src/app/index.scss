@@ -57,6 +57,9 @@ button.btn {
 .pagination > li:first-child > a, .pagination > li:last-child > a {
   border-radius: 0;
 }
+.dropdown-menu {
+  border-radius: 0;
+}
 
 /**ng verification**/
 .form-control.ng-invalid {
@@ -154,10 +157,13 @@ div.toast {
 table.uib-daypicker:focus {
   outline: 0;
 }
-table.uib-daypicker .btn{
+table.uib-daypicker .btn-default{
   border: 0;
+  background-color: #FFFFFF;
 }
-
+table.uib-daypicker .btn-default.active {
+  background-color: #ddd;
+}
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

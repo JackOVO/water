@@ -282,6 +282,17 @@ export class EntityFactory {
   }
 
   /**
+   * 下载封装
+   * @param  {Object} param 参数
+   */
+  download(param) {
+    let aim = this.aim,
+        action = 'download';
+
+    return this[_dataService].download(aim, action, param);
+  }
+
+  /**
    * 获取组合框下拉数据, 基类封装, 子类实现一下
    * @param  {String} vKey   值对应的key
    * @param  {String} tKey   文本对应的key

@@ -17,7 +17,7 @@ export function TableBoolsDirective($compile) {
         if (!conf) { return; }
 
         // 搜索对象
-        scope.$search = scope.search || {};
+        scope.$search = scope.sobj || {};
         // 搜索组回车执行
         scope.$keyup = (sfn, kcode) => {
           if (kcode === 13) { sfn(scope.$search); }
@@ -62,9 +62,22 @@ export function TableBoolsDirective($compile) {
           break;
         case 'search':
           let reset = item.reset,
-              search = item.search;
+              search = item.search,
+              downbar = item.downbar;
+
+          // 搜索组选项卡
+          if (angular.isArray(downbar)) {
+            let parKey = item.parKey;
+            let lis = angular.copy(downbar);
+
+            downbar = `<div class="input-group-btn" ng-init="cg${index};cg${index}.text='${lis[0].text}';$search.${parKey}='${lis[0].value}'" ng-class="{'open':cg${index}.isOpen}"><button type="button" class="btn dropdown-toggle" ng-click="cg${index}.isOpen=!cg${index}.isOpen">{{cg${index}.text}} <span class="fa fa-caret-down"></span></button><ul class="dropdown-menu" style="left:0;">`;
+
+            for (let i in lis) { downbar += `<li><a href="javascript:;" ng-click="cg${index}.isOpen=false;cg${index}.text='${lis[i].text}';$search.${parKey}='${lis[i].value}'">${lis[i].text}</a></li>`; }
+            downbar += '</ul></div>';
+          }
 
           input = `<div class="input-group">
+            ${downbar || ''}
             <input type="text" class="form-control" placeholder="${pholder}"
               ng-model="$search.${valKey}"
               ng-keyup="$keyup(${search}, $event.keyCode)">
@@ -91,6 +104,16 @@ export function TableBoolsDirective($compile) {
                 </button>
               </span>
             </p>`;
+          break;
+        case 'buttons':
+          search = item.search;
+          search = item.search;
+          input = `<div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-primary" type="button"
+                  ng-click="${search}($search)">搜索</button>
+              </span>
+            </<div>`;
           break;
       }
       if (clas) { input = '<div class="'+ clas +'">' + input + '</div>';}

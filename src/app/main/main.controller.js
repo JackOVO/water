@@ -42,6 +42,7 @@ console.info('menuKey----->', key);
       case 'user':
       case 'role':
       case 'baseInfo':
+      case 'statistics':
         params = {aim: key, t: 'Test'};
         this.$state.go('home.single', params);
       break;

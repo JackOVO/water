@@ -162,7 +162,7 @@ export class BusinessFactory {
   /**
    * 刷新列表
    * @param  {Object} msg  应该是消息对象
-   * @param  {[type]} page 刷新的页码
+   * @param  {Number} page 刷新的页码
    */
   refreshList(msg, page = 1) {
     let oper = msg.success === true ? 'success' : 'error';

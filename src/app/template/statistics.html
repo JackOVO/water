@@ -15,9 +15,17 @@
     <table-tools ng-if="vm.tools"
       conf-name="vm.tools"></table-tools>
     <datatable 
+      ng-show="stype=='byProduct'"
       defs="vm.defs"
       paging="vm.paging"
-      columns="vm.columns"
+      columns="vm.Machinecolumns"
+      row-click-notice="vm.onTableClick"
+      draught-request="vm.turn"></datatable>
+    <datatable 
+      ng-show="stype=='byMachine'"
+      defs="vm.defs"
+      paging="vm.paging"
+      columns="vm.Productcolumns"
       row-click-notice="vm.onTableClick"
       draught-request="vm.turn"></datatable>
   </div>

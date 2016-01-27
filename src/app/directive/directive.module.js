@@ -9,6 +9,7 @@ import { TableBoolsDirective } from './tabletools.directive';
 import { DataTableDirective } from './datatable.directive';
 import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
+import { UploadDirective } from './upload.directive';
 import { zTreeDirective } from './ztree.directive';
 import { DialogService } from './dialog.service';
 
@@ -17,6 +18,7 @@ angular
   .service('dataTableService', DataTableService)
   .service('dialogService', DialogService)
   .directive('ztree', zTreeDirective)
+  .directive('upload', UploadDirective)
   .directive('datatable', DataTableDirective)
   .directive('modalBody', ModalbodyDriective)
   .directive('tableTools', TableBoolsDirective);

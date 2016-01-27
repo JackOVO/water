@@ -25,4 +25,9 @@ export class MachineFactory extends EntityFactory {
     let entity = {userCode: code};
     return super.query(entity, 'treeByUserCode', 'packTree');
   }
+
+  // 封装一下映射关系
+  getCombobox() {
+    return super.getCombobox('value', 'text');
+  }
 }

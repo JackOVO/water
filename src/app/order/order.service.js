@@ -9,7 +9,26 @@ export class OrderService extends BusinessFactory {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, orderFactory);
+    this.searchObject = {};
+    this.orderFactory = orderFactory;
     this.dataTableColumns = dataTableColumns;
+  }
+
+  // 路由接口
+  init(page) {
+    this.search(page, this.size, {});
+  }
+
+  // 搜索条件保存
+  search(page, size = this.size, params = this.searchObject) {
+    this.searchObject = params;
+
+    return super.search(page, size, params);
+  }
+
+  // 下载, 要关联搜索条件
+  download() {
+    this.orderFactory.download(1, this.size, this.searchObject);
   }
 }
 
