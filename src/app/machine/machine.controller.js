@@ -1,18 +1,19 @@
 /**
- * 公司控制器
+ * 机器控制器
  */
 
-export class SubjectController {
-  constructor($scope, $state, subjectService) {
+export class MachineController {
+  constructor($scope, $state, machineService) {
     'ngInject';
-    this.subjectService = subjectService;
+    this.machineService = machineService;
 
     this.paging = null;
-    this.columns = subjectService.columns();
+    this.columns = machineService.columns();
 
     this.defs = {
       ctrlScope: $scope,
       buttons: [
+        {text: '详', action: ({code:c}) => `vm.info('${c}')`},
         {text: '改', action: ({code:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
           action: ({code:c, name:n}) => `vm.del('${c}', '${n}')`
@@ -21,32 +22,33 @@ export class SubjectController {
 
     // 按钮配置
     this.btns = [{
-      name: '新增公司', icon: 'fa-plus', click: this.add
+      name: '新增机器', icon: 'fa-plus', click: this.add
     }];
 
     // 分页监听
-    $scope.$on('subjectSearch', (e, paging) => {
+    $scope.$on('machineSearch', (e, paging) => {
       this.paging = paging;
     });
 
     // 翻页请求
     this.turn = (params) => {
       let page = params.page;
-      subjectService.search(page).then(() => {
+      machineService.search(page).then(() => {
         $state.go('.', {page: page}, {notify: false});
       });
     };
   }
 
-  add(vm) {
-    vm.subjectService.openEditPage();
+  // 详情
+  info(code) {
+alert(code);
   }
 
-  edit(code) {
-    this.subjectService.openEditPage(code);
+  add(vm) {
+    vm.machineService.openEditPage();
   }
 
   del(code, name) {
-    this.subjectService.del(code, name);
-  }
+    this.machineService.del(code, name);
+  } 
 }

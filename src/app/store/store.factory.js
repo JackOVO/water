@@ -1,22 +1,22 @@
 /**
- * 公司实体工厂
+ * 点位实体工厂
  */
 
 import { createObjectFn } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
-class Subject {
+class Store {
   constructor() {}
 }
-Subject.mapping = {};
-Subject.futility = [];
-Subject.create = createObjectFn(Subject);
+Store.mapping = {};
+Store.futility = [];
+Store.create =  createObjectFn(Store);
 
-export class SubjectFactory extends EntityFactory {
+export class StoreFactory extends EntityFactory {
   constructor(dataService) {
     'ngInject';
 
-    super('subject', Subject, 'subjectCode', dataService);
+    super('store', Store, 'storeCode', dataService);
   }
 
   // 封装一下映射关系

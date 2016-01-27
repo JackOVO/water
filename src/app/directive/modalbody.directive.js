@@ -50,10 +50,25 @@ export function ModalbodyDriective($compile) {
   return directive;
 }
 
+function getMaxSize(array) {
+  let size = 0;
+  for (let index in array) {
+    if (array[index].name.length > size) {
+      size = array[index].name.length;
+    }
+  }
+  return size;
+}
+
 // 根据配置生成input
 function createInputsHtml(inputs) {
   let html = '<form name="form" novalidate>';
 // class="form-horizontal" verification:[]
+  let lw = 2, cw = 10;
+  if (getMaxSize(inputs) > 4) {
+    lw = 3, cw = 9;
+  }
+
   for (let i in inputs) {
     let type = inputs[i].type,
         name = inputs[i].name,
@@ -70,8 +85,8 @@ function createInputsHtml(inputs) {
         let source = inputs[i].source;
 // {{${m2?m2+'=':''}$select.selected.text}} XXX 绑定名称的位置在元素属性上第一次会有无法选中的问题
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <ui-select theme="bootstrap" ng-model="${model}"
               search-enabled="true">
               <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
@@ -86,8 +101,8 @@ function createInputsHtml(inputs) {
         break;
       case 'textarea':
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <textarea class="form-control" ng-model="${model}" rows="4" placeholder="..." style="resize: none;"/>
           </div>
         </div>`;
@@ -95,8 +110,8 @@ function createInputsHtml(inputs) {
       case 'upload':
         let upName = inputs[i].upName;
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <upload files="files" val="${model}" name="${upName}" set-upload-fn="setUploadFn"></upload>
           </div>
         </div>`;
@@ -106,8 +121,8 @@ function createInputsHtml(inputs) {
       case 'passwrod':
       default:
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <input name="${model}" type="${type||'text'}" class="form-control" autocomplete="off"
               ng-model="${model}"
 

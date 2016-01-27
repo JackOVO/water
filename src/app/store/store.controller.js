@@ -1,14 +1,14 @@
 /**
- * 公司控制器
+ * 点位控制器
  */
 
-export class SubjectController {
-  constructor($scope, $state, subjectService) {
+export class StoreController {
+  constructor($scope, $state, storeService) {
     'ngInject';
-    this.subjectService = subjectService;
+    this.storeService = storeService;
 
     this.paging = null;
-    this.columns = subjectService.columns();
+    this.columns = storeService.dataTableColumns;
 
     this.defs = {
       ctrlScope: $scope,
@@ -21,32 +21,32 @@ export class SubjectController {
 
     // 按钮配置
     this.btns = [{
-      name: '新增公司', icon: 'fa-plus', click: this.add
+      name: '新增点位', icon: 'fa-plus', click: this.add
     }];
 
     // 分页监听
-    $scope.$on('subjectSearch', (e, paging) => {
+    $scope.$on('storeSearch', (e, paging) => {
       this.paging = paging;
     });
 
     // 翻页请求
     this.turn = (params) => {
       let page = params.page;
-      subjectService.search(page).then(() => {
+      storeService.search(page).then(() => {
         $state.go('.', {page: page}, {notify: false});
       });
     };
   }
 
   add(vm) {
-    vm.subjectService.openEditPage();
+    vm.storeService.openEditPage();
   }
 
   edit(code) {
-    this.subjectService.openEditPage(code);
+    this.storeService.openEditPage(code);
   }
 
   del(code, name) {
-    this.subjectService.del(code, name);
+    this.storeService.del(code, name);
   }
 }

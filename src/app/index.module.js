@@ -24,6 +24,7 @@ import './product/product.module'; // 商品模块
 import './admin/admin.module'; // 管理员模块
 import './order/order.module'; // 订单模块
 import './aisle/aisle.module'; // 货道模块
+import './store/store.module'; // 点位模块
 import './user/user.module'; // 用户模块
 import './role/role.module'; // 角色模块
 import './log/log.module'; // 日志模块
@@ -42,6 +43,7 @@ let rely = [
   'water.sidebar',
   'water.operate',
   'water.status',
+  'water.store',
   'water.admin',
   'water.order',
   'water.user',

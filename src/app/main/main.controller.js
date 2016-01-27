@@ -46,9 +46,12 @@ console.info('menuKey----->', key);
         params = {aim: key, t: 'Test'};
         this.$state.go('home.single', params);
       break;
+      case 'store':
       case 'order':
       case 'operate':
+      case 'machine':
       case 'product':
+      case 'subject':
         params = {aim: key, page: 1};
         this.$state.go('home.list', params);
       break;
