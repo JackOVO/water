@@ -8,6 +8,7 @@ export class GlobalService {
     userService,
     roleService,
     orderService,
+    adminService,
     operateService,
     productService,
     statisticsService,
@@ -18,6 +19,7 @@ export class GlobalService {
     this.ro = roleService;
     this.log = logService;
     this.order = orderService;
+    this.admin = adminService;
     this.aisle = aisleService;
     this.operate = operateService;
     this.product = productService;
@@ -33,6 +35,7 @@ export class GlobalService {
       case 'user': this.us.init(); break;
       case 'role': this.ro.init(); break;
       case 'statistics': this.statistics.init(); break;
+      case 'baseInfo': this.admin.getBaseInfo(); break;
     }
   }
 

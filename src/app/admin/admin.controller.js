@@ -3,7 +3,13 @@
  */
 
 export class AdminController {
-  constructor(adminService) {
+  constructor($scope, adminService) {
     'ngInject';
+    this.adminInfo = null;
+
+    // 基本信息监听
+    $scope.$on('adminInfo', (e, adminInfo) => {
+      this.adminInfo = adminInfo;
+    });
   }
 }

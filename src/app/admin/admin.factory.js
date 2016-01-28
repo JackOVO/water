@@ -33,5 +33,11 @@ export class AddminFactory extends EntityFactory {
     'ngInject';
 
     super('admin', Admin, 'code', dataService);
+    this.dataService = dataService;
+  }
+
+  // 从公司那边获取基本信息
+  getBaseInfo() {
+    return super.query({}, 'baseInfo');
   }
 }

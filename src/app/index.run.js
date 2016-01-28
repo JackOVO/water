@@ -22,6 +22,7 @@ export function runBlock($log, dataService, menuService) {
     },
     // 公司
     subject: {
+      my: 'my',
       combobox: 'subjectList'
     },
     // 角色
@@ -84,6 +85,7 @@ export function runBlock($log, dataService, menuService) {
     admin: {
       prefix: '',
       login: 'login',
+      baseInfo: {aim: 'subject', action: 'my'},
       base: 'http://localhost:5324'
       // machineOperation/deleteAisle.do
     }

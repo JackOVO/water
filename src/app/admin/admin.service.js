@@ -5,13 +5,21 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class AdminService extends BusinessFactory {
-  constructor($q, toastr, adminFactory) {
+  constructor(toastr, $q, $rootScope, dialogService, adminFactory) {
     'ngInject';
-    super(toastr);
+    super(toastr, $rootScope, dialogService, adminFactory);
 
     this.$q = $q;
     this.admin = null; // 管理员
     this.adminFactory = adminFactory;
+  }
+
+  // 登录用户基本信息
+  getBaseInfo() {
+    let _this = this;
+    return this.adminFactory.getBaseInfo().then((info) => {
+      return _this.globalNotice('info', info);
+    });
   }
 
   // 登录方法
