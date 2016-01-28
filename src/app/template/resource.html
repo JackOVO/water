@@ -1,0 +1,19 @@
+<div class="box">
+  <div class="box-header with-border">
+    <h3 class="box-title" ng-bind="vm.title"></h3>
+    <div class="pull-right box-tools">
+      <button class="btn btn-primary btn-sm tool-btn"
+        ng-click="vm.add()">
+        <i class="fa fa-plus"></i> 新增权限</button>
+      <button class="btn btn-primary btn-sm tool-btn"
+        ng-click="vm.edit()" ng-disabled="!vm.code">
+        <i class="fa fa-edit"></i> 修改权限</button>
+      <button class="btn btn-danger btn-sm tool-btn"
+        ng-click="vm.del()" ng-disabled="!vm.code">
+        <i class="fa fa-remove"></i> 删除权限</button>
+    </div>
+  </div>
+  <div class="box-body">
+    <ztree data="vm.tree" click="vm.clickNode" check-enable="false"></ztree>
+  </div>
+</div>

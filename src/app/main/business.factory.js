@@ -62,10 +62,8 @@ export class BusinessFactory {
   globalNotice(name, data) {
     let nary = [...name]
     nary[0] = nary[0].charAt(0).toUpperCase();
-
     let aim = this[_entityFactory].aim,
         broadcastName = aim + nary.join('');
-
     // 类型处理
     this[_$rootScope].$broadcast(broadcastName, data);
 

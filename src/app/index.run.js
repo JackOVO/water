@@ -67,7 +67,7 @@ export function runBlock($log, dataService, menuService) {
     },
     // 商品
     product: {
-      'combobox': 'findAll'
+      combobox: 'findAll'
     },
     // 日志
     log: {
@@ -82,6 +82,19 @@ export function runBlock($log, dataService, menuService) {
       byPDdownload: 'download_1',
       byMDownload: 'download_2'
     },
+    // 点位
+    store: {
+      combobox: 'findStoreAll'
+    },
+    // 资源(权限)
+    resource: {
+      prefix: 'res', // /listRes.do
+      tree: 'listRes'
+    },
+    // 活动推广
+    activity: {
+      prefix: 'promotion/wechat'
+    },
     admin: {
       prefix: '',
       login: 'login',
@@ -93,6 +106,11 @@ export function runBlock($log, dataService, menuService) {
 
   // 菜单映射key
   menuService.setMenuKeyMapping({
+    'admin:interactionAdsMgr:wechatSpreadMgr': 'activity',
+    'admin:systemMgr:resourceMaintain': 'resource',
+    'admin:machineMgr:machineMaintain': 'machine',
+    'admin:subjectMgr:companyMgr': 'subject',
+    'admin:storeMgr:storeMaintain': 'store',
     'admin:shopMgr:saleStats': 'statistics',
     'admin:shopMgr:machineOpr': 'operate',
     'admin:shopMgr:goodsMgr': 'product',

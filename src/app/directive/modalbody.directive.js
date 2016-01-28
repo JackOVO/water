@@ -50,10 +50,25 @@ export function ModalbodyDriective($compile) {
   return directive;
 }
 
+function getMaxSize(array) {
+  let size = 0;
+  for (let index in array) {
+    if (array[index].name.length > size) {
+      size = array[index].name.length;
+    }
+  }
+  return size;
+}
+
 // 根据配置生成input
 function createInputsHtml(inputs) {
   let html = '<form name="form" novalidate>';
 // class="form-horizontal" verification:[]
+  let lw = 2, cw = 10;
+  if (getMaxSize(inputs) > 4) {
+    lw = 3, cw = 9;
+  }
+
   for (let i in inputs) {
     let type = inputs[i].type,
         name = inputs[i].name,
@@ -70,8 +85,8 @@ function createInputsHtml(inputs) {
         let source = inputs[i].source;
 // {{${m2?m2+'=':''}$select.selected.text}} XXX 绑定名称的位置在元素属性上第一次会有无法选中的问题
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <ui-select theme="bootstrap" ng-model="${model}"
               search-enabled="true">
               <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
@@ -86,18 +101,41 @@ function createInputsHtml(inputs) {
         break;
       case 'textarea':
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
-            <textarea class="form-control" ng-model="${model}" rows="4" placeholder="..." style="resize: none;"/>
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
+            <textarea class="form-control" ng-model="${model}" rows="2" placeholder="..." style="resize: none;"/>
+          </div>
+        </div>`;
+        break;
+      case 'datepicker':
+        def = inputs[i].def || '';
+        inputHtml = `<div class="form-group">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
+            <p class="input-group" ng-init="dt${i}" style="margin-bottom:0;">
+              <input type="text" class="form-control" placeholder="${def}"
+                ng-model="${model}"
+                uib-datepicker-popup
+                format-day-title="yyyy - MM"
+                alt-input-formats="yyyy-MM-dd"
+                is-open="dt${i}.isOpen"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default"
+                  ng-click="dt${i}.isOpen = !dt${i}.isOpen">
+                  <i class="glyphicon glyphicon-calendar"></i>
+                </button>
+              </span>
+            </p>
           </div>
         </div>`;
         break;
       case 'upload':
         let upName = inputs[i].upName;
+        let gstr = inputs[i].group?'group='+inputs[i].group:'';
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
-            <upload files="files" val="${model}" name="${upName}" set-upload-fn="setUploadFn"></upload>
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
+            <upload files="files" val="${model}" name="${upName}" set-upload-fn="setUploadFn" ${gstr}></upload>
           </div>
         </div>`;
         break;
@@ -106,8 +144,8 @@ function createInputsHtml(inputs) {
       case 'passwrod':
       default:
         inputHtml = `<div class="form-group">
-          <label class="col-sm-2 control-label">${name}</label>
-          <div class="col-sm-10">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
             <input name="${model}" type="${type||'text'}" class="form-control" autocomplete="off"
               ng-model="${model}"
 
@@ -120,8 +158,28 @@ function createInputsHtml(inputs) {
           </div>
         </div>`;
         break;
+      case 'selectGroup':
+        source = inputs[i].source;
+        inputHtml = `<div class="form-group" ng-repeat="item in ${model}">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw - 1}">
+            <ui-select theme="bootstrap" ng-model="${model}[$index]"
+              search-enabled="true">
+              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
+                {{${m2?m2+'=':''}$select.selected.text}}
+              </ui-select-match>
+              <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
+                <div ng-bind="o.text || 'null'"></div>
+              </ui-select-choices>
+            </ui-select>
+          </div>
+          <div class="col-sm-1">
+            <i class="fa fa-plus-square" style="font-size:32px;color:#3c8dbc;cursor: pointer;margin-left:-12px;" ng-click="addProduct();" ng-if="$index == 0"></i>
+            <i class="fa fa-minus-square" style="font-size:32px;color:#d73925;cursor: pointer;margin-left:-12px;" ng-click="delProduct($index)" ng-if="$index != 0"></i>
+          </div>
+        </div>`;
+        break;
     }
-//tooltip-enable="form['${model}'].$invalid" tooltip-is-open="true" {{test(form['${model}'].$error)}}
     html += inputHtml;
   }
   return html + '</form>';

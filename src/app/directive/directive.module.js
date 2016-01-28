@@ -6,6 +6,7 @@
 import './alte/alte.directive.module';
 
 import { TableBoolsDirective } from './tabletools.directive';
+import { SlimscrollDriective } from './slimscroll.directive';
 import { DataTableDirective } from './datatable.directive';
 import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
@@ -21,4 +22,5 @@ angular
   .directive('upload', UploadDirective)
   .directive('datatable', DataTableDirective)
   .directive('modalBody', ModalbodyDriective)
+  .directive('slimscroll', SlimscrollDriective)
   .directive('tableTools', TableBoolsDirective);

@@ -7,6 +7,7 @@ export function zTreeDirective() {
     replace: true,
     scope: {
       data: '=',
+      click: '&',
       checkeds: '='
     },
     template: '<div class="ztree"></div>',
@@ -17,6 +18,7 @@ export function zTreeDirective() {
           checkedKey = attrs.checkedkey || 'checked',
           childrenKey = attrs.childrenkey || 'children',
           checkEnable = true;
+          if(attrs.checkEnable === 'false') { checkEnable = false; }
 
       element.attr('id', attrs.name);
 
@@ -42,6 +44,7 @@ export function zTreeDirective() {
           callback: {
             onClick: (e, treeId, node) => {
               ztree.checkNode(node, null, false, true);
+              if (scope.click()) { scope.click()(node); };
             },
             onCheck: createOnCheckCallBack(attrs.name, idKey, scope)
           }

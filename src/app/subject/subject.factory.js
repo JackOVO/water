@@ -16,7 +16,7 @@ export class SubjectFactory extends EntityFactory {
   constructor(dataService) {
     'ngInject';
 
-    super('subject', Subject, 'id', dataService);
+    super('subject', Subject, 'subjectCode', dataService);
   }
 
   // 封装一下映射关系
