@@ -3,7 +3,7 @@
  */
 
 export class ActivityController {
-  constructor($scope, activityService) {
+  constructor($scope, $state, activityService) {
     'ngInject';
     this.activityService = activityService;
 
@@ -19,10 +19,10 @@ export class ActivityController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '用户', action: ({code:c}) => `vm.info('${c}')`},
-        {text: '改', action: ({code:c}) => `vm.edit('${c}')`},
+        {text: '用户', action: ({wechatOriginalId:i}) => `vm.goUser('${i}')`},
+        {text: '改', action: ({activityCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
-          action: ({code:c, name:n}) => `vm.del('${c}', '${n}')`
+          action: ({code:c, activityName:n}) => `vm.del('${c}', '${n}')`
         }]
     };
 
@@ -30,9 +30,22 @@ export class ActivityController {
     $scope.$on('activitySearch', (e, paging) => {
       this.paging = paging;
     });
+
+    // 挑战用户
+    this.goUser = (i) => {
+      $state.go('home.child', {pAim: 'activity', aim: 'stats', id: i});
+    };
   }
 
   add(vm) {
     vm.activityService.openEditPage(vm.sp);
+  }
+
+  edit(code) {
+    this.activityService.openEditPage(this.sp, code);
+  }
+
+  del(code, name) {
+    this.activityService.del(code, name);
   }
 }

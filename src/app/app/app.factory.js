@@ -1,23 +1,22 @@
 /**
- * 活动实体工厂
+ * 活动用户统计
  */
 
 import { createObjectFn, Message } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
-class Activity {
+class App {
   constructor() {}
 }
-Activity.mapping = {};
-Activity.futility = [];
-Activity.create =  createObjectFn(Activity);
+App.mapping = {};
+App.futility = [];
+App.create =  createObjectFn(App);
 
-export class ActivityFactory extends EntityFactory {
+export class AppFactory extends EntityFactory {
   constructor(dataService) {
     'ngInject';
 
-    super('activity', Activity, 'activityCode', dataService);
-    this.dataService = dataService;
+    super('app', App, 'activityCode', dataService);
   }
 
   // 添加上传封装

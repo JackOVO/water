@@ -12,6 +12,7 @@ import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
 import { UploadDirective } from './upload.directive';
 import { zTreeDirective } from './ztree.directive';
+import { iCheckDirective } from './icheck.directive';
 import { DialogService } from './dialog.service';
 
 angular
@@ -20,6 +21,7 @@ angular
   .service('dialogService', DialogService)
   .directive('ztree', zTreeDirective)
   .directive('upload', UploadDirective)
+  .directive('icheck', iCheckDirective)
   .directive('datatable', DataTableDirective)
   .directive('modalBody', ModalbodyDriective)
   .directive('slimscroll', SlimscrollDriective)

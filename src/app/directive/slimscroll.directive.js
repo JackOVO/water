@@ -1,9 +1,9 @@
 export function SlimscrollDriective() {
   let directive = {
     link: function(sope, ele, attrs) {
-      $(ele).slimScroll({
-        height: attrs.slimscroll ? attrs.slimscroll + 'px' : '450px'
-      });
+      if (!!attrs.slimscroll === true) {
+        ele.slimScroll({'height': '450px'});
+      }
     }
   };
   return directive;

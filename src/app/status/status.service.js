@@ -25,6 +25,13 @@ export class StatusService {
         combobox.push(new Options(1, '一分钱喝'));
         combobox.push(new Options(2, 'app推广'));
         break;
+      case 'andrews':
+        combobox.push(new Options('安卓2.0及以上', '安卓2.0及以上'));
+        combobox.push(new Options('安卓2.2及以上', '安卓2.2及以上'));
+        combobox.push(new Options('安卓4.0及以上', '安卓4.0及以上'));
+        combobox.push(new Options('安卓4.4及以上', '安卓4.4及以上'));
+        combobox.push(new Options('安卓5.0及以上', '安卓5.0及以上'));
+        break;
     }
     return combobox;
   }

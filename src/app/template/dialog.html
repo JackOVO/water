@@ -6,7 +6,7 @@
       ng-click="closeThisDialog()"><span>×</span></button>
     <h4 class="modal-title" ng-bind="ngDialogData.title"></h4>
   </div>
-  <div class="modal-body form-horizontal" slimscroll>
+  <div class="modal-body form-horizontal" slimscroll="{{ngDialogData.isScroll}}">
     <modal-body
       content="ngDialogData.content"
       form-valid="valid"></modal-body><!-- 填出框内容指令 -->

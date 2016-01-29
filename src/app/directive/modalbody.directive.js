@@ -159,9 +159,12 @@ function createInputsHtml(inputs) {
         </div>`;
         break;
       case 'selectGroup':
+        let addFnName = inputs[i].addFnName,
+            delFnName = inputs[i].delFnName;
         source = inputs[i].source;
-        inputHtml = `<div class="form-group" ng-repeat="item in ${model}">
-          <label class="col-sm-${lw} control-label">${name}</label>
+        inputHtml = `<div class="form-group" ng-repeat="item in ${model} track by $index">
+          <label class="col-sm-${lw} control-label">${name}
+            {{$index+1}}</label>
           <div class="col-sm-${cw - 1}">
             <ui-select theme="bootstrap" ng-model="${model}[$index]"
               search-enabled="true">
@@ -174,10 +177,25 @@ function createInputsHtml(inputs) {
             </ui-select>
           </div>
           <div class="col-sm-1">
-            <i class="fa fa-plus-square" style="font-size:32px;color:#3c8dbc;cursor: pointer;margin-left:-12px;" ng-click="addProduct();" ng-if="$index == 0"></i>
-            <i class="fa fa-minus-square" style="font-size:32px;color:#d73925;cursor: pointer;margin-left:-12px;" ng-click="delProduct($index)" ng-if="$index != 0"></i>
+            <i class="fa fa-plus-square" style="font-size:32px;color:#3c8dbc;cursor: pointer;margin-left:-13px;" ng-click="${addFnName}()" ng-if="$index == 0"></i>
+            <i class="fa fa-minus-square" style="font-size:32px;color:#d73925;cursor: pointer;margin-left:-13px;" ng-click="${delFnName}($index)" ng-if="$index != 0"></i>
           </div>
         </div>`;
+        break;
+      case 'uploadGroup':
+        let addFnName2 = inputs[i].addFnName,
+            delFnName2 = inputs[i].delFnName;
+          let gstr2 = inputs[i].group?'group='+inputs[i].group:'';
+          inputHtml = `<div class="form-group" ng-repeat="item in ${model} track by $index">
+            <label class="col-sm-${lw} control-label">${name} {{$index+1}}</label>
+            <div class="col-sm-${cw - 1}">
+              <upload files="files" val="${model}" name="${upName}{{$index}}" set-upload-fn="setUploadFn" ${gstr2}></upload>
+            </div>
+            <div class="col-sm-1">
+              <i class="fa fa-plus-square" style="font-size:32px;color:#3c8dbc;cursor: pointer;margin-left:-13px;" ng-click="${addFnName2}()" ng-if="$index == 0"></i>
+              <i class="fa fa-minus-square" style="font-size:32px;color:#d73925;cursor: pointer;margin-left:-13px;" ng-click="${delFnName2}($index)" ng-if="$index != 0"></i>
+            </div>
+          </div>`;
         break;
     }
     html += inputHtml;

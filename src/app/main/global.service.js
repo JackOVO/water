@@ -5,18 +5,21 @@
 export class GlobalService {
   constructor(
     logService,
+    appService,
     userService,
     roleService,
     orderService,
     adminService,
     storeService,
     aisleService,
+    statsService,
     operateService,
     productService,
     machineService,
     subjectService,
     resourceService,
     activityService,
+    adresourceService,
     statisticsService) {
     
     'ngInject';
@@ -24,6 +27,8 @@ export class GlobalService {
     this.us = userService;
     this.ro = roleService;
     this.log = logService;
+    this.app = appService;
+    this.stats = statsService;
     this.store = storeService;
     this.order = orderService;
     this.admin = adminService;
@@ -34,6 +39,7 @@ export class GlobalService {
     this.subject = subjectService;
     this.activity = activityService;
     this.resource = resourceService;
+    this.adresource = adresourceService;
     this.statistics = statisticsService;
   }
 
@@ -58,6 +64,7 @@ export class GlobalService {
    */
   refreshListByAction(aim, page) {
     switch(aim) {
+      case 'app': this.app.search(page); break;
       case 'order': this.order.init(page); break;
       case 'store': this.store.search(page); break;
       case 'operate': this.operate.init(page); break;
@@ -65,6 +72,7 @@ export class GlobalService {
       case 'product': this.product.search(page); break;
       case 'subject': this.subject.search(page); break;
       case 'activity': this.activity.search(page); break;
+      case 'adresource': this.adresource.search(page); break;
     }
   }
 
@@ -77,6 +85,7 @@ export class GlobalService {
   refreshChildListByAction(aim, id) {
     switch(aim) {
       case 'log': this.log.init(id); break;
+      case 'stats': this.stats.init(id); break;
       case 'aisle': this.aisle.getAll(id); break;
     }
   }

@@ -19,18 +19,23 @@ export class ActivityService extends BusinessFactory {
   columns() {
     this.dataTableColumns[3].render = this.dataTableService.dataRender;
     this.dataTableColumns[4].render = this.dataTableService.dataRender;
-    this.dataTableColumns[8].render = this.dataTableService.enableflagRender;
     this.dataTableColumns[9].render = this.dataTableService.activityRender;
+    this.dataTableColumns[8].render = this.dataTableService.enableflagRender;
     return this.dataTableColumns;
   }
 
   // 打开编辑页添加依赖数据
   openEditPage(scope, code) {
+    let _this = this;
     let title = '增加活动';
 
     let binding = {
       a: this.activityFactory.create(),
-      products: this.productService.getCombobox(),
+      products: this.productService.getCombobox().then((ary) => {
+        // 非编辑下默认一项
+        if (!code) { scope.a.productCodes = [ary[0].value]; }
+        return ary;
+      }),
       enables: this.statusService.getCombobox('flag'),
       activitys: this.statusService.getCombobox('activity')
     };
@@ -38,25 +43,19 @@ export class ActivityService extends BusinessFactory {
     // 存在code即识别为编辑状态
     if (code) {
       title = '修改活动';
-    } else {
-      binding.a.productCodes = ['20151222165755483'];
-
+      binding.a = this.activityFactory.getById(code);
     }
 
-    scope.fileGroup = [];
-scope.$watch('a.productCodes', (code) => {
-  console.info(code);
-}, true);
     let inputs = [
       {name: '推广名称', model: 'a.activityName', required: true},
       {name: '公众号名称', model: 'a.wechatOriginalName', required: true},
       {name: '公众号logo', model: 'a.wechatLogo', type:'upload',
-        upName: 'img1', group:'fileGroup', required: true},
-      {name: '公众号二维码', model: 'a.activityImg', type:'upload', 
-        upName: 'img2', group:'fileGroup', required: true},
+        upName: 'wechatLogo', group:'fileGroup', required: true},
+      {name: '公众号二维码', model: 'a.activityImg', type:'upload',
+        upName: 'activityImg', group:'fileGroup', required: true},
       {name: '活动结束时间', model: 'a.activityBeginTime', type:'datepicker',
         required: true},
-      {name: '活动开始时间', model: 'a.activityEndTime',  type:'datepicker', 
+      {name: '活动开始时间', model: 'a.activityEndTime',  type:'datepicker',
         required: true},
       {name: '赠送数量', model: 'a.spreadQuantity', type:'number',
         required: true},
@@ -66,7 +65,9 @@ scope.$watch('a.productCodes', (code) => {
         name: '赠送商品',
         source: 'products',
         type: 'selectGroup',
-        model: 'a.productCodes'
+        model: 'a.productCodes', // 数组
+        addFnName: 'addProduct',
+        delFnName: 'delProduct'
       },
       {name: '状态标识', model: 'a.enableFlag', type: 'select',
        source: 'enables', def: '请选择状态标识'},
@@ -76,33 +77,66 @@ scope.$watch('a.productCodes', (code) => {
         required: true}
     ];
 
-    super.openEditDialog(title, inputs, binding, scope)
+    scope.addProduct = () => {
+      scope.a.productCodes.push(scope.a.productCodes[0]);
+    };
+    scope.delProduct = (index) => {
+      scope.a.productCodes.splice(index, 1);
+    };
+
+    super.openEditDialog(title, inputs, binding, scope, true)
       .then(({a, uploadFn, files}) => {
-        this.add(a, uploadFn);
+console.info(a);
+        let key = a.activityCode ? 'upd' : 'add';
+        if (files && files.length) { // 上传
+          _this[key](a, uploadFn);
+        } else {
+          _this[key](a);
+        }
     });
   }
 
   // 上传添加封装
   add(entity, uploadFn) {
     let _this = this;
+    formData(entity);
     return this.activityFactory.add(entity, uploadFn).then((msg) => {
       _this.refreshList(msg);
       return msg;
     });
   }
 
-//   
-// wechatOriginalName
-// wechatLogo
-// activityImg
-// activityBeginTime
-// activityEndTime
-// spreadQuantity
-// wechatQrscene
-// productCodes
-// enableFlag
-// activityType
-// activityRemark
+  // 上传修改封装
+  upd(entity, uploadFn) {
+    let _this = this;
+    formData(entity);
+    return this.activityFactory.upd(entity, uploadFn).then((msg) => {
+      _this.refreshList(msg);
+      return msg;
+    });
+  }
+
+  // 删除在封装
+  del(activityCode, name) {
+    let title = '删除活动(' + name + ')';
+    let content = '<p>确认删除该活动吗?</p>';
+
+    super.confirmDialog(title, content).then(() => {
+      return super.del(activityCode);
+    });
+  }
+}
+
+function formData(entity) {
+  let btimeKey = 'activityBeginTime',
+      etimeKey = 'activityEndTime';
+  if (entity[btimeKey]) {
+    entity[btimeKey] = new Date(entity[btimeKey]).format('yyyy-MM-dd');
+  }
+  if (entity[etimeKey]) {
+    entity[etimeKey] = new Date(entity[etimeKey]).format('yyyy-MM-dd');
+  }
+  return entity;
 }
 
 let dataTableColumns = [

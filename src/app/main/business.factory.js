@@ -35,12 +35,12 @@ export class BusinessFactory {
    * @param  {Scope} scope    可选的依赖作用域, 用于指令生成
    * @return {Promise}        对话框确定取消承诺
    */
-  openEditDialog(title = '编辑框框', inputs, binding, scope) {
+  openEditDialog(title = '编辑框框', inputs, binding, scope, scroll = '') {
 
     // 创建独立作用域
     scope = scope || this[_$rootScope].$new(true);
     let conf = { title: title },
-        content = { scope: scope, inputs: inputs };
+        content = { scope: scope, inputs: inputs, isScroll: scroll };
     for (let key in binding) {
       // 绑定一个承诺数据
       if (binding[key].then) {

@@ -7,7 +7,7 @@ import { ActivityService } from './activity.service';
 import { ActivityController } from './activity.controller';
 
 angular
-  .module('water.activity', [])
+  .module('water.activity', ['water.stats'])
   .service('activityFactory', ActivityFactory)
   .service('activityService', ActivityService)
   .controller('ActivityController', ActivityController);

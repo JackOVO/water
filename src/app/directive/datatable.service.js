@@ -14,6 +14,16 @@ export class DataTableService {
     }
   }
 
+  // 图片渲染
+  imgRender(src) {
+    return '<img src="'+src+'" style="width:30px;height:30px;">';
+  }
+
+  // 下载a
+  downLoadRender(href) {
+    return '<a href="'+ href +'">下载</a>';
+  }
+
   // 活动类型
   activityRender(key) {
     return {'freeDrink': '免费喝', 'centsDrink': '一分钱喝', 'app': 'APP推广'}[key];

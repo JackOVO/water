@@ -25,6 +25,8 @@ export class DialogService {
       content: content || '',
       title: conf.title || '标题',
       button: conf.button || true,
+      isScroll: (content && content.isScroll),
+      // isScroll: true,
       cancel: () => { defer.reject(result); dialog.close(); },
       confirm: () => { defer.resolve(result); dialog.close(); }
     };

@@ -95,6 +95,18 @@ export function runBlock($log, dataService, menuService) {
     activity: {
       prefix: 'promotion/wechat'
     },
+    // 推广统计
+    stats: {
+      prefix: 'promotion/wechat/stats'
+    },
+    // app推广
+    app: {
+      prefix: 'promotion/app'
+    },
+    // 广告资源
+    adresource: {
+      prefix: 'adResource'
+    },
     admin: {
       prefix: '',
       login: 'login',
@@ -109,6 +121,8 @@ export function runBlock($log, dataService, menuService) {
     'admin:interactionAdsMgr:wechatSpreadMgr': 'activity',
     'admin:systemMgr:resourceMaintain': 'resource',
     'admin:machineMgr:machineMaintain': 'machine',
+    'admin:interactionAdsMgr:appSpreadMgr': 'app',
+    'admin:staticAds:adResourceMgr': 'adresource',
     'admin:subjectMgr:companyMgr': 'subject',
     'admin:storeMgr:storeMaintain': 'store',
     'admin:shopMgr:saleStats': 'statistics',

@@ -115,6 +115,13 @@ export function TableBoolsDirective($compile) {
               </span>
             </<div>`;
           break;
+          case 'radio':
+            let list = item.list;
+            valKey = item.valKey;
+            for (var i in list) {
+              input += `<icheck vk="${valKey}" value="${list[i].v}">${list[i].t}</icheck>&nbsp;&nbsp;`;
+            }
+            break;
       }
       if (clas) { input = '<div class="'+ clas +'">' + input + '</div>';}
       html += input;
