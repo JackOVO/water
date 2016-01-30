@@ -24,6 +24,7 @@ import './operate/operate.module';       // 运营模块
 import './subject/subject.module';       // 公司模块
 import './machine/machine.module';       // 机器模块
 import './product/product.module';       // 商品模块
+import './adplan/adplan.module';         // 广告排期模块
 import './admin/admin.module';           // 管理员模块
 import './order/order.module';           // 订单模块
 import './aisle/aisle.module';           // 货道模块
@@ -33,7 +34,6 @@ import './user/user.module';             // 用户模块
 import './role/role.module';             // 角色模块
 import './log/log.module';               // 日志模块
 import './app/app.module';               // app推广模块
-
 
 
 import './index.locale'; // 本地化
@@ -52,6 +52,7 @@ let rely = [
   'water.resource',
   'water.sidebar',
   'water.operate',
+  'water.adplan',
   'water.status',
   'water.store',
   'water.admin',

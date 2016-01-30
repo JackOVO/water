@@ -2,16 +2,16 @@
  * 广告资源控制器
  */
 
-export class AdresourceController {
-  constructor($scope, $state, adresourceService) {
+export class AdPlanController {
+  constructor($scope, $state, adPlanService) {
     'ngInject';
 
     let _this = this;
-    this.adresourceService = adresourceService;
+    this.adPlanService = adPlanService;
 
-    this.title = '资源列表';
+    this.title = '排期列表';
     this.paging = null;
-    this.columns = adresourceService.columns();
+    this.columns = adPlanService.columns();
     this.defs = {
       ctrlScope: $scope,
       buttons: [
@@ -23,31 +23,19 @@ export class AdresourceController {
 
     // 按钮配置
     this.btns = [{
-      name: '新增资源', icon: 'fa-plus', click: this.add
+      name: '新增排期', icon: 'fa-plus', click: this.add
     }];
 
-    $scope.$on('adresourceSearch', (e, paging) => {
+    $scope.$on('adplanSearch', (e, paging) => {
       _this.paging = paging;
     });
 
     // 翻页请求
     this.turn = (params) => {
       let page = params.page;
-      adresourceService.search(page).then(() => {
+      adPlanService.search(page).then(() => {
         $state.go('.', {page: page}, {notify: false});
       });
     };
-  }
-
-  add(vm) {
-    vm.adresourceService.openEditPage();
-  }
-
-  edit(code) {
-    this.adresourceService.openEditPage(code);
-  }
-
-  del(code, name) {
-    this.adresourceService.del(code, name);
   }
 }

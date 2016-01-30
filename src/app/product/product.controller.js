@@ -9,6 +9,7 @@ export class ProductController {
     this.productService = productService;
 
     this.paging = null;
+    this.title = '商品列表';
     this.columns = productService.columns(); // 数据列定义
     this.defs = {
       ctrlScope: $scope,

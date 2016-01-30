@@ -70,7 +70,7 @@ let sideMenu = {
     let span = '<span>'+ text +'</span>';
     let title = $('<a href="javascript:;">').html(span);
     if (icon) {
-      title.prepend('&nbsp;').prepend(this.createIcon(icon));
+      title.prepend(this.createIcon(icon));
     }
     return title;
   },

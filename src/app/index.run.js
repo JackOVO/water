@@ -107,6 +107,10 @@ export function runBlock($log, dataService, menuService) {
     adresource: {
       prefix: 'adResource'
     },
+    // 广告排期
+    adplan: {
+      prefix: 'adSysPlan'
+    },
     admin: {
       prefix: '',
       login: 'login',
@@ -127,6 +131,7 @@ export function runBlock($log, dataService, menuService) {
     'admin:storeMgr:storeMaintain': 'store',
     'admin:shopMgr:saleStats': 'statistics',
     'admin:shopMgr:machineOpr': 'operate',
+    'admin:staticAds:adPlanMgr': 'adplan',
     'admin:shopMgr:goodsMgr': 'product',
     'admin:user:baseInfo': 'baseInfo',
     'admin:shopMgr:orderMgr': 'order',
@@ -134,6 +139,7 @@ export function runBlock($log, dataService, menuService) {
     'admin:user:roleMgr': 'role'
   });
 
+  // 扩展格式化
   Date.prototype.format = function (fmt) { //author: meizz 
     var o = {
         "M+": this.getMonth() + 1, //月份 

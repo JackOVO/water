@@ -55,7 +55,7 @@ export class MachineService extends BusinessFactory {
       binding.machine = this.machineFactory.getById(code).then((machine) =>{
         return machine;
       });
-    }name
+    }
     
     let inputs = [
       {name: '出厂编号', model: 'machine.serNum', required: true},

@@ -9,6 +9,7 @@ export class ActivityController {
 
     this.sp = $scope;
     this.paging = null;
+    this.title = '推广列表';
     this.columns = activityService.columns();
 
     // 按钮配置

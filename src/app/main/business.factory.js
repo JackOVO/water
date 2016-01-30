@@ -8,7 +8,7 @@ let _entityFactory = Symbol();
 let _dialogService = Symbol();
 
 export class BusinessFactory {
-  constructor(toastr, $rootScope, dialogService, entityFactory, size = 9) {
+  constructor(toastr, $rootScope, dialogService, entityFactory, size = 2) {
     this.size = size;
 
     this[_toastr] = toastr;

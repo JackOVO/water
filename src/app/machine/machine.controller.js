@@ -8,6 +8,7 @@ export class MachineController {
     this.machineService = machineService;
 
     this.paging = null;
+    this.title = '机器列表';
     this.columns = machineService.columns();
 
     this.defs = {

@@ -8,6 +8,7 @@ export class StoreController {
     this.storeService = storeService;
 
     this.paging = null;
+    this.title = '点位列表';
     this.columns = storeService.dataTableColumns;
 
     this.defs = {

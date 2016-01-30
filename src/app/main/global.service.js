@@ -13,6 +13,7 @@ export class GlobalService {
     storeService,
     aisleService,
     statsService,
+    adPlanService,
     operateService,
     productService,
     machineService,
@@ -33,6 +34,7 @@ export class GlobalService {
     this.order = orderService;
     this.admin = adminService;
     this.aisle = aisleService;
+    this.adplan = adPlanService;
     this.operate = operateService;
     this.product = productService;
     this.machine = machineService;
@@ -67,6 +69,7 @@ export class GlobalService {
       case 'app': this.app.search(page); break;
       case 'order': this.order.init(page); break;
       case 'store': this.store.search(page); break;
+      case 'adplan': this.adplan.search(page); break;
       case 'operate': this.operate.init(page); break;
       case 'machine': this.machine.search(page); break;
       case 'product': this.product.search(page); break;

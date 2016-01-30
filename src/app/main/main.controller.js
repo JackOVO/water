@@ -50,6 +50,7 @@ console.info('menuKey----->', key);
       case 'app':
       case 'store':
       case 'order':
+      case 'adplan':
       case 'operate':
       case 'machine':
       case 'product':

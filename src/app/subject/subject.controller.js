@@ -8,6 +8,7 @@ export class SubjectController {
     this.subjectService = subjectService;
 
     this.paging = null;
+    this.title = '公司列表';
     this.columns = subjectService.columns();
 
     this.defs = {

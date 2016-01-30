@@ -14,6 +14,15 @@ export class DataTableService {
     }
   }
 
+  // 时间渲染 格式
+  timeRender(time) {
+    if (time) {
+      return new Date(time).format('yyyy-MM-dd hh:mm:ss');
+    } else {
+      return '';
+    }
+  }
+
   // 图片渲染
   imgRender(src) {
     return '<img src="'+src+'" style="width:30px;height:30px;">';
@@ -37,5 +46,10 @@ export class DataTableService {
   // 删除状态渲染(商品)
   delFlagRender(data) {
     return (data == 1 ? '已删除' : '未删除');
+  }
+
+  // 媒体类型
+  mediaTypesRender(media) {
+    return {PICTURE: '图片', VIDEO: '视频'}[media];
   }
 }

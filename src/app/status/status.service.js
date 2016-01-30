@@ -32,6 +32,10 @@ export class StatusService {
         combobox.push(new Options('安卓4.4及以上', '安卓4.4及以上'));
         combobox.push(new Options('安卓5.0及以上', '安卓5.0及以上'));
         break;
+      case 'media':
+        combobox.push(new Options('PICTURE', '图片'));
+        combobox.push(new Options('VIDEO', '视频'));
+        break;
     }
     return combobox;
   }
