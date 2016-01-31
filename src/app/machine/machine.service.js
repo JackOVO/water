@@ -38,6 +38,11 @@ export class MachineService extends BusinessFactory {
     });
   }
 
+  // 获取广告计划选中
+  getCheckByAd(code) {
+    return this.machineFactory.getCheckByAd(code);
+  }
+
   // 打开编辑页添加依赖数据
   openEditPage(code) {
     let title = '增加机器';

@@ -92,12 +92,21 @@ function createInputsHtml(inputs) {
               <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
                 {{${m2?m2+'=':''}$select.selected.text}}
               </ui-select-match>
-              <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
+              <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by $index">
                 <div ng-bind="o.text || 'null'"></div>
               </ui-select-choices>
             </ui-select>
           </div>
         </div>`;
+        break;
+      case 'checkbox':
+        source = inputs[i].source;
+        inputHtml = `<div class="form-group">
+              <label class="col-sm-${lw} control-label">${name}</label>
+              <div class="col-sm-${cw}">
+                <checkgroup source="${source}"></checkgroup>
+              </div>
+            </div>`;
         break;
       case 'textarea':
         inputHtml = `<div class="form-group">

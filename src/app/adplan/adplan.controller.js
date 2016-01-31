@@ -15,7 +15,7 @@ export class AdPlanController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '改', action: ({code:c}) => `vm.edit('${c}')`},
+        {text: '改', action: ({adUserPlanCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
           action: ({code:c, name:n}) => `vm.del('${c}', '${n}')`
         }]
@@ -37,5 +37,13 @@ export class AdPlanController {
         $state.go('.', {page: page}, {notify: false});
       });
     };
+  }
+
+  add(vm) {
+    vm.adPlanService.openEditPage();
+  }
+
+  edit(code) {
+    this.adPlanService.openEditPage(code);
   }
 }

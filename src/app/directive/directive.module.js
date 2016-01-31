@@ -5,6 +5,7 @@
 // adminTle相关指令模块
 import './alte/alte.directive.module';
 
+import { iCheckDirective, iCheckGroupDirective } from './icheck.directive';
 import { TableBoolsDirective } from './tabletools.directive';
 import { SlimscrollDriective } from './slimscroll.directive';
 import { DataTableDirective } from './datatable.directive';
@@ -12,7 +13,6 @@ import { ModalbodyDriective } from './modalbody.directive';
 import { DataTableService } from './datatable.service';
 import { UploadDirective } from './upload.directive';
 import { zTreeDirective } from './ztree.directive';
-import { iCheckDirective } from './icheck.directive';
 import { DialogService } from './dialog.service';
 
 angular
@@ -25,4 +25,5 @@ angular
   .directive('datatable', DataTableDirective)
   .directive('modalBody', ModalbodyDriective)
   .directive('slimscroll', SlimscrollDriective)
+  .directive('checkgroup', iCheckGroupDirective)
   .directive('tableTools', TableBoolsDirective);

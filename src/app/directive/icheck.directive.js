@@ -23,16 +23,34 @@ export function iCheckDirective() {
         scope.$apply();
       });
 
-      // scope.$watch(attrs.ngModel, (tv) => {
-      //   if (tv === value) {
-      //     input.iCheck('check');
-      //   } else {
-      //     input.iCheck('uncheck');
-      //   }
-      // });
-
     }
   };
 
   return directive;
 }
+
+export function iCheckGroupDirective() {
+  let directive = {
+    replace: true,
+    transclude: true,
+    scope: {
+      source: '=',
+      checked: '='
+    },
+    template: `<div>1<div>`,
+    link: function(scope, element, attrs) {
+
+      // 数据监听
+      scope.$watch('source', (array) => {
+        element.empty();
+        for (let index in array) {
+          let item = array[index];
+          element.append('<label class="checkbox"><input type="checkbox" > '+ item.text +'</label>');
+        }
+      });
+    }
+  };
+
+  return directive;
+}
+

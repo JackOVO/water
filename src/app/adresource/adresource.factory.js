@@ -20,6 +20,11 @@ export class AdresourceFactory extends EntityFactory {
     this.dataService = dataService;
   }
 
+  // 封装一下映射关系
+  getCombobox() {
+    return super.getCombobox('code', 'name');
+  }
+
   // 添加上传封装
   add(entity, uploadFn) {
     if (typeof(uploadFn) === 'undefined') {

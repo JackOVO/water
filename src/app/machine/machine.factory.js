@@ -30,4 +30,11 @@ export class MachineFactory extends EntityFactory {
   getCombobox() {
     return super.getCombobox('value', 'text');
   }
+
+  // 售货机列表根据广告计划
+  getCheckByAd(adPlanCode) {
+    let params = {adUserPlanCode: adPlanCode};
+
+    return super.query(params, 'byAdPlanCode');
+  }
 }

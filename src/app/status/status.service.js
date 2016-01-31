@@ -36,6 +36,12 @@ export class StatusService {
         combobox.push(new Options('PICTURE', '图片'));
         combobox.push(new Options('VIDEO', '视频'));
         break;
+      case 'planStatus':
+        combobox.push(new Options('0', '未审核'));
+        combobox.push(new Options('1', '已通过'));
+        combobox.push(new Options('2', '投放中'));
+        combobox.push(new Options('3', '投放结束'));
+        break;
     }
     return combobox;
   }

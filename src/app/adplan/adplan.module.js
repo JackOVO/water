@@ -7,7 +7,7 @@ import { AdPlanService } from './adplan.service';
 import { AdPlanController } from './adplan.controller';
 
 angular
-  .module('water.adplan', [])
+  .module('water.adplan', ['water.adresource', 'water.machine'])
   .service('adPlanService', AdPlanService)
   .service('adPlanFactory', AdPlanFactory)
   .controller('AdplanController', AdPlanController);

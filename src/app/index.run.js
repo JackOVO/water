@@ -36,7 +36,8 @@ export function runBlock($log, dataService, menuService) {
     machine: {
       prefix: 'vendingmachine',
       treeByUserCode: 'listTreeVM',
-      combobox: 'findVendingMachineAll'
+      combobox: 'findVendingMachineAll',
+      byAdPlanCode: 'findMachineByAdUserPlanId'
     },
     // 权限
     competence: {
@@ -105,7 +106,8 @@ export function runBlock($log, dataService, menuService) {
     },
     // 广告资源
     adresource: {
-      prefix: 'adResource'
+      prefix: 'adResource',
+      combobox: 'findAll'
     },
     // 广告排期
     adplan: {

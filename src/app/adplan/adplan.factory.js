@@ -16,6 +16,6 @@ export class AdPlanFactory extends EntityFactory {
   constructor(dataService) {
     'ngInject';
 
-    super('adplan', AdPlan, 'id', dataService);
+    super('adplan', AdPlan, 'adSysPlanCode', dataService);
   }
 }
