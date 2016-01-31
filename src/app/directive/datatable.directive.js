@@ -62,10 +62,11 @@ export function DataTableDirective($compile) {
 
       // 定义配置
       let setting = {
+        ordering: false,
         serverSide: true,
         columns: columns,
         searching: false,
-        ordering: false,
+        autoWidth: false,
         language: language,
         lengthChange: false,
         info: attrs.info !== 'false',

@@ -40,4 +40,8 @@ export class AddminFactory extends EntityFactory {
   getBaseInfo() {
     return super.query({}, 'baseInfo');
   }
+
+  signout() {
+    return this.dataService.get(this.aim, 'signout');
+  }
 }

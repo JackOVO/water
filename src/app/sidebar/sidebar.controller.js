@@ -5,6 +5,7 @@
 export class SidebarController {
   constructor($scope, menuService) {
     'ngInject';
+    this.search = ''; // 菜单搜索值
 
     // 回调监听
     $scope.$on('menuGetSideMenuData', (e, menuData) => {

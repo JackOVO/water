@@ -8,6 +8,7 @@ export function AlteSideMenuDirective() {
     template: '<ul class="sidebar-menu">sideMenu</ul>',
     scope: {
       'data': '=',
+      'search': '=',
       'callback': '&'
     },
 //     controller: function() {
@@ -28,8 +29,43 @@ export function AlteSideMenuDirective() {
           if (scope.callback()) { scope.callback()(node, pary, isc, isv);}
         };
       });
+
+      // 搜索, 烂代码XXX
+      scope.$watch('search', (value) => {
+        // 所有显示
+        let showAry = [];
+        for (let id in sideMenu.nodeStructure) {
+          let node = sideMenu.nodeStructure[id];
+          if (node.text.indexOf(value) !== -1) {
+            showAry.push(node);
+          }
+        }
+
+        let s = getDad(sideMenu.nodeStructure, showAry);
+        for (let id in sideMenu.nodeStructure) {
+          sideMenu.nodeStructure[id]._jq.hide();
+        }
+        for (let index in s) { s[index]._jq.slideDown(); }
+      });
     }
   };
+
+  function getDad(map, showAry) {
+    let allShow = [];
+    for (let i = 0,l = showAry.length; i < l; i++) {
+      let node = showAry[i];
+
+      if (map[node.pid]) {
+        let z = showAry.splice(i, 1, map[node.pid]);
+        allShow.push(z[0]);
+        i = -1; l = showAry.length;
+      } else {
+        allShow.push(node);
+      }
+    }
+
+    return allShow;
+  }
 
   return directive;
 }

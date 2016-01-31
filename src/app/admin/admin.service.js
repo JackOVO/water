@@ -29,10 +29,17 @@ export class AdminService extends BusinessFactory {
 
     return this.adminFactory.query(admin, 'login').then((msg) => {
       if (msg.success === true) {
-        return msg.data;
+        that.admin = msg.data;
+        that.globalNotice('login', that.admin);
+        return that.admin;
       } else {
         return that.$q.reject(msg.content);
       }
     });
+  }
+
+  // 登出
+  signout() {
+    return this.adminFactory.signout();
   }
 }

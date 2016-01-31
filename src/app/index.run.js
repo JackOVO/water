@@ -116,6 +116,7 @@ export function runBlock($log, dataService, menuService) {
     admin: {
       prefix: '',
       login: 'login',
+      signout: 'xxxx',
       baseInfo: {aim: 'subject', action: 'my'},
       base: 'http://localhost:5324'
       // machineOperation/deleteAisle.do

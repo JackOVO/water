@@ -7,6 +7,7 @@
 let _$http = Symbol(); // 1
 let _$window = Symbol();
 
+let _$q = null;
 let _errorService = null;
 let _baseUrl = 'http://localhost:5324/admin'; // 2
 let _requestMapping = {
@@ -22,9 +23,10 @@ let _requestMapping = {
 };
 
 export class DataService {
-  constructor($http, $window, errorService) {
+  constructor($q, $http, $window, errorService) {
     'ngInject';
 
+    _$q = $q;
     this[_$http] = $http;
     this[_$window] = $window;
     _errorService = errorService;
@@ -168,14 +170,16 @@ function _completeCallBack(response) {
  * @return {[type]} [description]
  */
 function _failedCallBack(error) {
-
   // 非状态码200的处理
   switch (error.status) {
-    case 600: break;
+    case 600: 
+      _errorService.swallow(_errorService.NotLogged);
+    break;
     case 650: break;
     default:
       throw new Error('data.service, 服务器状态码:' + error.status);
   }
+  return _$q.reject('dataService: 服务器错误代码!');
 }
 
 // 下载js生成内容

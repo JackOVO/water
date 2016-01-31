@@ -3,12 +3,22 @@
  */
 
 export class MainController {
-  constructor($scope, $state, globalService) {
+  constructor($scope, $state, adminService, globalService) {
     'ngInject';
 
     let _this = this;
     this.$state = $state;
     this.globalService = globalService;
+
+    $scope.admin = adminService.admin;
+    $scope.signout = () => {
+      adminService.signout();
+    };
+
+    // 登录监听
+//     $scope.$watch('admin', (admin) => {
+// console.info(admin);
+//     });
 
     // 侧边栏菜单点击通知
     $scope.$on('sideBarMenuOnClick', (e, key, pkey) => {
