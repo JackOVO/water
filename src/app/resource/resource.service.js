@@ -55,7 +55,7 @@ export class ResourceService extends BusinessFactory {
       {name: '备注', model: 'resource.remark', type: 'textarea'}
     ];
 
-    super.openEditDialog(title, inputs, binding).then(({resource}) => {
+    return super.openEditDialog(title, inputs, binding).then(({resource}) => {
       if (typeof(resource.code) !== 'undefined') {
         // 无法修改url
         super.update(resource);
