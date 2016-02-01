@@ -18,7 +18,6 @@ export class LogController {
     // 回调监听
     $scope.$on('logSearch', (e, paging) => {
       this.paging = paging;
-console.info(paging);
 
       // 获取货道查询条件
       logService.getAisleCombobox().then((array) => {

@@ -28,6 +28,7 @@ export class AdPlanService extends BusinessFactory {
   columns() {
     this.dataTableCloum[2].render = this.dataTableService.timeRender;
     this.dataTableCloum[3].render = this.dataTableService.timeRender;
+    this.dataTableCloum[4].render = this.dataTableService.adTypeRender;
     this.dataTableCloum[5].render = this.dataTableService.enableflagRender;
     return this.dataTableCloum;
   }
@@ -48,6 +49,8 @@ export class AdPlanService extends BusinessFactory {
     if (code) {
       title = '修改排期';
       binding.plan = this.adPlanFactory.getById(code).then((plan) =>{
+plan.startTime = new Date(plan.startTime);
+plan.endTime = new Date(plan.endTime);
         return plan;
       });
     }
@@ -55,26 +58,28 @@ export class AdPlanService extends BusinessFactory {
     let inputs = [
       {name: '广告资源', model: 'plan.resourceCode', type: 'select',
         source: 'resources', m2: 'plan.resourceName', def: '请选择广告资源'},
-      {name: '广告开始时间', model: 'user.startTime', type: 'datepicker'},
-      {name: '广告结束时间', model: 'user.endTime', type: 'datepicker'},
+      {name: '广告开始时间', model: 'plan.startTime', type: 'datepicker'},
+      {name: '广告结束时间', model: 'plan.endTime', type: 'datepicker'},
       {name: '广告状态', model: 'plan.status', type: 'select',
         source: 'status', def: '请选择广告状态'},
       {name: '启用状态', model: 'plan.enableFlag', type: 'select',
         source: 'enables', def: '请选择启用状态'},
-      {name: '售货机', model: 'plan.resourceCode', type: 'checkbox',
+      {name: '售货机', model: 'plan.machineCodes', type: 'checkbox',
         source: 'machines', def: '请选择广告资源'}
-
-      // ,
-      //       {name: '所属公司', model: 'user.subjectCode', type: 'select',
-      //        source: 'subjects', m2: 'user.subjectName', def: '请选择所属公司'},
-      //       {name: '广告状态', model: 'user.subjectCode', type: 'select',
-      //        source: 'subjects', m2: 'user.subjectName', def: '请选择所属公司'},
-      //       {name: '是否启用', model: 'user.enableFlag', type: 'select',
-      //        source: 'roles', m2: 'user.roleName', def: '请选择所属角色'}
     ];
 
-    super.openEditDialog(title, inputs, binding).then(({adplan}) => {
-      console.info(adplan);
+    super.openEditDialog(title, inputs, binding).then(({plan}) => {
+plan.startTime = plan.startTime.format('yyyy-MM-dd');
+plan.endTime = plan.endTime.format('yyyy-MM-dd');
+delete plan.createDate;
+delete plan.updateDate;
+delete plan.createBy;
+delete plan.updateBy;
+      if (typeof(plan.adUserPlanCode) !== 'undefined') {
+        super.update(plan);
+      } else {
+        super.add(plan);
+      }
     });
   }
 }

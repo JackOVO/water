@@ -57,9 +57,8 @@ export class UserController {
     };
 
     // 表格点击相应, 通知机器更新权限树
-    this.onTableClick = ({userCode, loginName}) => {
+    this.onTableClick = ({userCode}) => {
       _this.userCode = userCode;
-      _this.loginName = loginName;
 
       // 切换机器的树
       machineService.toggleTree(userCode).then(() => {
@@ -74,6 +73,9 @@ export class UserController {
     let userCode = this.userCode;
     let loginName = this.loginName;
     let checkeds = this.machineCheckeds;
+
+    let rootIndex = checkeds.indexOf('machineCode');
+    if (rootIndex !== -1) { checkeds.splice(rootIndex, 1); }
 
     // 跟新并重新执行行点击方法, 触发树更新
     this.userService.updMachineResource(userCode, checkeds).then((success) => {

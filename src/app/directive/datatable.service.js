@@ -52,4 +52,9 @@ export class DataTableService {
   mediaTypesRender(media) {
     return {PICTURE: '图片', VIDEO: '视频'}[media];
   }
+
+  // 广告状态
+  adTypeRender(type) {
+    return {0: '未审核', 1: '已通过', 2: '投放中', 3: '投放结束'}[type];
+  }
 }

@@ -5,12 +5,13 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class AdminService extends BusinessFactory {
-  constructor(toastr, $q, $rootScope, dialogService, adminFactory) {
+  constructor(toastr, $q, $rootScope, dialogService, dataService, adminFactory) {
     'ngInject';
     super(toastr, $rootScope, dialogService, adminFactory);
 
     this.$q = $q;
     this.admin = null; // 管理员
+    this.dataService = dataService;
     this.adminFactory = adminFactory;
   }
 
@@ -27,7 +28,7 @@ export class AdminService extends BusinessFactory {
     let that = this;
     let admin = this.adminFactory.create(loginName, password);
 
-    return this.adminFactory.query(admin, 'login').then((msg) => {
+    return this.dataService.post('admin', 'login', admin).then((msg) => {
       if (msg.success === true) {
         that.admin = msg.data;
         that.globalNotice('login', that.admin);

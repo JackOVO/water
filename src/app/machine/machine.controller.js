@@ -42,7 +42,7 @@ export class MachineController {
 
   // 详情
   info(code) {
-alert(code);
+    this.machineService.openInfoPage(code);
   }
 
   edit(code) {

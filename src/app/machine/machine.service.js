@@ -43,6 +43,44 @@ export class MachineService extends BusinessFactory {
     return this.machineFactory.getCheckByAd(code);
   }
 
+  // 打开详情页
+  openInfoPage(code) {
+    let _this = this;
+    let title = '机器详情';
+    let binding = {
+      machine: this.machineFactory.getById(code).then((machine) => {
+machine.createDate = _this.dataTableService.timeRender(machine.createDate);
+machine.updateDate = _this.dataTableService.timeRender(machine.updateDate);
+machine.enableFlag = _this.dataTableService.enableflagRender(machine.enableFlag);
+        return machine;
+      })
+    };
+
+    let inputs = [
+      {name: '售货机Code', model: 'machine.code'},
+      {name: '售货机序列号', model: 'machine.serNum'},
+      {name: '售货机名称', model: 'machine.name'},
+      {name: '经度', model: 'machine.latitude'},
+      {name: '纬度', model: 'machine.longitude'},
+      {name: '地址', model: 'machine.address'},
+      {name: '商铺名称', model: 'machine.storeName'},
+      {name: '投放主体', model: 'machine.deliverySubjectName'},
+      {name: '运营主体', model: 'machine.operateSubjectName'},
+      {name: '验证token', model: 'machine.token'},
+      {name: '备注', model: 'machine.remark', type: 'textarea'},
+      {name: '是否启用', model: 'machine.enableFlag'},
+      {name: '创建人', model: 'machine.createBy'},
+      {name: '创建日期', model: 'machine.createDate'},
+      {name: '更新人', model: 'machine.updateBy'},
+      {name: '更新时间', model: 'machine.updateDate'},
+      {name: '标识位置信息', model: 'machine.locationType'}
+    ];
+
+    super.openEditDialog(title, inputs, binding, null, true).then(({machine}) => {
+console.info(machine);
+    });
+  }
+
   // 打开编辑页添加依赖数据
   openEditPage(code) {
     let title = '增加机器';
@@ -51,6 +89,7 @@ export class MachineService extends BusinessFactory {
       machine: this.machineFactory.create(),
       stores: this.storeService.getCombobox(),
       subjects: this.subjectService.getCombobox(),
+      types: this.statusService.getCombobox('mType'),
       enables: this.statusService.getCombobox('flag')
     };
 
@@ -72,7 +111,9 @@ export class MachineService extends BusinessFactory {
       {name: '投放主体', model: 'machine.deliverySubjectCode', type: 'select',
        source: 'subjects', def: '请选择投放主体'},
       {name: '运营主体', model: 'machine.operateSubjectCode', type: 'select',
-       source: 'subjects', m2: 'machine.operateSubjectName', def: '请选择运营主体'}
+       source: 'subjects', m2: 'machine.operateSubjectName', def: '请选择运营主体'},
+      {name: '类型', model: 'machine.type', type: 'select',
+       source: 'types', def: '请选择类型'}
     ];
 
     super.openEditDialog(title, inputs, binding).then(({machine}) => {

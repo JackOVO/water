@@ -68,16 +68,17 @@ export class DataService {
       headers: {
         'Accept': '*/*',
         'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+        // 'Content-Type': 'application/json; charset=UTF-8'
       },
       transformRequest: (obj) => {
         // 以下处理数组变为 array=1&array=2&array=3
-        // return $.param(obj);
+        return  $.param(obj, true);
 
         // 以下处理数组变为 array: 1,2,3
-        var str = [];
-        for(var p in obj)
-        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
-        return str.join("&");
+        // var str = [];
+        // for(var p in obj)
+        // str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+        // return str.join("&");
       }
     };
 
@@ -139,18 +140,16 @@ function _createRequestUrl(aim, action) {
       aimConfig = _requestMapping[aim];
     }
 
-    baseUrl = aimConfig.base || baseUrl;
+    if (typeof(aimConfig.base) !== 'undefined') {
+      baseUrl = aimConfig.base;
+    }
     let path = aimConfig[action] || defConfig[action];
     let prefix = typeof(aimConfig.prefix) == 'undefined' ? aim : aimConfig.prefix;
     let suffix = aimConfig.suffix || defConfig.suffix;
-
-    
-
     url = baseUrl + '/' + (prefix?prefix+'/':'') + path + suffix;
   } else {
     throw new Error('data.service 未定义的目标配置-' + aim);
   }
-
   return url;
 }
 

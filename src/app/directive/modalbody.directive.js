@@ -89,8 +89,7 @@ function createInputsHtml(inputs) {
           <div class="col-sm-${cw}">
             <ui-select theme="bootstrap" ng-model="${model}"
               search-enabled="true">
-              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">
-                {{${m2?m2+'=':''}$select.selected.text}}
+              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">{{${m2?m2+'=':''}$select.selected.text}}
               </ui-select-match>
               <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by $index">
                 <div ng-bind="o.text || 'null'"></div>
@@ -104,7 +103,7 @@ function createInputsHtml(inputs) {
         inputHtml = `<div class="form-group">
               <label class="col-sm-${lw} control-label">${name}</label>
               <div class="col-sm-${cw}">
-                <checkgroup source="${source}"></checkgroup>
+                <checkgroup source="${source}" checked="${model}"></checkgroup>
               </div>
             </div>`;
         break;
@@ -194,11 +193,13 @@ function createInputsHtml(inputs) {
       case 'uploadGroup':
         let addFnName2 = inputs[i].addFnName,
             delFnName2 = inputs[i].delFnName;
-          let gstr2 = inputs[i].group?'group='+inputs[i].group:'';
+        let gstr2 = inputs[i].group?'group='+inputs[i].group:'';
+        upName = inputs[i].upName;
+// console.info(upName, gstr2);
           inputHtml = `<div class="form-group" ng-repeat="item in ${model} track by $index">
             <label class="col-sm-${lw} control-label">${name} {{$index+1}}</label>
             <div class="col-sm-${cw - 1}">
-              <upload files="files" val="${model}" name="${upName}{{$index}}" set-upload-fn="setUploadFn" ${gstr2}></upload>
+              <upload files="files" val="${model}" name="{{'${upName}'+($index-0)+1}}" set-upload-fn="setUploadFn" ${gstr2}></upload>
             </div>
             <div class="col-sm-1">
               <i class="fa fa-plus-square" style="font-size:32px;color:#3c8dbc;cursor: pointer;margin-left:-13px;" ng-click="${addFnName2}()" ng-if="$index == 0"></i>

@@ -6,7 +6,11 @@ import { createObjectFn, Message } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
 class App {
-  constructor() {}
+  constructor() {
+    this.update = new Date();
+    this.activityEndTime = new Date();
+    this.activityBeginTime = new Date();
+  }
 }
 App.mapping = {};
 App.futility = [];
@@ -17,6 +21,7 @@ export class AppFactory extends EntityFactory {
     'ngInject';
 
     super('app', App, 'activityCode', dataService);
+    this.dataService = dataService;
   }
 
   // 添加上传封装
@@ -34,7 +39,7 @@ export class AppFactory extends EntityFactory {
   // 修改上传封装
   upd(entity, uploadFn) {
     if (typeof(uploadFn) === 'undefined') {
-      return super.add(entity);
+      return super.update(entity); //?
     } else {
       return this.dataService.upload(this.aim, 'upd', entity, uploadFn)
         .then(({success, message}) => {

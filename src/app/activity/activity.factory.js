@@ -6,7 +6,10 @@ import { createObjectFn, Message } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
 class Activity {
-  constructor() {}
+  constructor() {
+    this.activityBeginTime = new Date();
+    this.activityEndTime = new Date();
+  }
 }
 Activity.mapping = {};
 Activity.futility = [];

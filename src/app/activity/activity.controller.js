@@ -20,7 +20,7 @@ export class ActivityController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '用户', action: ({wechatOriginalId:i}) => `vm.goUser('${i}')`},
+        {text: '用户', action: ({activityCode:c}) => `vm.goUser('${c}')`},
         {text: '改', action: ({activityCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
           action: ({code:c, activityName:n}) => `vm.del('${c}', '${n}')`

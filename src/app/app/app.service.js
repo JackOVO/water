@@ -15,8 +15,12 @@ export class AppService extends BusinessFactory {
     this.dataTableService = dataTableService;
     this.dataTableColumns = dataTableColumns;
   }
-
   columns() {
+    this.dataTableColumns[1].render = (list) => {
+      let html = [];
+      for (let index in list) { html.push(list[index].name); }
+      return html.join(',');
+    };
     this.dataTableColumns[3].render = this.dataTableService.dataRender;
     this.dataTableColumns[4].render = this.dataTableService.dataRender;
     this.dataTableColumns[5].render = this.dataTableService.imgRender;
@@ -33,7 +37,7 @@ export class AppService extends BusinessFactory {
 
     let binding = {
       app: this.appFactory.create(),
-      products: this.productService.getCombobox(),
+      productx: this.productService.getCombobox(),
       enables: this.statusService.getCombobox('flag'),
       requiresL: this.statusService.getCombobox('andrews')
     };
@@ -41,21 +45,30 @@ export class AppService extends BusinessFactory {
     // 存在code即识别为编辑状态
     if (code) {
       title = '修改推广';
-      binding.app = this.appFactory.getById(code);
+      binding.app = this.appFactory.getById(code).then((app) => {
+for(let index in app.products) {
+  app.productCodes = app.products[index].sn;
+}
+app.update = new Date(app.update);
+app.activityEndTime = new Date(app.activityEndTime);
+app.activityBeginTime = new Date(app.activityBeginTime);
+        return app;
+      });
     } else {
-      binding.app.spreadOutline = [' '];
+      binding.app.activityImg = [' '];
     }
     
     let inputs = [
       {name: 'APP名称', model: 'app.activityName', required: true},
       {name: 'APP图标', model: 'app.appLogo', type: 'upload',
-        required: true},
+        upName: 'WECHAT_LOGO', group:'fileGroup', required: true},
       {name: 'APP文件', model: 'app.spreadLink', type: 'upload',
-        required: true},
+        upName: 'APP_PATH', group:'fileGroup', required: true},
       {
         name: 'APP描述',
         group: 'fileGroup',
         type: 'uploadGroup',
+        upName: 'ACTIVITY_IMG_',
         model: 'app.activityImg', // 数组
         addFnName: 'addProduct',
         delFnName: 'delProduct'
@@ -64,8 +77,8 @@ export class AppService extends BusinessFactory {
         required: true},
       {name: '结束时间', model: 'app.activityEndTime', type:'datepicker',
        required: true},
-      {name: '选择商品', model: 'app.products', type: 'select',
-        source: 'products', def: '请选择商品'},
+      {name: '选择商品', model: 'app.productCodes', type: 'select',
+        source: 'productx', def: '请选择商品'},
       {name: '商品数量', model: 'app.spreadQuantity', type: 'number',
         required: true},
       {name: '开发商', model: 'app.appDeveloper', required: true},
@@ -80,16 +93,18 @@ export class AppService extends BusinessFactory {
         required: true}
     ];
 
+    
+
     scope.addProduct = () => {
-      scope.app.spreadOutline.push(' ');
+      scope.app.activityImg.push(' ');
     };
     scope.delProduct = (index) => {
-      scope.app.spreadOutline.splice(index, 1);
+      scope.app.activityImg.splice(index, 1);
     };
 
     super.openEditDialog(title, inputs, binding, scope, true)
       .then(({app, uploadFn, files}) => {
-console.info(app);
+delete app.activityImg;
         let key = app.activityCode ? 'upd' : 'add';
         if (files && files.length) { // 上传
           _this[key](app, uploadFn);

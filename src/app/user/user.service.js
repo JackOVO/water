@@ -26,6 +26,7 @@ export class UserService extends BusinessFactory {
    this.dataTableService = dataTableService;
    this.dataTableColumns = dataTableColumns;
    this.dataTableColumnSpecific = dataTableColumnSpecific;
+   this.watch = false;
   }
 
   /**
@@ -64,8 +65,7 @@ export class UserService extends BusinessFactory {
     }
     
     let inputs = [
-      {name: '用户名称', model: 'user.userName', required: true,
-        verification: ['ng-minlength=5']},
+      {name: '用户名称', model: 'user.userName', required: true},
       {name: '登录名称', model: 'user.loginName', required: true},
       {name: '登录密码', model: 'user.password', type: 'password', required: true},
       {name: '所属公司', model: 'user.subjectCode', type: 'select',
@@ -77,15 +77,18 @@ export class UserService extends BusinessFactory {
       {name: '备注', model: 'user.remark', type: 'textarea'}];
 
     // 公司角色级联
-    scope.$watch('user.subjectCode', (subjectCode) => {
-      if (!subjectCode) { return; }
-      this.roleService.getCombobox(subjectCode).then((array) => {
-        scope.roles = array;
-        if (scope.roles.length) {
-          scope.user.roleCode = scope.roles[0].value;
-        }
+    if (this.watch === false) {
+      scope.$watch('user.subjectCode', (subjectCode) => {
+        if (!subjectCode) { return; }
+        this.roleService.getCombobox(subjectCode).then((array) => {
+          scope.roles = array;
+          if (scope.roles.length) {
+            scope.user.roleCode = scope.roles[0].value;
+          }
+        });
       });
-    });
+      this.watch = true;
+    }
 
     super.openEditDialog(title, inputs, binding, scope).then(({user}) => {
       if (typeof(user.userCode) !== 'undefined') {

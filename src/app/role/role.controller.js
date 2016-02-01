@@ -54,9 +54,8 @@ export class RoleController {
     };
 
     // 表格点击相应, 通知权限更新权限树
-    this.onTableClick = ({roleCode, roleName}) => {
+    this.onTableClick = ({roleCode}) => {
       _this.roleCode = roleCode;
-      _this.roleName = roleName;
 
       // 切换权限的树
       competenceService.toggleTree(roleCode).then(() => {

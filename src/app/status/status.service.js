@@ -42,6 +42,10 @@ export class StatusService {
         combobox.push(new Options('2', '投放中'));
         combobox.push(new Options('3', '投放结束'));
         break;
+      case 'mType':
+        combobox.push(new Options('1', '智能售货机'));
+        combobox.push(new Options('2', '热点'));
+        break;
     }
     return combobox;
   }

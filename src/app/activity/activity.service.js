@@ -20,6 +20,11 @@ export class ActivityService extends BusinessFactory {
     this.dataTableColumns[3].render = this.dataTableService.dataRender;
     this.dataTableColumns[4].render = this.dataTableService.dataRender;
     this.dataTableColumns[9].render = this.dataTableService.activityRender;
+    this.dataTableColumns[7].render = (list) => {
+      let html = [];
+      for (let index in list) { html.push(list[index].name); }
+      return html.join(',');
+    };
     this.dataTableColumns[8].render = this.dataTableService.enableflagRender;
     return this.dataTableColumns;
   }
@@ -31,7 +36,7 @@ export class ActivityService extends BusinessFactory {
 
     let binding = {
       a: this.activityFactory.create(),
-      products: this.productService.getCombobox().then((ary) => {
+      productx: this.productService.getCombobox().then((ary) => {
         // 非编辑下默认一项
         if (!code) { scope.a.productCodes = [ary[0].value]; }
         return ary;
@@ -43,16 +48,24 @@ export class ActivityService extends BusinessFactory {
     // 存在code即识别为编辑状态
     if (code) {
       title = '修改活动';
-      binding.a = this.activityFactory.getById(code);
+      binding.a = this.activityFactory.getById(code).then((activity) => {
+activity.productCodes = [];
+for (let index in activity.products) {
+  activity.productCodes.push(activity.products[index].sn);
+}
+activity.activityEndTime = new Date(activity.activityEndTime);
+activity.activityBeginTime = new Date(activity.activityBeginTime);
+        return activity;
+      });
     }
 
     let inputs = [
       {name: '推广名称', model: 'a.activityName', required: true},
       {name: '公众号名称', model: 'a.wechatOriginalName', required: true},
       {name: '公众号logo', model: 'a.wechatLogo', type:'upload',
-        upName: 'wechatLogo', group:'fileGroup', required: true},
+        upName: 'WECHAT_LOGO', group:'fileGroup', required: true},
       {name: '公众号二维码', model: 'a.activityImg', type:'upload',
-        upName: 'activityImg', group:'fileGroup', required: true},
+        upName: 'ACTIVITY_IMG', group:'fileGroup', required: true},
       {name: '活动结束时间', model: 'a.activityBeginTime', type:'datepicker',
         required: true},
       {name: '活动开始时间', model: 'a.activityEndTime',  type:'datepicker',
@@ -63,7 +76,7 @@ export class ActivityService extends BusinessFactory {
       {
         required: true,
         name: '赠送商品',
-        source: 'products',
+        source: 'productx',
         type: 'selectGroup',
         model: 'a.productCodes', // 数组
         addFnName: 'addProduct',
@@ -77,16 +90,11 @@ export class ActivityService extends BusinessFactory {
         required: true}
     ];
 
-    scope.addProduct = () => {
-      scope.a.productCodes.push(scope.a.productCodes[0]);
-    };
-    scope.delProduct = (index) => {
-      scope.a.productCodes.splice(index, 1);
-    };
+scope.addProduct = () => {scope.a.productCodes.push(scope.a.productCodes[0]);};
+scope.delProduct = (index) => { scope.a.productCodes.splice(index, 1); };
 
     super.openEditDialog(title, inputs, binding, scope, true)
       .then(({a, uploadFn, files}) => {
-console.info(a);
         let key = a.activityCode ? 'upd' : 'add';
         if (files && files.length) { // 上传
           _this[key](a, uploadFn);
@@ -147,7 +155,7 @@ let dataTableColumns = [
   {data: 'activityEndTime', title: '活动开始时间'},
   {data: 'spreadQuantity', title: '赠送数量'},
   {data: 'wechatQrscene', title: '渠道ID'},
-  {data: 'productCodes', title: '赠送商品'},
+  {data: 'products', title: '赠送商品'},
   {data: 'enableFlag', title: '是否启用'},
   {data: 'activityType', title: '活动类型'},
   {data: 'activityRemark', title: '公众号介绍'}
