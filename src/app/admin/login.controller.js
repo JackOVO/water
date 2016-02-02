@@ -7,8 +7,8 @@ export class LoginController {
     'ngInject';
 
     this.$state = $state;
-    this.loginName = 'admin';
-    this.password = 'admin123';
+    this.loginName = '';
+    this.password = '';
     this.adminService = adminService;
   }
 

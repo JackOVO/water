@@ -5,12 +5,13 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class AdminService extends BusinessFactory {
-  constructor(toastr, $q, $rootScope, dialogService, dataService, adminFactory) {
+  constructor(toastr, $state, $q, $rootScope, dialogService, dataService, adminFactory) {
     'ngInject';
     super(toastr, $rootScope, dialogService, adminFactory);
 
     this.$q = $q;
     this.admin = null; // 管理员
+    this.$state = $state;
     this.dataService = dataService;
     this.adminFactory = adminFactory;
   }
@@ -41,6 +42,9 @@ export class AdminService extends BusinessFactory {
 
   // 登出
   signout() {
-    return this.adminFactory.signout();
+    let _this = this;
+    return this.adminFactory.signout().then(() => {
+      _this.$state.go('login');
+    });
   }
 }
