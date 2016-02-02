@@ -2,6 +2,7 @@
  * 活动统计服务
  */
 
+import { Options } from '../main/model';
 import { BusinessFactory } from '../main/business.factory';
 
 export class AppService extends BusinessFactory {
@@ -39,7 +40,8 @@ export class AppService extends BusinessFactory {
       app: this.appFactory.create(),
       productx: this.productService.getCombobox(),
       enables: this.statusService.getCombobox('flag'),
-      requiresL: this.statusService.getCombobox('andrews')
+      requiresL: this.statusService.getCombobox('andrews'),
+      activitys: [new Options(2, 'app推广')]
     };
 
     // 存在code即识别为编辑状态
@@ -89,6 +91,8 @@ app.activityBeginTime = new Date(app.activityBeginTime);
         source: 'requiresL',  def: '请选择系统要求', required: true},
       {name: '状态标识', model: 'app.enableFlag',  type: 'select',
         source: 'enables', def: '请选择状态标识'},
+      {name: '活动类型', model: 'app.activityType', type: 'select',
+       source: 'activitys', def: '请选择活动类型'},
       {name: '内容概述', model: 'app.spreadOutline', type: 'textarea',
         required: true}
     ];
@@ -105,6 +109,7 @@ app.activityBeginTime = new Date(app.activityBeginTime);
     super.openEditDialog(title, inputs, binding, scope, true)
       .then(({app, uploadFn, files}) => {
 delete app.activityImg;
+delete app.products;
         let key = app.activityCode ? 'upd' : 'add';
         if (files && files.length) { // 上传
           _this[key](app, uploadFn);

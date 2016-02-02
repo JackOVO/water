@@ -7,7 +7,10 @@ import { EntityFactory } from '../main/entity.factory';
 
 
 class Machine {
-  constructor() {}
+  constructor() {
+    this.type = '1';
+    this.enableFlag = 'Enable';
+  }
 }
 Machine.mapping = {};
 Machine.futility = [];

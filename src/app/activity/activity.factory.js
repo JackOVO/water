@@ -7,6 +7,7 @@ import { EntityFactory } from '../main/entity.factory';
 
 class Activity {
   constructor() {
+    this.activityType = 1;
     this.activityBeginTime = new Date();
     this.activityEndTime = new Date();
   }
@@ -38,7 +39,7 @@ export class ActivityFactory extends EntityFactory {
   // 修改上传封装
   upd(entity, uploadFn) {
     if (typeof(uploadFn) === 'undefined') {
-      return super.add(entity);
+      return super.update(entity);
     } else {
       return this.dataService.upload(this.aim, 'upd', entity, uploadFn)
         .then(({success, message}) => {

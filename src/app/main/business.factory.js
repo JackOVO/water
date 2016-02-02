@@ -49,7 +49,6 @@ export class BusinessFactory {
         scope[key] = binding[key];
       }
     }
-
     return this[_dialogService].open(conf, content);
   }
 

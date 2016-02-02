@@ -7,8 +7,8 @@ export function runBlock($log, dataService, menuService) {
   'ngInject';
 
   // 数据服务配置
-  dataService.setBaseUrl('/admin');
-  // dataService.setBaseUrl('http://localhost:5324/admin');
+  // dataService.setBaseUrl('/admin');
+  dataService.setBaseUrl('http://localhost:5324/admin');
   dataService.setRequestMapping({
     menu: {
       prefix: '',
@@ -16,11 +16,11 @@ export function runBlock($log, dataService, menuService) {
       all: 'menus'
     },
     admin: {
-      // base: 'http://localhost:5324',
-      base: '',
+      base: 'http://localhost:5324',
+      // base: '',
       prefix: '',
       login: 'login',
-      signout: 'loginout',
+      signout: 'logout',
       baseInfo: {aim: 'subject', action: 'my'}
       // machineOperation/deleteAisle.do
     },

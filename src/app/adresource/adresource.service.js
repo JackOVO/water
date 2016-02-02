@@ -16,7 +16,7 @@ export class AdresourceService extends BusinessFactory {
   }
 
   columns() {
-    this.dataTableCloum[3].render = this.dataTableService.imgRender;
+    this.dataTableCloum[3].render = this.dataTableService.imgLinkRender;
     this.dataTableCloum[5].render = this.dataTableService.enableflagRender;
     this.dataTableCloum[2].render = this.dataTableService.mediaTypesRender;
     return this.dataTableCloum;

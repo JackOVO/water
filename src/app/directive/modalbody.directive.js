@@ -33,6 +33,12 @@ export function ModalbodyDriective($compile) {
             }[errorKey];
           }
 
+          content.scope.setName = (obj, keys, selText) => {
+            if (angular.isObject(obj)) {
+              obj[keys] = selText;
+            }
+          };
+
           let html = createInputsHtml(content.inputs);
           content.scope.setUploadFn = (uploadFn) => {
             content.scope.uploadFn = uploadFn;
@@ -73,7 +79,6 @@ function createInputsHtml(inputs) {
     let type = inputs[i].type,
         name = inputs[i].name,
         model = inputs[i].model,
-        m2 = inputs[i].m2,
         def = inputs[i].def || '', // 组合框默认提示值
         verification = inputs[i].verification || [], // 验证
         inputHtml = '';
@@ -84,12 +89,18 @@ function createInputsHtml(inputs) {
       case 'select':
         let source = inputs[i].source;
 // {{${m2?m2+'=':''}$select.selected.text}} XXX 绑定名称的位置在元素属性上第一次会有无法选中的问题
+        let m1 = 'xxx', m2 = inputs[i].m2, m3 = 'xxx';
+        if (m2) {
+          let ary = m2.split('.');
+          m1 = ary[0]; m3 = ary[1];
+        }
         inputHtml = `<div class="form-group">
           <label class="col-sm-${lw} control-label">${name}</label>
           <div class="col-sm-${cw}">
             <ui-select theme="bootstrap" ng-model="${model}"
-              search-enabled="true">
-              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">{{${m2?m2+'=':''}$select.selected.text}}
+              search-enabled="true"
+              on-select="setName(${m1}, '${m3}', $select.selected.text)">
+              <ui-select-match placeholder="{{$select.selected.text || '${def}'}}">{{$select.selected.text}}
               </ui-select-match>
               <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by $index">
                 <div ng-bind="o.text || 'null'"></div>

@@ -82,6 +82,16 @@ delete plan.updateBy;
       }
     });
   }
+
+  // 删除在封装
+  del(code, name) {
+    let title = '删除资源(' + name + ')';
+    let content = '<p>确认删除该排期吗?</p>';
+
+    super.confirmDialog(title, content).then(() => {
+      return super.del(code);
+    });
+  }
 }
 
 let dataTableCloum = [

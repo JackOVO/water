@@ -2,6 +2,7 @@
  * 活动服务
  */
 
+import { Options } from '../main/model';
 import { BusinessFactory } from '../main/business.factory';
 
 export class ActivityService extends BusinessFactory {
@@ -42,7 +43,8 @@ export class ActivityService extends BusinessFactory {
         return ary;
       }),
       enables: this.statusService.getCombobox('flag'),
-      activitys: this.statusService.getCombobox('activity')
+      activitys: [new Options(1, '一分钱喝')]
+      // new Options(2, 'app推广')
     };
 
     // 存在code即识别为编辑状态
@@ -96,6 +98,9 @@ scope.delProduct = (index) => { scope.a.productCodes.splice(index, 1); };
     super.openEditDialog(title, inputs, binding, scope, true)
       .then(({a, uploadFn, files}) => {
         let key = a.activityCode ? 'upd' : 'add';
+delete a.products;
+delete a.createDate;
+delete a.modifyDate;
         if (files && files.length) { // 上传
           _this[key](a, uploadFn);
         } else {

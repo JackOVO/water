@@ -17,7 +17,7 @@ export class AdPlanController {
       buttons: [
         {text: '改', action: ({adUserPlanCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
-          action: ({code:c, name:n}) => `vm.del('${c}', '${n}')`
+          action: ({adUserPlanCode:c, resourceName:n}) => `vm.del('${c}', '${n}')`
         }]
     };
 
@@ -41,6 +41,10 @@ export class AdPlanController {
 
   add(vm) {
     vm.adPlanService.openEditPage();
+  }
+
+  del(code, name) {
+    this.adPlanService.del(code, name);
   }
 
   edit(code) {

@@ -28,7 +28,11 @@ export class AdPlanFactory extends EntityFactory {
     });
     return super.getById(code).then((adplan) => {
       ck.then((checkeds) => {
-        adplan.machineCodes = checkeds;
+        if (!angular.isArray(checkeds)) {
+          adplan.machineCodes = [];
+        } else {
+          adplan.machineCodes = checkeds;
+        }
       });
       return adplan;
     });

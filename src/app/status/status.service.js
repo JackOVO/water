@@ -44,7 +44,7 @@ export class StatusService {
         break;
       case 'mType':
         combobox.push(new Options('1', '智能售货机'));
-        combobox.push(new Options('2', '热点'));
+        combobox.push(new Options('2', '乐点'));
         break;
     }
     return combobox;

@@ -23,7 +23,7 @@ export class ProductService extends BusinessFactory {
 
   // 附加列处理
   columns() {
-    this.dataTableColumns[6].render = this.dataTableService.delFlagRender;
+    this.dataTableColumns[4].render = this.dataTableService.imgLinkRender;
     return this.dataTableColumns;
   }
 
@@ -101,8 +101,8 @@ let dataTableColumns = [
   {data: 'name', title: '商品名称'},
   {data: 'price', title: '售价'},
   {data: 'marketPrice', title: '市场价'},
-  {data: 'id', title: '商品ID'},
-  {data: 'image', title: '图片'},
+  // {data: 'id', title: '商品ID'},
+  {data: 'image', title: '图片'}
   // isDel Number  Y 删除标识 1已删除，0未删除
-  {data: 'isDel', title: '删除标识'}
+  // {data: 'isDel', title: '删除标识'}
 ];

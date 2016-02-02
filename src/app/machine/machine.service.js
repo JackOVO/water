@@ -26,7 +26,8 @@ export class MachineService extends BusinessFactory {
 
   // 附加列处理
   columns() {
-    this.dataTableColumns[6].render = this.dataTableService.enableflagRender;
+    this.dataTableColumns[6].render = this.dataTableService.machineType;
+    this.dataTableColumns[7].render = this.dataTableService.enableflagRender;
     return this.dataTableColumns;
   }
 
@@ -76,8 +77,9 @@ machine.enableFlag = _this.dataTableService.enableflagRender(machine.enableFlag)
       {name: '标识位置信息', model: 'machine.locationType'}
     ];
 
-    super.openEditDialog(title, inputs, binding, null, true).then(({machine}) => {
-console.info(machine);
+    super.openEditDialog(title, inputs, binding, null, true)
+      .then(({machine}) => {
+// console.info(machine);
     });
   }
 
@@ -87,8 +89,15 @@ console.info(machine);
 
     let binding = {
       machine: this.machineFactory.create(),
-      stores: this.storeService.getCombobox(),
-      subjects: this.subjectService.getCombobox(),
+      stores: this.storeService.getCombobox().then((stores) => {
+        binding.machine.storeCode = stores[0].value;
+        return stores;
+      }),
+      subjects: this.subjectService.getCombobox().then((subjects) => {
+        binding.machine.deliverySubjectCode = subjects[0].value;
+        binding.machine.operateSubjectCode = subjects[0].value;
+        return subjects;
+      }),
       types: this.statusService.getCombobox('mType'),
       enables: this.statusService.getCombobox('flag')
     };
@@ -118,15 +127,15 @@ console.info(machine);
 
     super.openEditDialog(title, inputs, binding).then(({machine}) => {
       if (typeof(machine.code) !== 'undefined') {
-          delete machine.address;
-          delete machine.createBy;
-          delete machine.createDate;
-          delete machine.latitude;
-          delete machine.locationType;
-          delete machine.longitude;
-          delete machine.token;
-          delete machine.updateBy;
-          delete machine.updateDate;
+delete machine.address;
+delete machine.createBy;
+delete machine.createDate;
+delete machine.latitude;
+delete machine.locationType;
+delete machine.longitude;
+delete machine.token;
+delete machine.updateBy;
+delete machine.updateDate;
         super.update(machine);
       } else {
         super.add(machine);
@@ -147,12 +156,13 @@ console.info(machine);
 
 // 显示列定义
 let dataTableColumns = [
-  {data:'code', title: '编号'},
+  {data:'serNum', title: '编号'},
   {data:'name', title: '名称'},
   {data:'address', title: '地址'},
   {data:'latitude', title: '纬度'},
   {data:'longitude', title: '经度'},
   {data:'operateSubjectName', title: '经营主体'},
+  {data:'type', title: '类型'},
   {data:'enableFlag', title: '启用状态'}
 ];
 // serNum: "0100010002"

@@ -7,6 +7,7 @@ import { EntityFactory } from '../main/entity.factory';
 
 class App {
   constructor() {
+    this.activityType = 2;
     this.update = new Date();
     this.activityEndTime = new Date();
     this.activityBeginTime = new Date();

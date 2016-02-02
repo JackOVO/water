@@ -28,6 +28,11 @@ export class DataTableService {
     return '<img src="'+src+'" style="width:30px;height:30px;">';
   }
 
+  // 图片链接
+  imgLinkRender(src) {
+    return '<a href="'+src+'" target="view">查看</a>';
+  }
+
   // 下载a
   downLoadRender(href) {
     return '<a href="'+ href +'">下载</a>';
@@ -56,5 +61,10 @@ export class DataTableService {
   // 广告状态
   adTypeRender(type) {
     return {0: '未审核', 1: '已通过', 2: '投放中', 3: '投放结束'}[type];
+  }
+
+  // 机器类型
+  machineType(type) {
+    return {'1': '智能售货机', '2': '乐点'}[type];
   }
 }

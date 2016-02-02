@@ -23,7 +23,7 @@ export class ActivityController {
         {text: '用户', action: ({activityCode:c}) => `vm.goUser('${c}')`},
         {text: '改', action: ({activityCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
-          action: ({code:c, activityName:n}) => `vm.del('${c}', '${n}')`
+          action: ({activityCode:c, activityName:n}) => `vm.del('${c}', '${n}')`
         }]
     };
 
