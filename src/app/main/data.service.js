@@ -118,7 +118,7 @@ export class DataService {
 
 /**
  * 根据请求映射创建请求地址
- * @param  {String} aim    目标key, 当值为'default'时,将放回action为地址
+ * @param  {String} aim    目标key, 当值为'default'时,将返回action为地址
  * @param  {[type]} action 请求动作通常为get, add, upd, del, download
  * @return {[type]}        返回请求的地址
  */

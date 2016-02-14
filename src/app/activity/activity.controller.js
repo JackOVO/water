@@ -32,7 +32,7 @@ export class ActivityController {
       this.paging = paging;
     });
 
-    // 挑战用户
+    // 跳转用户
     this.goUser = (i) => {
       $state.go('home.child', {pAim: 'activity', aim: 'stats', id: i});
     };
