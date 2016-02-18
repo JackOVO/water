@@ -7,8 +7,8 @@ export function runBlock($log, dataService, menuService) {
   'ngInject';
 
   // 数据服务配置
-  // dataService.setBaseUrl('/admin');
-  dataService.setBaseUrl('http://localhost:5324/admin');
+  dataService.setBaseUrl('/admin');
+  // dataService.setBaseUrl('http://localhost:5324/admin');
   dataService.setRequestMapping({
     menu: {
       prefix: '',
@@ -16,8 +16,8 @@ export function runBlock($log, dataService, menuService) {
       all: 'menus'
     },
     admin: {
-      base: 'http://localhost:5324',
-      // base: '',
+      // base: 'http://localhost:5324',
+      base: '',
       prefix: '',
       login: 'login',
       signout: 'logout',
@@ -108,7 +108,8 @@ export function runBlock($log, dataService, menuService) {
     },
     // 推广统计
     stats: {
-      prefix: 'promotion/wechat/stats'
+      prefix: 'promotion/wechat/stats',
+      download: 'download.do'
     },
     // app推广
     app: {

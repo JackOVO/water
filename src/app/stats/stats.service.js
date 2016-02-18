@@ -39,6 +39,14 @@ export class StatsService extends BusinessFactory {
     }, this.searchObject);
     return super.search(page, size, params);
   }
+
+  // 下载, 要关联搜索条件
+  download() {
+    let params = angular.copy(this.searchObject);
+    if (!params.endDate) { delete params.endDate; }
+    if (!params.startDate) { delete params.startDate; }
+    this.statsFactory.download(1, this.size, params);
+  }
 }
 
 // 数据列定义

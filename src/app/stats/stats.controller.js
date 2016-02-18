@@ -18,17 +18,24 @@ export class StatsController {
       name: '下载Excel', icon: 'fa-download', click: this.download
     }];
 
+    $scope.sobj = {};
     // 回调监听
     $scope.$on('statsSearch', (e, paging) => {
       this.paging = paging;
     });
 
-    $scope.promotionStatsType = 'THE_MONTH'; // 自定义
+    $scope.$watch('vm.promotionStatsType', () => {
+      $scope.sobj.startDate = null;
+      $scope.sobj.endDate = null;
+    });
+
+    this.promotionStatsType = 'TODAY'; // 自定义
     // 搜索工具条配置
     this.tools = {
       inputs: [{
-        type: 'radio', valKey: 'promotionStatsType',
-        clas: 'col-md-2', list: [
+        type: 'radio', valKey: 'vm.promotionStatsType',
+        clas: 'col-md-3', list: [
+          {v: 'TODAY', t:'今天'},
           {v: 'THE_WEEK', t:'本周'},
           {v: 'THE_MONTH', t:'本月'},
           {v: 'THE_YEAR', t:'本年'}
@@ -40,14 +47,10 @@ export class StatsController {
         type: 'datepicker', valKey: 'endDate',
         clas: 'col-md-2', placeholder: '结束时间'
       }, {
-        type: 'buttons', clas: 'col-md-6 text-right',
+        type: 'buttons', clas: 'col-md-4 col-md-offset-1 text-right',
         reset: 'vm.reset', search: 'vm.search'
       }]
     };
-
-    $scope.$watch('promotionStatsType', (v, e) => {
-      console.info('v', e);
-    });
 
     // 分页
     this.turn = (params) => {
@@ -55,14 +58,13 @@ export class StatsController {
       statsService.search(page);
     };
 
-    this.search = ({startDate, endDate}) => {
-console.info(startDate, endDate, $scope.promotionStatsType);
-      // console.info(startDate, endDate, promotionStatsType);
-      // this.statsService.search(1, );
+    this.search = (sobj) => {
+      sobj.promotionStatsType = this.promotionStatsType;
+      this.statsService.search(1, undefined, sobj);
     };
   }
 
-  download() {
-    alert('下载');
+  download(vm) {
+    vm.statsService.download();
   }
 }

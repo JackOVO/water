@@ -67,7 +67,6 @@ export class OrderController {
 
   // 搜索
   search(sobj) {
-console.info(sobj);
     this.orderService.search(1, undefined, sobj);
   }
 
