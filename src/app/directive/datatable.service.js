@@ -40,7 +40,7 @@ export class DataTableService {
 
   // 活动类型
   activityRender(key) {
-    return {'freeDrink': '免费喝', 'centsDrink': '一分钱喝', 'app': 'APP推广'}[key];
+    return {'0': '免费喝', '1': '一分钱喝', '2': 'APP推广'}[key];
   }
 
   // 启用状态渲染(用户)

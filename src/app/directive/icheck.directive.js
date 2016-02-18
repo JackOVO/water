@@ -9,6 +9,7 @@ export function iCheckDirective() {
     /*<div class="checkbox icheck"></div>外层必须*/
     template: `<label class="radio" style="display:inline-block;"><input type="radio" name="rd"> <ng-transclude></ng-transclude></label>`,
     link: function(scope, element, attrs) {
+      let vk = attrs.vk;
       let value = attrs.value;
       let input = element.find('input');
 
@@ -18,8 +19,15 @@ export function iCheckDirective() {
         increaseArea: '20%' // optional
       });
 
+console.info(vk);
+
+      scope.$watch(vk, (vk) => {
+console.info(vk);
+      });
+
       input.on('ifChecked', () => {
-        scope[attrs.vk] = value;
+        scope['$search']['promotionStatsType'] = value;
+console.info('--', scope[attrs.vk]);
         scope.$apply();
       });
 

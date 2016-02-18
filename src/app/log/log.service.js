@@ -50,6 +50,7 @@ let dataTableColumns = [
   {data: 'aisle_code', title: '货道'},
   {data: 'product_name', title: '商品名称'},
   {data: 'product_num', title: '商品数量'},
+  {data: 'goods_left', title: '补货前商品数量'},
   {data: 'created_date', title: '补货时间'},
   {data: 'created_by', title: '补货人'},
   {data: 'remarks', title: '补货备注'}

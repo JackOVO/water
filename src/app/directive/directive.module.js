@@ -10,6 +10,7 @@ import { TableBoolsDirective } from './tabletools.directive';
 import { SlimscrollDriective } from './slimscroll.directive';
 import { DataTableDirective } from './datatable.directive';
 import { ModalbodyDriective } from './modalbody.directive';
+import { EchartsDirective } from './echarts.directive';
 import { DataTableService } from './datatable.service';
 import { UploadDirective } from './upload.directive';
 import { zTreeDirective } from './ztree.directive';
@@ -22,6 +23,7 @@ angular
   .directive('ztree', zTreeDirective)
   .directive('upload', UploadDirective)
   .directive('icheck', iCheckDirective)
+  .directive('echarts', EchartsDirective)
   .directive('datatable', DataTableDirective)
   .directive('modalBody', ModalbodyDriective)
   .directive('slimscroll', SlimscrollDriective)

@@ -23,7 +23,7 @@ export class StatsController {
       this.paging = paging;
     });
 
-    $scope.promotionStatsType = 'THE_WEEK'; // 自定义
+    $scope.promotionStatsType = 'THE_MONTH'; // 自定义
     // 搜索工具条配置
     this.tools = {
       inputs: [{
@@ -53,6 +53,12 @@ export class StatsController {
     this.turn = (params) => {
       let page = params.page;
       statsService.search(page);
+    };
+
+    this.search = ({startDate, endDate}) => {
+console.info(startDate, endDate, $scope.promotionStatsType);
+      // console.info(startDate, endDate, promotionStatsType);
+      // this.statsService.search(1, );
     };
   }
 

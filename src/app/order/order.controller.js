@@ -12,6 +12,10 @@ export class OrderController {
     this.columnDefs = {};
     this.orderService = orderService;
     this.columns = orderService.dataTableColumns; // 数据列定义
+    this.status = [{value: 0, text: '未确认'},
+                    {value: 1, text: '已确认'},
+                     {value: 2, text: '已完成'},
+                      {value: 3, text: '已取消'}];
 
     // 按钮配置
     this.btns = [{
@@ -21,8 +25,17 @@ export class OrderController {
     // 搜索工具条配置
     this.tools = {
       inputs: [{
+        type: 'datepicker', valKey: 'startDate',
+        clas: 'col-md-2', placeholder: '开始时间'
+      }, {
+        type: 'datepicker', valKey: 'endDate',
+        clas: 'col-md-2', placeholder: '结束时间'
+      }, {
+        type: 'select', valKey: 'orderStatus', source: 'vm.status',
+        clas: 'col-md-2', placeholder: '选择订单状态'
+      }, {
         type: 'search',
-        clas: 'col-md-offset-7 col-md-5',
+        clas: 'col-md-4 col-md-offset-2',
         reset: 'vm.reset',
         search: 'vm.search',
         valKey: 'searchValue',
@@ -30,7 +43,8 @@ export class OrderController {
         placeholder: '输入查询的值',
         downbar: [{value: 'sn', text: '订单编号'},
                   {value: 'consignee', text: '客户名称'},
-                  {value: 'productName', text: '商品名称'}]
+                  {value: 'productName', text: '商品名称'},
+                  {value: 'vmName', text: '机器名称'}]
       }]
     };
 
@@ -53,6 +67,7 @@ export class OrderController {
 
   // 搜索
   search(sobj) {
+console.info(sobj);
     this.orderService.search(1, undefined, sobj);
   }
 
