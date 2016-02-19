@@ -12,6 +12,7 @@ export class AdPlanService extends BusinessFactory {
     machineService,
     dataTableService,
     adresourceService,
+    machineGroupService,
     adPlanFactory) {
     'ngInject';
 
@@ -23,6 +24,7 @@ export class AdPlanService extends BusinessFactory {
     this.machineService = machineService;
     this.dataTableService = dataTableService;
     this.adresourceService = adresourceService;
+    this.machineGroupService = machineGroupService;
   }
 
   columns() {
@@ -39,7 +41,9 @@ export class AdPlanService extends BusinessFactory {
 
     let binding = {
       plan: this.adPlanFactory.create(),
+      types: this.statusService.getCombobox('adplanType'),
       machines: this.machineService.getCombobox(), // checkbox
+      machineGroups: this.machineGroupService.getCombobox(),
       enables: this.statusService.getCombobox('flag'),
       resources: this.adresourceService.getCombobox(),
       status: this.statusService.getCombobox('planStatus')
@@ -51,6 +55,7 @@ export class AdPlanService extends BusinessFactory {
       binding.plan = this.adPlanFactory.getById(code).then((plan) =>{
 plan.startTime = new Date(plan.startTime);
 plan.endTime = new Date(plan.endTime);
+plan.codes = [];
         return plan;
       });
     }
@@ -58,14 +63,20 @@ plan.endTime = new Date(plan.endTime);
     let inputs = [
       {name: '广告资源', model: 'plan.resourceCode', type: 'select',
         source: 'resources', m2: 'plan.resourceName', def: '请选择广告资源'},
-      {name: '广告开始时间', model: 'plan.startTime', type: 'datepicker'},
-      {name: '广告结束时间', model: 'plan.endTime', type: 'datepicker'},
+      {name: '开始时间', model: 'plan.startTime', type: 'datepicker'},
+      {name: '结束时间', model: 'plan.endTime', type: 'datepicker'},
       {name: '广告状态', model: 'plan.status', type: 'select',
         source: 'status', def: '请选择广告状态'},
       {name: '启用状态', model: 'plan.enableFlag', type: 'select',
         source: 'enables', def: '请选择启用状态'},
-      {name: '售货机', model: 'plan.machineCodes', type: 'checkbox',
-        source: 'machines', def: '请选择广告资源'}
+      // {name: '售货机', model: 'plan.machineCodes', type: 'checkbox',
+      //   source: 'machines', def: '请选择广告资源'},
+      {name: '售货机', type: 'tabs', inputs: [
+        {name: '机器关联', model: 'plan.machineCodes', type: 'checkbox',
+          source: 'machines'},
+        {name: '分组关联', model: 'plan.codes', type: 'checkbox',
+          source: 'machineGroups'}
+      ]}
     ];
 
     super.openEditDialog(title, inputs, binding).then(({plan}) => {
@@ -75,6 +86,11 @@ delete plan.createDate;
 delete plan.updateDate;
 delete plan.createBy;
 delete plan.updateBy;
+if (plan.codes && plan.codes.length) {
+  plan.type = 1; // 分组提交- -
+} else {
+  plan.type = 0;
+}
       if (typeof(plan.adUserPlanCode) !== 'undefined') {
         super.update(plan);
       } else {

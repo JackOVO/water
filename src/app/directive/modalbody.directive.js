@@ -70,6 +70,12 @@ function getMaxSize(array) {
 function createInputsHtml(inputs) {
   let html = '<form name="form" novalidate>';
 // class="form-horizontal" verification:[]
+  html += getHtml(inputs);
+  return html + '</form>';
+}
+
+function getHtml(inputs) {
+  let html = '';
   let lw = 2, cw = 10;
   if (getMaxSize(inputs) > 4) {
     lw = 3, cw = 9;
@@ -218,8 +224,40 @@ function createInputsHtml(inputs) {
             </div>
           </div>`;
         break;
+      case 'tabs':
+        let tinputs = inputs[i].inputs;
+        let tabH = '';
+        let tabC = '';
+        for (let index in tinputs) {
+          let inputC = tinputs[index];
+          tabH += `<li ng-click="ti=${index}"
+           ng-class="{${index}: 'active'}[ti]">
+           <a href="javascript:;"">${inputC.name}</a>
+          </li>`;
+
+          let chtml = getHtml([inputC]);
+
+          let lable = $(chtml).children('label');
+          chtml = lable.next().html();
+
+          tabC += `<div class="tab-pane" 
+            ng-class="{${index}: 'active'}[ti]">${chtml}</div>`;
+        }
+        inputHtml = `<div class="form-group">
+          <label class="col-sm-${lw} control-label">${name}</label>
+          <div class="col-sm-${cw}">
+            <div class="nav-tabs-custom" ng-init="ti=0"
+                style="margin-bottom:0;">
+              <ul class="nav nav-tabs">${tabH}</ul>
+              <div class="tab-content">${tabC}</div>
+            </div>
+          </div>
+        </div>`;
+        break;
     }
     html += inputHtml;
   }
-  return html + '</form>';
+
+  return html;
 }
+

@@ -7,7 +7,9 @@ import { EntityFactory } from '../main/entity.factory';
 
 class AdPlan {
  constructor() {
-   this.machineCodes = [];
+  this.type = 0; // 关联类型
+  this.codes = [];
+  this.machineCodes = [];
  }
 }
 AdPlan.mapping = {};

@@ -47,7 +47,7 @@ export function iCheckGroupDirective() {
       checked: '='
     },
     template: `<div>1<div>`,
-    link: function(scope, element, attrs) {
+    link: function(scope, element) {
       let inputs = [];
 
       // 数据监听, 数据初始化
@@ -60,7 +60,7 @@ export function iCheckGroupDirective() {
           let item = array[index];
           let td = $('<td><label class="checkbox"><input type="checkbox" value="'+ item.value +'"> '+ item.text +'</label></td>');
           tr.append(td);
-          if (index !== 0 && index % 2 === 0) {
+          if ((index-0+1) % 2 === 0) {
             tr = $('<tr>').appendTo(tbody);
           }
         }

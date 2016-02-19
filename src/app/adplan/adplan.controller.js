@@ -6,10 +6,10 @@ export class AdPlanController {
   constructor($scope, $state, adPlanService) {
     'ngInject';
 
-    let _this = this;
+    this.$state = $state;
     this.adPlanService = adPlanService;
 
-    this.title = '排期列表';
+    this.title = '排期历史';
     this.paging = null;
     this.columns = adPlanService.columns();
     this.defs = {
@@ -22,12 +22,11 @@ export class AdPlanController {
     };
 
     // 按钮配置
-    this.btns = [{
-      name: '新增排期', icon: 'fa-plus', click: this.add
-    }];
+    this.btns = [{name: '新增排期', icon: 'fa-plus', click: this.add},
+     {name: '查看历史', icon: 'fa-search', click: this.goHistory}];
 
     $scope.$on('adplanSearch', (e, paging) => {
-      _this.paging = paging;
+      this.paging = paging;
     });
 
     // 翻页请求
@@ -41,6 +40,10 @@ export class AdPlanController {
 
   add(vm) {
     vm.adPlanService.openEditPage();
+  }
+
+  goHistory(vm) {
+    vm.$state.go('home.list', {aim: 'adhistory'});
   }
 
   del(code, name) {

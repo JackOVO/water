@@ -20,6 +20,7 @@ export class GlobalService {
     subjectService,
     resourceService,
     activityService,
+    adHistoryService,
     adresourceService,
     statisticsService) {
     
@@ -41,6 +42,7 @@ export class GlobalService {
     this.subject = subjectService;
     this.activity = activityService;
     this.resource = resourceService;
+    this.adhistory = adHistoryService;
     this.adresource = adresourceService;
     this.statistics = statisticsService;
   }
@@ -75,6 +77,7 @@ export class GlobalService {
       case 'product': this.product.search(page); break;
       case 'subject': this.subject.search(page); break;
       case 'activity': this.activity.search(page); break;
+      case 'adhistory': this.adhistory.search(page); break;
       case 'adresource': this.adresource.search(page); break;
     }
   }

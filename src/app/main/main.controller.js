@@ -66,6 +66,7 @@ console.info('menuKey----->', key);
       case 'product':
       case 'subject':
       case 'activity':
+      case 'adhistory':
       case 'adresource':
         params = {aim: key, page: 1};
         this.$state.go('home.list', params);
