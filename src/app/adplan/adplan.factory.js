@@ -39,4 +39,10 @@ export class AdPlanFactory extends EntityFactory {
       return adplan;
     });
   }
+
+  // 获取机器
+  getMachines(code) {
+    let params = {'adUserPlanCode': code};
+    return super.query(params, 'findMachines', 'packArray');
+  }
 }

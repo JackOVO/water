@@ -56,6 +56,7 @@ export class GlobalService {
       case 'user': this.us.init(); break;
       case 'role': this.ro.init(); break;
       case 'resource': this.resource.init(); break;
+      case 'adplan': this.adplan.search(1); break;
       case 'statistics': this.statistics.init(); break;
       case 'baseInfo': this.admin.getBaseInfo(); break;
     }
@@ -71,7 +72,7 @@ export class GlobalService {
       case 'app': this.app.search(page); break;
       case 'order': this.order.init(page); break;
       case 'store': this.store.search(page); break;
-      case 'adplan': this.adplan.search(page); break;
+      // case 'adplan': this.adplan.search(page); break;
       case 'operate': this.operate.init(page); break;
       case 'machine': this.machine.search(page); break;
       case 'product': this.product.search(page); break;

@@ -51,6 +51,7 @@ console.info('menuKey----->', key);
     switch(key) {
       case 'user':
       case 'role':
+      case 'adplan':
       case 'resource':
       case 'baseInfo':
       case 'statistics':
@@ -60,7 +61,6 @@ console.info('menuKey----->', key);
       case 'app':
       case 'store':
       case 'order':
-      case 'adplan':
       case 'operate':
       case 'machine':
       case 'product':

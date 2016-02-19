@@ -22,7 +22,7 @@ export function runBlock($log, dataService, menuService) {
       login: 'login',
       signout: 'logout',
       baseInfo: {aim: 'subject', action: 'my'}
-      // machineOperation/deleteAisle.do
+      // machineOperation/deleteAisle.do`
     },
     // 用户
     user: {
@@ -123,6 +123,7 @@ export function runBlock($log, dataService, menuService) {
     // 广告排期
     adplan: {
       prefix: 'adSysPlan',
+      findMachines: 'findMachines',
       byAdPlanCode: {aim: 'machine', action: 'byAdPlanCode'}
     },
     // 广告历史
