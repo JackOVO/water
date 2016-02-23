@@ -26,6 +26,7 @@ import './operate/operate.module';           // 运营模块
 import './subject/subject.module';           // 公司模块
 import './machine/machine.module';           // 机器模块
 import './product/product.module';           // 商品模块
+import './adstats/adstats.module';           // 广告统计模块
 import './adplan/adplan.module';             // 广告排期模块
 import './admin/admin.module';               // 管理员模块
 import './order/order.module';               // 订单模块
@@ -43,6 +44,7 @@ import './index.locale'; // 本地化
 let rely = [
   'ngSanitize',
   'ui.router',
+  'ngCookies',
   'ui.select',
   'ngDialog',
   'toastr',
@@ -55,6 +57,7 @@ let rely = [
   'water.resource',
   'water.sidebar',
   'water.operate',
+  'water.adstats',
   'water.adplan',
   'water.status',
   'water.store',

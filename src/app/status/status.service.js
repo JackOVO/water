@@ -46,6 +46,23 @@ export class StatusService {
         combobox.push(new Options('1', '智能售货机'));
         combobox.push(new Options('2', '乐点'));
         break;
+      case 'adPlayType':
+        combobox.push(new Options('-1', '不限播放程度'));
+        combobox.push(new Options('1', '完整播放'));
+        combobox.push(new Options('0', '未完整播放'));
+        break;
+      case 'adType':
+        combobox.push(new Options('-1', '不限格式类型'));
+        combobox.push(new Options('0', '视频'));
+        combobox.push(new Options('1', '图片'));
+        break;
+      case 'adTimeType':
+        combobox.push(new Options('-1', '不限时间类型'));
+        combobox.push(new Options('1', '当天'));
+        combobox.push(new Options('2', '本周'));
+        combobox.push(new Options('3', '本月'));
+        combobox.push(new Options('4', '本年'));
+        break;
     }
     return combobox;
   }

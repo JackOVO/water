@@ -153,7 +153,7 @@ export class BusinessFactory {
       else if (operation === 'error') { title = title || '错误'; }
       else { operation = 'info'; }
 
-    this[_toastr][operation](`<p>${msg}</p>`, title);
+    this[_toastr][operation](`<p>${msg || '未知的...'}</p>`, title);
   }
 
   /**

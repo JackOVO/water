@@ -18,11 +18,14 @@ export class GlobalService {
     productService,
     machineService,
     subjectService,
+    adStatsService,
     resourceService,
     activityService,
     adHistoryService,
     adresourceService,
-    statisticsService) {
+    statisticsService,
+    machineGroupService) {
+    
     
     'ngInject';
 
@@ -36,6 +39,7 @@ export class GlobalService {
     this.admin = adminService;
     this.aisle = aisleService;
     this.adplan = adPlanService;
+    this.adstats = adStatsService;
     this.operate = operateService;
     this.product = productService;
     this.machine = machineService;
@@ -45,6 +49,7 @@ export class GlobalService {
     this.adhistory = adHistoryService;
     this.adresource = adresourceService;
     this.statistics = statisticsService;
+    this.machinegroup = machineGroupService;
   }
 
   /**
@@ -55,10 +60,12 @@ export class GlobalService {
     switch(aim) {
       case 'user': this.us.init(); break;
       case 'role': this.ro.init(); break;
+      case 'adplan': this.adplan.init(); break;
+      case 'adstats': this.adstats.init(); break;
       case 'resource': this.resource.init(); break;
-      case 'adplan': this.adplan.search(1); break;
       case 'statistics': this.statistics.init(); break;
       case 'baseInfo': this.admin.getBaseInfo(); break;
+      case 'machinegroup': this.machinegroup.init(); break;
     }
   }
 
@@ -94,6 +101,8 @@ export class GlobalService {
       case 'log': this.log.init(id); break;
       case 'stats': this.stats.init(id); break;
       case 'aisle': this.aisle.getAll(id); break;
+      case 'details': this.adstats.info(id); break;
+      case 'adplan': this.adplan.byMachineInit(id); break;
     }
   }
 }

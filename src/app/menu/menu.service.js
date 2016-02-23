@@ -37,28 +37,31 @@ node.icon = iconMaping[node.key] || '';
 }
 
 let iconMaping = {
-  'admin:user': 'user',
-  'admin:shopMgr': 'shopping-cart',
-  'admin:staticAds': 'thumb-tack',
   'admin:interactionAdsMgr': 'thumbs-up',
-  'admin:subjectMgr': 'sitemap',
+  'admin:shopMgr': 'shopping-cart',
   'admin:storeMgr': 'street-view',
+  'admin:staticAds': 'thumb-tack',
   'admin:machineMgr': 'android', //fa-plug
-  'admin:systemMgr': 'cog',
-  'adplan': 'tasks',
-  'adresource': 'upload',
-  'activity': 'weixin', // share
-  'app': 'share',
-  'machine': 'wrench',
-  'resource': 'unlock-alt',
-  'subject': 'building',
-  'store': 'map-signs',
+  'admin:subjectMgr': 'sitemap',
   'statistics': 'area-chart',
   'baseInfo': 'info-circle',
-  'role': 'users',
-  'user': 'user-plus',
+  'admin:systemMgr': 'cog',
+  'resource': 'unlock-alt',
+  'machinegroup': 'cubes',
+  'adresource': 'upload',
+  'adstats': 'bar-chart',
+  'subject': 'building',
+  'store': 'map-signs',
+  'activity': 'weixin', // share
+  'admin:user': 'user',
   'order': 'file-text',
-  'product': 'archive'
+  'product': 'archive',
+  'user': 'user-plus',
+  'machine': 'wrench',
+  'adplan': 'clock-o',
+  'operate': 'child',
+  'app': 'share',
+  'role': 'users'
 };
 // area-chart
 // circle-o

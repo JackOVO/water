@@ -26,7 +26,6 @@ export class AdPlanController {
     });
 
     $scope.$on('adplanToggleMachines', (e, data) => {
-console.info(data);
       this.children = data;
     });
 
@@ -38,12 +37,7 @@ console.info(data);
 
     // 表格点击相应, 通知权限更新权限树
     this.onTableClick = ({adUserPlanCode}) => {
-      // this.roleCode = roleCode;
-adPlanService.getMachines(adUserPlanCode);
-      // 切换权限的树
-      // competenceService.toggleTree(roleCode).then(() => {
-      //   initCheckeds = true; // 证明下次选中更新, 是当前选中的结果
-      // });
+      adPlanService.getMachines(adUserPlanCode);
     }
   }
 

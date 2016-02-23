@@ -14,6 +14,7 @@ export class OperateController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
+        {text: '排期', action: ({machineCode:c}) => `vm.goAdPlan('${c}')`},
         {text: '货道', action: ({machineCode:c}) => `vm.goAisle('${c}')`},
         {text: '日志', action: ({machineCode:c}) => `vm.goLog('${c}')`}]
     };
@@ -58,6 +59,11 @@ export class OperateController {
       $state.go('.', {page: 1}, {notify: false});
       operateService.search(1, undefined, {});
     };
+  }
+
+  // 跳转相关的排期
+  goAdPlan(code) {
+    this.$state.go('home.child', {pAim: 'machine', aim: 'adplan', id: code});
   }
 
   // 搜索

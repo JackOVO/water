@@ -10,7 +10,7 @@ export class AdminService extends BusinessFactory {
     super(toastr, $rootScope, dialogService, adminFactory);
 
     this.$q = $q;
-    this.admin = null; // 管理员
+    this.admin = dataService.getLocal('admin'); // 管理员
     this.$state = $state;
     this.dataService = dataService;
     this.adminFactory = adminFactory;
@@ -33,6 +33,8 @@ export class AdminService extends BusinessFactory {
       if (msg.success === true) {
         that.admin = msg.data;
         that.globalNotice('login', that.admin);
+
+        this.dataService.setLocal('admin', that.admin);
         return that.admin;
       } else {
         return that.$q.reject(msg.content);

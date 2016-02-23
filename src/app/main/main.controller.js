@@ -52,9 +52,11 @@ console.info('menuKey----->', key);
       case 'user':
       case 'role':
       case 'adplan':
+      case 'adstats':
       case 'resource':
       case 'baseInfo':
       case 'statistics':
+      case 'machinegroup':
         params = {aim: key, t: 'Test'};
         this.$state.go('home.single', params);
       break;

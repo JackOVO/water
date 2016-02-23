@@ -5,6 +5,7 @@
 export class MachineController {
   constructor($scope, $state, machineService) {
     'ngInject';
+    this.$state = $state;
     this.machineService = machineService;
 
     this.paging = null;

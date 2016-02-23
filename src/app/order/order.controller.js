@@ -35,7 +35,7 @@ export class OrderController {
         clas: 'col-md-2', placeholder: '选择订单状态'
       }, {
         type: 'search',
-        clas: 'col-md-4 col-md-offset-2',
+        clas: 'col-md-5 col-md-offset-1',
         reset: 'vm.reset',
         search: 'vm.search',
         valKey: 'searchValue',

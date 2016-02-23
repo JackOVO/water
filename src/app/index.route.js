@@ -37,7 +37,13 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
     .state('home.child', {
       url: ':pAim/:aim/:id',
       resolve: { stateParams: ($stateParams) => $stateParams },
-      templateUrl: 'app/template/child-datatable.html',
+      templateUrl: (stateParams) => {
+        // XXX 临时更改?
+        if (stateParams.pAim === 'machine' && stateParams.aim === 'adplan') {
+          return 'app/template/adplan.html';
+        }
+        return 'app/template/child-datatable.html';
+      },
       controllerProvider: createControllerName,
       controllerAs: 'vm'
     });

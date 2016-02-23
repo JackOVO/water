@@ -47,7 +47,8 @@ export class AisleService extends BusinessFactory {
       {name: '货道编号', model: 'aisle.aisleCode', required: true},
       {name: '商品名称', model: 'aisle.productCode', type: 'select',
        source: 'products', m2: 'aisle.productName', def: '请选择货道商品'},
-      {name: '货道容量', model: 'aisle.amount', required: true}];
+      {name: '货道容量', model: 'aisle.amount', required: true},
+      {name: '商品价格', model: 'aisle.price', required: true}];
 
     super.openEditDialog(title, inputs, binding).then(({aisle}) => {
       aisle.machineCode = _this.machineCode;

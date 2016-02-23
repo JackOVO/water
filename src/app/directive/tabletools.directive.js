@@ -52,7 +52,7 @@ export function TableBoolsDirective($compile) {
 
           input = `<ui-select theme="bootstrap" ng-model="$search.${valKey}"
                   search-enabled="true">
-              <ui-select-match placeholder="{{$select.selected.text || '${pholder}'}}">
+              <ui-select-match placeholder="{{'${pholder}'}}">
                 {{$select.selected.text}}
               </ui-select-match>
               <ui-select-choices repeat="o.value as o in (${source} | filter: $select.search) track by o.value">
@@ -105,15 +105,27 @@ export function TableBoolsDirective($compile) {
               </span>
             </p>`;
           break;
-        case 'buttons':
+        case 'buttons2':
+          reset = item.reset;
           search = item.search;
+
+          input = `<div class="input-group">
+              <span class="input-group-btn" style="text-align: right;">
+                <button class="btn btn-primary" type="button"
+                  ng-click="${search}($search)">搜索</button>
+                <button class="btn btn-danger" type="button"
+                  ng-click="$reset(${reset})">重置</button>
+              </span>
+            </div>`;
+          break;
+        case 'buttons':
           search = item.search;
           input = `<div class="input-group">
               <span class="input-group-btn">
                 <button class="btn btn-primary" type="button"
                   ng-click="${search}($search)">搜索</button>
               </span>
-            </<div>`;
+            </div>`;
           break;
           case 'radio':
             let list = item.list;

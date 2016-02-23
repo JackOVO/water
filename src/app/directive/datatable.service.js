@@ -55,7 +55,7 @@ export class DataTableService {
 
   // 媒体类型
   mediaTypesRender(media) {
-    return {PICTURE: '图片', VIDEO: '视频'}[media];
+    return {PICTURE: '图片', VIDEO: '视频', '0': '视频', '1': '图片'}[media];
   }
 
   // 广告状态
@@ -66,5 +66,19 @@ export class DataTableService {
   // 机器类型
   machineType(type) {
     return {'1': '智能售货机', '2': '乐点'}[type];
+  }
+
+  // 毫秒转秒
+  MsturnSecRender(ms) {
+    if (ms) {
+      return ms / 1000;
+    } else {
+      return 0;
+    }
+  }
+
+  // 播放类型
+  playTypeRender(type) {
+    return {'1': '完整播放', '0': '未完整播放'}[type];
   }
 }

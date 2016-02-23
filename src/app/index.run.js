@@ -130,20 +130,29 @@ export function runBlock($log, dataService, menuService) {
     adhistory: {
       prefix: 'adSysPlan/history'
     },
-    // 机器组
+    // 广告统计
+    adstats: {
+      prefix: 'adResourceStats',
+      summary: 'findByCondition',
+      download: 'downLoadAdResourceStatsCount'
+    },
     machinegroup: {
       prefix: 'machinegroup',
-      combobox: 'listGroups'
+      combobox: 'listGroups',
+      machineTree: 'listMachinesWithTree',
+      updMachineTree: 'modifyMachinesInTheGroup'
     }
   });
 
   // 菜单映射key
   menuService.setMenuKeyMapping({
     'admin:interactionAdsMgr:wechatSpreadMgr': 'activity',
+    'admin:machineMgr:machinegroup': 'machinegroup',
     'admin:systemMgr:resourceMaintain': 'resource',
     'admin:machineMgr:machineMaintain': 'machine',
     'admin:interactionAdsMgr:appSpreadMgr': 'app',
     'admin:staticAds:adResourceMgr': 'adresource',
+    'admin:staticAds:adResourceStats': 'adstats',
     'admin:subjectMgr:companyMgr': 'subject',
     'admin:storeMgr:storeMaintain': 'store',
     'admin:shopMgr:saleStats': 'statistics',

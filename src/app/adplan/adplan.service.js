@@ -17,6 +17,7 @@ export class AdPlanService extends BusinessFactory {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, adPlanFactory);
+    this.searchObject = {};
     this.adPlanFactory = adPlanFactory;
     this.dataTableCloum = dataTableCloum;
 
@@ -33,6 +34,23 @@ export class AdPlanService extends BusinessFactory {
     this.dataTableCloum[4].render = this.dataTableService.adTypeRender;
     this.dataTableCloum[5].render = this.dataTableService.enableflagRender;
     return this.dataTableCloum;
+  }
+
+  
+  init() {
+    this.searchObject = {};
+    this.search(1);
+  }
+
+  // 作为机器的子项初始化
+  byMachineInit(code) {
+    this.searchObject = {'machineCode': code};
+    this.search(1);
+  }
+
+  // 搜索封装
+  search(page, size = this.size, options = this.searchObject) {
+    return super.search(page, size, options);
   }
 
   // 打开编辑页添加依赖数据
@@ -80,17 +98,23 @@ plan.codes = [];
     ];
 
     super.openEditDialog(title, inputs, binding).then(({plan}) => {
+
 plan.startTime = plan.startTime.format('yyyy-MM-dd');
 plan.endTime = plan.endTime.format('yyyy-MM-dd');
 delete plan.createDate;
 delete plan.updateDate;
 delete plan.createBy;
 delete plan.updateBy;
+
+// 有codes就是为分组提交
 if (plan.codes && plan.codes.length) {
   plan.type = 1; // 分组提交- -
 } else {
-  plan.type = 0;
+  plan.type = 0; // 机器提交
+  plan.codes = plan.machineCodes;
 }
+delete plan.machineCodes;
+
       if (typeof(plan.adUserPlanCode) !== 'undefined') {
         super.update(plan);
       } else {
@@ -111,11 +135,9 @@ if (plan.codes && plan.codes.length) {
 
   getMachines(code) {
     let _this = this;
-    let data = [{"address":"北京市海淀区苏州街鼎钧大厦D座220","code":"20151222163135374","createBy":"慧通达管理员","createDate":1450773095000,"deliverySubjectCode":"20151013133607654","deliverySubjectName":"北京慧通达商贸有限公司","enableFlag":"Enable","latitude":"39.9735537680","locationType":1,"longitude":"116.3050357885","name":"苏州街测试机2","operateSubjectCode":"20151013133607654","operateSubjectName":"北京慧通达商贸有限公司","remark":"","serNum":"0000000002","storeCode":"20151222162547531","storeName":"苏州街","token":"7ef2740cb29345d3b4960b76e4ee6b0e","type":1,"updateBy":"慧通达管理员","updateDate":1450953742000},{"address":"北京市交道口新华文化大厦","code":"20151222164124738","createBy":"超级管理员","createDate":1450773684000,"deliverySubjectCode":"20151013133607654","deliverySubjectName":"北京慧通达商贸有限公司","enableFlag":"Enable","latitude":"39.9402042705","locationType":1,"longitude":"116.4082787542","name":"新华文化大厦大厅","operateSubjectCode":"20151013133607654","operateSubjectName":"北京慧通达商贸有限公司","remark":"","serNum":"0100010001","storeCode":"20151222163637806","storeName":"新华文化大厦大厅","token":"6cacb5cb16ba45cfafbaae9a2be67bdf","type":1,"updateBy":"超级管理员","updateDate":1450953615000},{"address":"北京市海淀区海淀大街34号海置创投大厦7层","code":"20151222164218300","createBy":"超级管理员","createDate":1450773738000,"deliverySubjectCode":"20160104150400944","deliverySubjectName":"北京慧通达商贸有限公司","enableFlag":"Enable","latitude":"39.9821458489","locationType":1,"longitude":"116.3076639822","name":"创业邦","operateSubjectCode":"20151013133607654","operateSubjectName":"北京慧通达商贸有限公司","remark":"","serNum":"0100010002","storeCode":"20151222164006680","storeName":"创业邦","token":"6b10275f28c843bfb6645a8460707bc8","type":1,"updateBy":"超级管理员","updateDate":1450953461000}];
-    return _this.globalNotice('toggleMachines', data);
-    // return this.adPlanFactory.getMachines(code).then((children) => {
-    //   return _this.globalNotice('machines', children);
-    // });
+    this.adPlanFactory.getMachines(code).then((children) => {
+      return _this.globalNotice('toggleMachines', children);
+    });
   }
 }
 

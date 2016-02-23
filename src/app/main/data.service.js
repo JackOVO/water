@@ -23,12 +23,13 @@ let _requestMapping = {
 };
 
 export class DataService {
-  constructor($q, $http, $window, errorService) {
+  constructor($q, $http, $cookies, $window, errorService) {
     'ngInject';
 
     _$q = $q;
     this[_$http] = $http;
     this[_$window] = $window;
+    this.$cookies = $cookies;
     _errorService = errorService;
   }
 
@@ -37,6 +38,20 @@ export class DataService {
   setRequestMapping(requestMapping) {
     var reqMap = angular.extend({}, _requestMapping, requestMapping);
     _requestMapping = reqMap;
+  }
+
+  // 获取本地数据
+  getLocal(key) {
+    let userData = this.$cookies.getObject('userData') || {};
+    return userData[key];
+  }
+
+  // 设置本地数据
+  setLocal(key, data) {
+    let userData = this.$cookies.getObject('userData') || {};
+    userData[key] = data;
+    this.$cookies.putObject('userData', userData);
+    return this.$cookies.getObject('userData');
   }
 
   /**
