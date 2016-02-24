@@ -285,9 +285,8 @@ export class EntityFactory {
    * 下载封装
    * @param  {Object} param 参数
    */
-  download(param) {
-    let aim = this.aim,
-        action = 'download';
+  download(param, action = 'download') {
+    let aim = this.aim;
 
     return this[_dataService].download(aim, action, param);
   }

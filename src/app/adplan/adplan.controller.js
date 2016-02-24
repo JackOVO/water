@@ -39,6 +39,15 @@ export class AdPlanController {
     this.onTableClick = ({adUserPlanCode}) => {
       adPlanService.getMachines(adUserPlanCode);
     }
+
+    // 机器树点击
+    this.machineClick = ({machineCode}) => {
+      if (adPlanService.searchObject.machineCode === machineCode) {
+        console.info('本机!');
+      } else {
+        $state.go('home.child', {pAim: 'machine', aim: 'adplan', id: machineCode});
+      }
+    };
   }
 
   add() {

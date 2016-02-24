@@ -3,7 +3,7 @@
  */
 
 export class OrderController {
-  constructor($scope, orderService) {
+  constructor($scope, $state, orderService) {
     'ngInject';
     let _this = this;
     this.title = '订单列表';
@@ -11,7 +11,7 @@ export class OrderController {
     this.paging = null;
     this.columnDefs = {};
     this.orderService = orderService;
-    this.columns = orderService.dataTableColumns; // 数据列定义
+    this.columns = orderService.column(); // 数据列定义
     this.status = [{value: 0, text: '未确认'},
                     {value: 1, text: '已确认'},
                      {value: 2, text: '已完成'},
@@ -21,6 +21,13 @@ export class OrderController {
     this.btns = [{
       name: '下载Excel', icon: 'fa-download', click: this.download
     }];
+
+    this.defs = {
+      ctrlScope: $scope,
+      buttons: [
+        {text: '详情', action: ({id:id}) => `vm.info('${id}')`}
+      ]
+    };
 
     // 搜索工具条配置
     this.tools = {
@@ -56,13 +63,20 @@ export class OrderController {
     // 翻页方法
     this.turn = (params) => {
       let page = params.page;
-      _this.orderService.search(page);
+      _this.orderService.search(page).then(() => {
+        $state.go('.', {page: page}, {notify: false});
+      });
     };
 
     // 清空方法
     this.reset = () => {
       orderService.search(1, undefined, {});
     };
+  }
+
+  // 详情
+  info(id) {
+    this.orderService.openInfoPage(id);
   }
 
   // 搜索

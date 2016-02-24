@@ -3,7 +3,7 @@
     <h3 class="box-title">排期列表</h3>
     <div class="pull-right box-tools">
       <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增排期</button>
-      <button class="btn btn-primary btn-sm" ng-click="vm.goHistory()"><i class="fa fa-search"></i> 查看历史</button>
+      <!-- <button class="btn btn-primary btn-sm" ng-click="vm.goHistory()"><i class="fa fa-search"></i> 查看历史</button> -->
       <!-- <i class="fa fa-plus"></i>  -->
     </div>
   </div>
@@ -28,9 +28,9 @@
           <ztree idkey="id"
                  name="machine"
                  namekey="name"
+                 data="vm.children"
                  check-enable="false"
-            data="vm.children"
-            checkeds="vm.checkeds"></ztree>
+                 click="vm.machineClick"></ztree>
           </div>
         </div>
     </div>

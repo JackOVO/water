@@ -58,7 +58,7 @@ machine.enableFlag = _this.dataTableService.enableflagRender(machine.enableFlag)
     };
 
     let inputs = [
-      {name: '售货机Code', model: 'machine.code'},
+      {name: '售货机Code', model: 'machine.machineCode'},
       {name: '售货机序列号', model: 'machine.serNum'},
       {name: '售货机名称', model: 'machine.name'},
       {name: '经度', model: 'machine.latitude'},
@@ -126,7 +126,7 @@ machine.enableFlag = _this.dataTableService.enableflagRender(machine.enableFlag)
     ];
 
     super.openEditDialog(title, inputs, binding).then(({machine}) => {
-      if (typeof(machine.code) !== 'undefined') {
+      if (typeof(machine.machineCode) !== 'undefined') {
 delete machine.address;
 delete machine.createBy;
 delete machine.createDate;

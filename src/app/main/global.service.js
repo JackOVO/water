@@ -100,7 +100,7 @@ export class GlobalService {
     switch(aim) {
       case 'log': this.log.init(id); break;
       case 'stats': this.stats.init(id); break;
-      case 'aisle': this.aisle.getAll(id); break;
+      case 'aisle': this.aisle.init(id); break;
       case 'details': this.adstats.info(id); break;
       case 'adplan': this.adplan.byMachineInit(id); break;
     }

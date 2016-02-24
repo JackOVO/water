@@ -65,12 +65,11 @@ export function runBlock($log, dataService, menuService) {
     },
     // 货道
     aisle: {
-      combobox: {aim: 'operate', action: 'aisleList'},
-      upd: {aim: 'operate', action: 'updateAisle'},
-      del: {aim: 'operate', action: 'deleteAisle'},
-      all: {aim: 'operate', action: 'aisleList'},
-      add: {aim: 'operate', action: 'addAisle'},
-      get: {aim: 'operate', action: 'getAisle'}
+      prefix: 'machineOperation/aisle',
+      add: 'addAisle',
+      upd: 'updateAisle',
+      del: 'deleteAisle',
+      combobox: 'aisleList'
     },
     // 订单
     order: {
@@ -134,7 +133,8 @@ export function runBlock($log, dataService, menuService) {
     adstats: {
       prefix: 'adResourceStats',
       summary: 'findByCondition',
-      download: 'downLoadAdResourceStatsCount'
+      download: 'downLoadAdResourceStatsCount',
+      detailDownload: 'downLoadAdResourceStatsFindPage'
     },
     machinegroup: {
       prefix: 'machinegroup',
@@ -153,6 +153,7 @@ export function runBlock($log, dataService, menuService) {
     'admin:interactionAdsMgr:appSpreadMgr': 'app',
     'admin:staticAds:adResourceMgr': 'adresource',
     'admin:staticAds:adResourceStats': 'adstats',
+    'admin:staticAds:adPlanHistory': 'adhistory',
     'admin:subjectMgr:companyMgr': 'subject',
     'admin:storeMgr:storeMaintain': 'store',
     'admin:shopMgr:saleStats': 'statistics',

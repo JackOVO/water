@@ -9,6 +9,7 @@ export class DetailsController  {
     let _this = this;
     this.paging = null;
     this.title = '播放明细';
+    this.adStatsService = adStatsService;
     this.columns = adStatsService.detailColums();
 
     // 搜索源
@@ -16,6 +17,11 @@ export class DetailsController  {
     this.timeType = null;
     this.playTypes = null;
     this.machines = [{value: -1, text: '不限机器'}];
+
+    // 按钮配置
+    this.btns = [{
+      name: '下载Excel', icon: 'fa-download', click: this.download
+    }];
 
     // 搜索工具条配置
     this.tools = {
@@ -29,10 +35,10 @@ export class DetailsController  {
         type: 'select', valKey: 'queryTimeType', source: 'vm.timeType',
         clas: 'col-md-2', placeholder: '选择时间类型'
       }, {
-        type: 'datepicker', valKey: 'beginPlayDate',
+        type: 'datepicker', valKey: 'startTime',
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
-        type: 'datepicker', valKey: 'endPlayDate',
+        type: 'datepicker', valKey: 'endTime',
         clas: 'col-md-2', placeholder: '结束时间'
       }, {
         type: 'buttons2', search: 'vm.search',
@@ -40,18 +46,19 @@ export class DetailsController  {
       }]
     };
 
+
     // 监听搜索条件, 绑定响应的逻辑- -
     $scope.$watch('sobj.queryTimeType', (type) => {
       if (type && type-0 !== -1) {
-        delete $scope.sobj.endPlayDate;
-        delete $scope.sobj.beginPlayDate;
+        delete $scope.sobj.endTime;
+        delete $scope.sobj.startTime;
       }
     });
-    $scope.$watch('sobj.beginPlayDate', (date) => {
+    $scope.$watch('sobj.startTime', (date) => {
       if (!date) { return; }
       delete $scope.sobj.queryTimeType;
     });
-    $scope.$watch('sobj.endPlayDate', (date) => {
+    $scope.$watch('sobj.endTime', (date) => {
       if (!date) { return; }
       delete $scope.sobj.queryTimeType;
     });
@@ -88,6 +95,11 @@ export class DetailsController  {
       }
       adStatsService.detailSearch(1, condition);
     };
+  }
+
+  // 下载
+  download(vm) {
+    vm.adStatsService.detailDownload();
   }
 }
 

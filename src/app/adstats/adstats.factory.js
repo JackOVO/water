@@ -24,6 +24,11 @@ export class AdStatsFactory extends EntityFactory {
     return super.download(params);
   }
 
+  // 详情下载
+  detailDownload(params) {
+    return super.download(params, 'detailDownload');
+  }
+
   // 获取汇总列表, 需要将数据拼装一下
   getSummaryList(entity = {}) {
     return super.query(entity, 'summary').then((summary) => {

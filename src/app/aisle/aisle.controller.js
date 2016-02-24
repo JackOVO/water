@@ -3,13 +3,12 @@
  */
 
 export class AisleController {
-  constructor($scope, aisleService) {
+  constructor($scope, $state, aisleService) {
     'ngInject';
     this.title = '货道列表';
     this.aisleService = aisleService;
 
     this.paging = null;
-    this.isPaging = false;
     this.columns = aisleService.dataTableColumns;
     this.defs = {
       ctrlScope: $scope,
@@ -23,9 +22,17 @@ export class AisleController {
     // 按钮配置
     this.btns = [{name: '新增货道', icon: 'fa-plus', click: this.add}];
 
+    // 翻页请求
+    this.turn = (params) => {
+      let page = params.page;
+      aisleService.search(page).then(() => {
+        $state.go('.', {page: page}, {notify: false});
+      });
+    };
+
     // 监听货道
-    $scope.$on('aisleAll', (e, array) => {
-      this.paging = array;
+    $scope.$on('aisleSearch', (e, paging) => {
+      this.paging = paging;
     });
   }
 

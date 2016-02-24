@@ -71,7 +71,7 @@ export class ProductService extends BusinessFactory {
   add(entity, uploadFn) {
     let _this = this;
     return this.productFactory.add(entity, uploadFn).then((msg) => {
-      _this.refreshList(msg);
+      _this.refreshList(msg, _this.page, 1);
       return msg;
     });
   }

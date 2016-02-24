@@ -15,10 +15,10 @@ export class MachineController {
     this.defs = {
       ctrlScope: $scope,
       buttons: [
-        {text: '详', action: ({code:c}) => `vm.info('${c}')`},
-        {text: '改', action: ({code:c}) => `vm.edit('${c}')`},
+        {text: '详', action: ({machineCode:c}) => `vm.info('${c}')`},
+        {text: '改', action: ({machineCode:c}) => `vm.edit('${c}')`},
         {text: '删', clas: 'danger',
-          action: ({code:c, name:n}) => `vm.del('${c}', '${n}')`
+          action: ({machineCode:c, name:n}) => `vm.del('${c}', '${n}')`
         }]
     };
 

@@ -8,7 +8,9 @@ let _entityFactory = Symbol();
 let _dialogService = Symbol();
 
 export class BusinessFactory {
-  constructor(toastr, $rootScope, dialogService, entityFactory, size = 9) {
+  constructor(toastr, $rootScope, dialogService, entityFactory, size = 10) {
+    this.page = 1;
+    this.total = 0;
     this.size = size;
 
     this[_toastr] = toastr;
@@ -87,7 +89,7 @@ export class BusinessFactory {
   add(entity) {
     let _this = this;
     return this[_entityFactory].add(entity).then((msg) => {
-      _this.refreshList(msg);
+      _this.refreshList(msg, _this.page, 1);
       return msg;
     });
   }
@@ -113,7 +115,7 @@ export class BusinessFactory {
   del(code) {
     let _this = this;
     return this[_entityFactory].delete(code).then((msg) => {
-      _this.refreshList(msg);
+      _this.refreshList(msg, _this.page, -1);
       return msg;
     });
   }
@@ -127,12 +129,15 @@ export class BusinessFactory {
    */
   search(page, size = this.size, options = {}) {
     let _this = this;
+    this.page = page;
+
     if (typeof(this.order) !== 'undefined') {
       options.order = this.order;
     }
     // 要在内部保存搜索选项
 
     return this[_entityFactory].search(page, size, options).then((paging) => {
+      _this.total = paging.total;
       return paging;
     }).then((paging) => {
       return _this.globalNotice('search', paging);
@@ -161,8 +166,15 @@ export class BusinessFactory {
    * @param  {Object} msg  应该是消息对象
    * @param  {Number} page 刷新的页码
    */
-  refreshList(msg, page = 1) {
+  refreshList(msg, page = this.page, variable = 0) {
     let oper = msg.success === true ? 'success' : 'error';
+
+    if (variable) {
+      let vb = Math.ceil((this.total + variable) / this.size);
+      page = vb;
+    }
+
+
     this.search(page);
     this.showToastr(msg.content, oper);
   }

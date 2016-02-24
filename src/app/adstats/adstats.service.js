@@ -57,11 +57,13 @@ export class AdStatsService extends BusinessFactory {
   // 详情搜索
   detailSearch(page, params) {
     this.searchObjectInfo = angular.extend({}, this.searchObjectInfo, params);
+this.formatDate(this.searchObjectInfo);
     return super.search(page, this.size, this.searchObjectInfo);
   }
 
   search(condition) {
     this.searchObject = condition;
+this.formatDate(this.searchObject);
     return this.getSummaryList(condition);
   }
 
@@ -70,11 +72,25 @@ export class AdStatsService extends BusinessFactory {
     this.adStatsFactory.download(condition);
   }
 
+  // 详情信息下载
+  detailDownload(condition = this.searchObjectInfo) {
+    this.adStatsFactory.detailDownload(condition);
+  }
+
   getSummaryList(entity) {
     let _this = this;
     return this.adStatsFactory.getSummaryList(entity).then((data) => {
       return _this.globalNotice('getSummary', data);
     });
+  }
+
+  formatDate(c) {
+    if (c.endTime) {
+      c.endTime = c.endTime.format('yyyy-MM-dd');
+    }
+    if (c.startTime) {
+      c.startTime = c.startTime.format('yyyy-MM-dd');
+    }
   }
 }
 

@@ -43,11 +43,13 @@ let iconMaping = {
   'admin:staticAds': 'thumb-tack',
   'admin:machineMgr': 'android', //fa-plug
   'admin:subjectMgr': 'sitemap',
+  'adplan': 'calendar-plus-o',
   'statistics': 'area-chart',
   'baseInfo': 'info-circle',
   'admin:systemMgr': 'cog',
   'resource': 'unlock-alt',
   'machinegroup': 'cubes',
+  'adhistory': 'clock-o',
   'adresource': 'upload',
   'adstats': 'bar-chart',
   'subject': 'building',
@@ -58,7 +60,6 @@ let iconMaping = {
   'product': 'archive',
   'user': 'user-plus',
   'machine': 'wrench',
-  'adplan': 'clock-o',
   'operate': 'child',
   'app': 'share',
   'role': 'users'

@@ -47,8 +47,8 @@ export class AisleService extends BusinessFactory {
       {name: '货道编号', model: 'aisle.aisleCode', required: true},
       {name: '商品名称', model: 'aisle.productCode', type: 'select',
        source: 'products', m2: 'aisle.productName', def: '请选择货道商品'},
-      {name: '货道容量', model: 'aisle.amount', required: true},
-      {name: '商品价格', model: 'aisle.price', required: true}];
+      {name: '货道容量', model: 'aisle.amount', type:'number', required: true},
+      {name: '商品价格', model: 'aisle.price', type:'number', required: true}];
 
     super.openEditDialog(title, inputs, binding).then(({aisle}) => {
       aisle.machineCode = _this.machineCode;
@@ -74,19 +74,25 @@ export class AisleService extends BusinessFactory {
     });
   }
 
-  search() {
-    this.getAll();
-  }
-
-  // 获取机器的货道列表
-  getAll(code = this.machineCode) {
-    let _this = this;
+  init(code = this.machineCode) {
     this.machineCode = code;
-
-    return this.aisleFactory.getAllByMachineCode(code).then((array) => {
-      return _this.globalNotice('all', array);
-    });
+    this.search(1, this.size, code);
   }
+
+  search(page) {
+    let params = {'machineCode': this.machineCode};
+    return super.search(page, this.size, params);
+  }
+
+  // // 获取机器的货道列表
+  // getAll(code = this.machineCode) {
+  //   let _this = this;
+  //   this.machineCode = code;
+
+  //   return this.aisleFactory.getAllByMachineCode(code).then((array) => {
+  //     return _this.globalNotice('all', array);
+  //   });
+  // }
 
   // 获取combobox封装
   getCombobox(machineCode) {

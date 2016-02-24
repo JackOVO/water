@@ -44,7 +44,7 @@ export function zTreeDirective() {
           callback: {
             onClick: (e, treeId, node) => {
               ztree.checkNode(node, null, false, true);
-              if (scope.click()) { scope.click()(node); };
+              if (scope.click()) { scope.click()(node); }
             },
             onCheck: createOnCheckCallBack(attrs.name, idKey, scope)
           }
