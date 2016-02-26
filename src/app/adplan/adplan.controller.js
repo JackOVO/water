@@ -21,6 +21,11 @@ export class AdPlanController {
         }]
     };
 
+    // 按钮配置
+    this.btns = [{
+      name: '新增排期', icon: 'fa-plus', click: this.add
+    }];
+
     $scope.$on('adplanSearch', (e, paging) => {
       this.paging = paging;
     });
@@ -48,10 +53,11 @@ export class AdPlanController {
         $state.go('home.child', {pAim: 'machine', aim: 'adplan', id: machineCode});
       }
     };
+
   }
 
-  add() {
-    this.adPlanService.openEditPage();
+  add(vm) {
+    vm.adPlanService.openEditPage();
   }
 
   goHistory() {

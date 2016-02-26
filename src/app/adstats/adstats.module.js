@@ -13,3 +13,4 @@ angular
   .service('adStatsService', AdStatsService)
   .controller('AdstatsController', AdStatsController)
   .controller('DetailsController', DetailsController);
+  // AdstatsDetailsController

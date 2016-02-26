@@ -58,10 +58,22 @@ export class StatusService {
         break;
       case 'adTimeType':
         combobox.push(new Options('-1', '不限时间类型'));
-        combobox.push(new Options('1', '当天'));
-        combobox.push(new Options('2', '本周'));
-        combobox.push(new Options('3', '本月'));
-        combobox.push(new Options('4', '本年'));
+        combobox.push(new Options('TODAY', '今天'));
+        combobox.push(new Options('THE_YEAR', '本年'));
+        combobox.push(new Options('THE_WEEK', '本周'));
+        combobox.push(new Options('THE_MONTH', '本月'));
+        combobox.push(new Options('SELF_DEF', '自定义'));
+        break;
+      case 'allTimeType':
+        combobox.push(new Options('-1', '不限时间类型'));
+        combobox.push(new Options('TRELVE_MONTH', '12个月'));
+        combobox.push(new Options('SIX_MONTH', '6个月'));
+        combobox.push(new Options('THREE_MONTH', '3个月'));
+        combobox.push(new Options('TODAY', '今天'));
+        combobox.push(new Options('THE_WEEK', '本周'));
+        combobox.push(new Options('THE_MONTH', '本月'));
+        combobox.push(new Options('THE_YEAR', '本年'));
+        combobox.push(new Options('SELF_DEF', '自定义'));
         break;
     }
     return combobox;

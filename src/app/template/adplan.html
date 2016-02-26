@@ -1,8 +1,14 @@
 <div class="box">
   <div class="box-header with-border">
-    <h3 class="box-title">排期列表</h3>
+    <h3 class="box-title" ng-bind="vm.title"></h3>
     <div class="pull-right box-tools">
-      <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增排期</button>
+      <button class="btn btn-primary btn-sm"
+        ng-repeat="btn in vm.btns"
+        ng-click="btn.click(vm)">
+          <i ng-if="btn.icon" class="fa {{btn.icon}}"></i>
+          {{btn.name}}
+        </button>
+<!--       <button class="btn btn-primary btn-sm" ng-click="vm.add()"><i class="fa fa-plus"></i> 新增排期</button> -->
       <!-- <button class="btn btn-primary btn-sm" ng-click="vm.goHistory()"><i class="fa fa-search"></i> 查看历史</button> -->
       <!-- <i class="fa fa-plus"></i>  -->
     </div>
@@ -10,6 +16,8 @@
 
   <div class="box-body">
     <div class="col-sm-9">
+      <table-tools ng-if="vm.tools"
+        conf-name="vm.tools"></table-tools>
       <datatable 
         defs="vm.defs"
         paging="vm.paging"

@@ -21,8 +21,8 @@ export class ProductFactory extends EntityFactory {
   }
 
   // 封装一下映射关系
-  getCombobox() {
-    return super.getCombobox('sn', 'name');
+  getCombobox(params) {
+    return super.getCombobox('sn', 'name', params);
   }
 
   // 添加上传封装

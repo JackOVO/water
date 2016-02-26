@@ -34,8 +34,8 @@ export class MainController {
       } else if ($state.is('home.single')) {
         globalService.initPageDataByAction(aim);
       } else if ($state.is('home.child')) {
-        let {aim, id} = params;
-        globalService.refreshChildListByAction(aim, id);
+        let {pAim, aim, id} = params;
+        globalService.refreshChildListByAction(pAim, aim, id);
       }
     });
   }
@@ -55,7 +55,6 @@ console.info('menuKey----->', key);
       case 'adstats':
       case 'resource':
       case 'baseInfo':
-      case 'statistics':
       case 'machinegroup':
         params = {aim: key, t: 'Test'};
         this.$state.go('home.single', params);
@@ -70,6 +69,7 @@ console.info('menuKey----->', key);
       case 'activity':
       case 'adhistory':
       case 'adresource':
+      case 'statistics':
         params = {aim: key, page: 1};
         this.$state.go('home.list', params);
       break;

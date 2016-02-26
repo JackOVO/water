@@ -106,7 +106,7 @@ delete plan.updateDate;
 delete plan.createBy;
 delete plan.updateBy;
 
-// 有codes就是为分组提交
+// 有codes就为分组提交
 if (plan.codes && plan.codes.length) {
   plan.type = 1; // 分组提交- -
 } else {

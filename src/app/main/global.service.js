@@ -63,7 +63,6 @@ export class GlobalService {
       case 'adplan': this.adplan.init(); break;
       case 'adstats': this.adstats.init(); break;
       case 'resource': this.resource.init(); break;
-      case 'statistics': this.statistics.init(); break;
       case 'baseInfo': this.admin.getBaseInfo(); break;
       case 'machinegroup': this.machinegroup.init(); break;
     }
@@ -86,6 +85,7 @@ export class GlobalService {
       case 'subject': this.subject.search(page); break;
       case 'activity': this.activity.search(page); break;
       case 'adhistory': this.adhistory.search(page); break;
+      case 'statistics': this.statistics.search(page); break;
       case 'adresource': this.adresource.search(page); break;
     }
   }
@@ -96,12 +96,15 @@ export class GlobalService {
    * @param  {String} id   查询的唯一属性值
    * @param  {Number} page 可选页码
    */
-  refreshChildListByAction(aim, id) {
+  refreshChildListByAction(pAim, aim, id) {
     switch(aim) {
       case 'log': this.log.init(id); break;
       case 'stats': this.stats.init(id); break;
       case 'aisle': this.aisle.init(id); break;
-      case 'details': this.adstats.info(id); break;
+      case 'details':
+        if (pAim === 'adstats') { this.adstats.info(id); }
+        else if(pAim === 'adhistory') { this.adhistory.info(id); }
+      break;
       case 'adplan': this.adplan.byMachineInit(id); break;
     }
   }

@@ -1,55 +1,38 @@
 /**
- * 广告历史控制器
+ * 广告历史详情控制器
  */
 
-export class AdHistoryController {
+export class AdhistoryDetailsController {
   constructor($scope, $state, machineFactory, statusService, adHistoryService) {
     'ngInject';
 
     let _this = this;
-    this.title = '排期历史';
     this.paging = null;
-    this.columns = adHistoryService.columns();
-
-    this.defs = {
-      ctrlScope: $scope,
-      buttons: [
-        {text: '明细', action: ({resourceCode:c}) => `vm.goInfo('${c}')`}
-      ]
-    };
+    this.children = null;
+    this.title = '历史详情';
+    this.columns = adHistoryService.detailsColumns();
 
     // 搜索源预定义
     $scope.sobj = {}; // 关联到搜索条件
-    this.adTypes = null;
     this.timeType = null;
     this.machines = [{value: -1, text: '不限机器'}];
-    this.playTypes = null;
 
     machineFactory.getCombobox().then((combobox) => {
       _this.machines = _this.machines.concat(combobox);
     });
-    this.adTypes = statusService.getCombobox('adType');
-    this.status = statusService.getCombobox('planStatus');
     this.timeType = statusService.getCombobox('adTimeType');
-
 
     // 搜索工具条配置
     this.tools = {
       inputs: [{
-        type: 'select', valKey: 'resourceType', source: 'vm.adTypes',
-        clas: 'col-md-2', placeholder: '选择资源类型'
-      }, {
-        type: 'select', valKey: 'status', source: 'vm.status',
-        clas: 'col-md-2', placeholder: '选择投放状态'
-      }, {
         type: 'select', valKey: 'scopeType', source: 'vm.timeType',
-        clas: 'col-md-2', placeholder: '选择时间类型'
+        clas: 'col-md-4', placeholder: '选择时间类型'
       }, {
         type: 'datepicker', valKey: 'planStartDate',
-        clas: 'col-md-2', placeholder: '开始时间'
+        clas: 'col-md-3', placeholder: '开始时间'
       }, {
         type: 'datepicker', valKey: 'planEndDate',
-        clas: 'col-md-2', placeholder: '结束时间',
+        clas: 'col-md-3', placeholder: '结束时间',
         setHours: '23'
       }, {
         type: 'buttons2', search: 'vm.search',
@@ -84,29 +67,38 @@ export class AdHistoryController {
           delete condition[key];
         }
       }
-      adHistoryService.search(1, undefined, condition);
+      adHistoryService.detailsSearch(1, undefined, condition);
     }
-
-    // 重置
-    this.reset = () => {
-      adHistoryService.search(1, undefined, {});
-    };
-
-    // 明细
-    this.goInfo = (code) => {
-      $state.go('home.child', {pAim: 'adhistory', aim: 'details', id: code});
-    };
-
-    $scope.$on('adhistorySearch', (e, paging) => {
-      this.paging = paging;
-    });
 
     // 翻页请求
     this.turn = (params) => {
       let page = params.page;
-      adHistoryService.search(page).then(() => {
-        $state.go('.', {page: page}, {notify: false});
-      });
+      adHistoryService.detailsSearch(page);
     };
+
+    // 表格点击相应, 通知权限更新权限树
+    this.onTableClick = ({planCode}) => {
+      adHistoryService.getMachines(planCode);
+    }
+
+    // 机器树点击, 选中售货机, 再次跳转
+    this.machineClick = ({machineCode}) => {
+      $scope.sobj.machineCode = machineCode;
+      $scope.$apply();
+      _this.search($scope.sobj);
+    };
+
+    // 重置
+    this.reset = () => {
+      adHistoryService.info();
+    };
+
+    $scope.$on('adhistoryDetailsearch', (e, paging) => {
+      this.paging = paging;
+    });
+
+    $scope.$on('adhistoryToggleMachines', (e, data) => {
+      this.children = data;
+    });
   }
 }

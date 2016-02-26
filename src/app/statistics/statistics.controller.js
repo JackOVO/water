@@ -3,16 +3,17 @@
  */
 
 export class StatisticsController {
-  constructor($scope, $timeout, statisticsService, productService, machineService) {
+  constructor($scope, $state, statisticsService, productFactory, statusService, machineService) {
     'ngInject';
+
     let _this = this;
     this.title = '统计列表';
     this.statisticsService = statisticsService;
 
+    this.p = false;
+    this.info = false;
     this.paging = null;
-    this.columnDefs = {};
-    this.Machinecolumns = statisticsService.columns('byProduct');
-    this.Productcolumns = statisticsService.columns('byMachine');
+    this.columns = statisticsService.columns();
 
     // 按钮配置
     this.btns = [{
@@ -21,84 +22,72 @@ export class StatisticsController {
 
     // 搜索引用
     $scope.sobj = {};
-    $scope.stype = 'byProduct'; // 列判断
-    $scope.sobj.stype = 'byProduct';
-    this.stypes = [
-      {value: 'byProduct', text: '按商品统计售货机'},
-      {value: 'byMachine', text: '按售货机统计商品'}
-    ];
-    this.typeAry = [];
+    this.products = null;
+    this.machines = null;
+    this.statsTimeType = statusService.getCombobox('allTimeType');
+
     // 搜索工具条配置
     this.tools = {
       inputs: [{
-        type: 'select', valKey: 'stype', source: 'vm.stypes',
-        clas: 'col-md-2', placeholder: '选择查询类型'
+        type: 'select', valKey: 'productCode', source: 'vm.products',
+        clas: 'col-md-4', placeholder: '选择所属商品'
       }, {
-        type: 'select', valKey: 'typeCode', source: 'vm.typeAry',
-        clas: 'col-md-4', placeholder: '选择类型数据'
+        type: 'select', valKey: 'statsTimeScopeType', source: 'vm.statsTimeType',
+        clas: 'col-md-2', placeholder: '选择时间类型'
       }, {
         type: 'datepicker', valKey: 'startDate',
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
         type: 'datepicker', valKey: 'endDate',
-        clas: 'col-md-2', placeholder: '结束时间'
+        clas: 'col-md-2', placeholder: '结束时间',
+        setHours: '23'
       }, {
-        type: 'buttons', clas: 'col-md-2 text-right',
+        type: 'buttons2', clas: 'col-md-2 text-right',
         reset: 'vm.reset', search: 'vm.search'
+      }, {
+        type: 'select', valKey: 'machineCode', source: 'vm.machines',
+        clas: 'col-md-4', placeholder: '选择所属机器'
       }]
     };
 
-    // 监听搜索类型变化
-    $scope.$watch('sobj.stype', (stype) => {
-      if (stype === 'byProduct') {
-        productService.getCombobox().then((ary) => {
-          _this.typeAry = ary;
-        });
-      } else if (stype === 'byMachine') {
-        machineService.getCombobox().then((ary) => {
-          _this.typeAry = ary;
-        });
-      }
-      $scope.sobj.typeCode = undefined;
+    // 获取搜索选项数据
+    // let productP = {
+    //   code: this.machineCode,
+    //   pageAction: 'MAINTAIN_AISLE'
+    // };
+    productFactory.getCombobox().then((products) => {
+      _this.products = products;
+    });
+    machineService.getCombobox().then((machines) => {
+      _this.machines = machines;
     });
 
     // 搜索回调监听
     $scope.$on('statisticsSearch', (e, paging) => {
       this.paging = paging;
-      $scope.stype = $scope.sobj.stype; // 变更时更新列定义
     });
 
     // 分页
     this.turn = (params) => {
       let page = params.page;
-      statisticsService.search(page);
+      statisticsService.search(page).tehn(() => {
+        $state.go('.', {page: page}, {notify: false});
+      });
+    };
+
+    // 重置
+    this.reset = () => {
+      return this.statisticsService.search(1, undefined, {});
     };
   }
 
   download(vm) {
-    vm.statisticsService.download();
+    // vm.statisticsService.download();
   }
 
   // 搜索
   search(sobj) {
-    let searchObject = angular.copy(sobj);
-    let type = searchObject.stype;
-    delete searchObject.stype;
-    if(searchObject.typeCode) {
-      let key = {'byProduct': 'sn', 'byMachine': 'serNum'}[type];
-      searchObject[key] = searchObject.typeCode;
-    }
-    delete searchObject.typeCode;
-
-    let fmt = 'yyyy-MM-dd';
-    if(searchObject.startDate){
-      searchObject.startDate = searchObject.startDate.format(fmt);
-    }
-    if(searchObject.endDate){
-      searchObject.endDate = searchObject.endDate.format(fmt);
-    }
-
-    return this.statisticsService.search(1, undefined, type, searchObject);
+    return this.statisticsService.search(1, undefined, sobj);
   }
 }
 

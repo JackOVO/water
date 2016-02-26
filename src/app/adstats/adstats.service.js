@@ -63,8 +63,9 @@ this.formatDate(this.searchObjectInfo);
 
   search(condition) {
     this.searchObject = condition;
-this.formatDate(this.searchObject);
-    return this.getSummaryList(condition);
+    let xxx = angular.copy(this.searchObject);
+this.formatDate(xxx);
+    return this.getSummaryList(xxx);
   }
 
   // 下载, 要关联搜索条件
@@ -85,12 +86,12 @@ this.formatDate(this.searchObject);
   }
 
   formatDate(c) {
-    if (c.endTime) {
-      c.endTime = c.endTime.format('yyyy-MM-dd');
-    }
-    if (c.startTime) {
-      c.startTime = c.startTime.format('yyyy-MM-dd');
-    }
+    // if (c.endTime) {
+    //   c.endTime = c.endTime.format('yyyy-MM-dd');
+    // }
+    // if (c.startTime) {
+    //   c.startTime = c.startTime.format('yyyy-MM-dd');
+    // }
   }
 }
 

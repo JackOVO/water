@@ -43,11 +43,12 @@ export class AdStatsController {
         type: 'select', valKey: 'queryTimeType', source: 'vm.timeType',
         clas: 'col-md-2', placeholder: '选择时间类型'
       }, {
-        type: 'datepicker', valKey: 'beginPlayDate',
+        type: 'datepicker', valKey: 'startTime',
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
-        type: 'datepicker', valKey: 'endPlayDate',
-        clas: 'col-md-2', placeholder: '结束时间'
+        type: 'datepicker', valKey: 'endTime',
+        clas: 'col-md-2', placeholder: '结束时间',
+        setHours: '23'
       }, {
         type: 'buttons2', search: 'vm.search',
         clas: 'col-md-2', reset: 'vm.reset'
@@ -57,20 +58,27 @@ export class AdStatsController {
       }]
     };
 
+    machineFactory.getCombobox().then((combobox) => {
+      _this.machines = _this.machines.concat(combobox);
+    });
+    this.adTypes = statusService.getCombobox('adType');
+    this.timeType = statusService.getCombobox('adTimeType');
+    this.playTypes = statusService.getCombobox('adPlayType');
+
     // 监听搜索条件, 绑定响应的逻辑- -
     $scope.$watch('sobj.queryTimeType', (type) => {
-      if (type && type-0 !== -1) {
-        delete $scope.sobj.endPlayDate;
-        delete $scope.sobj.beginPlayDate;
+      if (type && type-0 !== -1 && type !== 'SELF_DEF') {
+        delete $scope.sobj.endTime;
+        delete $scope.sobj.startTime;
       }
     });
-    $scope.$watch('sobj.beginPlayDate', (date) => {
+    $scope.$watch('sobj.startTime', (date) => {
       if (!date) { return; }
-      delete $scope.sobj.queryTimeType;
+      $scope.sobj.queryTimeType = 'SELF_DEF';
     });
-    $scope.$watch('sobj.endPlayDate', (date) => {
+    $scope.$watch('sobj.endTime', (date) => {
       if (!date) { return; }
-      delete $scope.sobj.queryTimeType;
+      $scope.sobj.queryTimeType = 'SELF_DEF';
     });
 
     // 搜索
@@ -95,17 +103,9 @@ export class AdStatsController {
       $state.go('home.child', {pAim: 'adstats', aim: 'details', id: code});
     };
 
-    machineFactory.getCombobox().then((combobox) => {
-      _this.machines = _this.machines.concat(combobox);
-    });
-    this.adTypes = statusService.getCombobox('adType');
-    this.timeType = statusService.getCombobox('adTimeType');
-    this.playTypes = statusService.getCombobox('adPlayType');
-
     $scope.$on('adstatsGetSummary', (e, paging) => {
       this.paging = paging;
     });
-
   }
 
   // 下载excel

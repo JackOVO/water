@@ -1,7 +1,7 @@
 /**
  * 统计实体工厂
  */
-import { createObjectFn, Paging } from '../main/model';
+import { Paging } from '../main/model';
 import { EntityFactory } from '../main/entity.factory';
 
 class Statistics {
@@ -9,7 +9,18 @@ class Statistics {
 }
 Statistics.mapping = {};
 Statistics.futility = [];
-Statistics.create = createObjectFn(Statistics);
+Statistics.create = (...args) => {
+  let statistics = new Statistics();
+
+  //XXX
+  statistics.serNum = args[0].serNum;
+  statistics.machineName = args[0].machineName;
+  for(let key in args[0].statsEntity) {
+    statistics[key] = args[0].statsEntity[key];
+  }
+
+  return statistics;
+};
 
 export class StatisticsFactory extends EntityFactory {
   constructor(dataService) {
@@ -17,6 +28,21 @@ export class StatisticsFactory extends EntityFactory {
 
     super('statistics', Statistics, 'id', dataService);
     this.dataService = dataService;
+  }
+
+  // 封装总计列表
+  search(page, size, params) {
+    let _this = this;
+
+    return this.dataService.get(this.aim, 'list', params).then((res) => {
+      let paging = new Paging([], page, size, res.total);
+      paging.data = _this.packArray(res.saleStatsItems);
+
+      // 添加总计值
+      res.saleStatsSummary.serNum = '总计';
+      paging.data.push(res.saleStatsSummary);
+      return paging;
+    });
   }
 
   /**
@@ -27,19 +53,19 @@ export class StatisticsFactory extends EntityFactory {
    * @param  {[type]} params [description]
    * @return {[type]}        [description]
    */
-  search(page, size, type, params) {
-    let _this = this,
-        aim = this.aim,
-        action = 'byProduct';
-    params = angular.extend({pageSize: size, pageNumber: page}, params);
-    if (type === 'byMachine') { action = 'byMachine'; }
+  // search(page, size, type, params) {
+  //   let _this = this,
+  //       aim = this.aim,
+  //       action = 'byProduct';
+  //   params = angular.extend({pageSize: size, pageNumber: page}, params);
+  //   if (type === 'byMachine') { action = 'byMachine'; }
 
-    return this.dataService.get(aim, action, params).then((res) => {
-      let paging = new Paging([], page, size, res.total);
-      paging.data = _this.packArray(res.rows);
-      return paging;
-    });
-  }
+  //   return this.dataService.get(aim, action, params).then((res) => {
+  //     let paging = new Paging([], page, size, res.total);
+  //     paging.data = _this.packArray(res.rows);
+  //     return paging;
+  //   });
+  // }
 
   /**
    * 下载方法
@@ -47,15 +73,15 @@ export class StatisticsFactory extends EntityFactory {
    * @param  {[type]} params [description]
    * @return {[type]}        [description]
    */
-  download(type, params) {
-    let aim = this.aim,
-        action = 'byPDdownload';
-    if (type === 'byMachine') { action = 'byMDownload'; }
+  // download(type, params) {
+  //   let aim = this.aim,
+  //       action = 'byPDdownload';
+  //   if (type === 'byMachine') { action = 'byMDownload'; }
 
-    for (let key in params) {
-      if (!params[key]) { delete params[key]; }
-    }
+  //   for (let key in params) {
+  //     if (!params[key]) { delete params[key]; }
+  //   }
 
-    return this.dataService.download(aim, action, params);
-  }
+  //   return this.dataService.download(aim, action, params);
+  // }
 }

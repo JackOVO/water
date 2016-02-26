@@ -39,7 +39,8 @@ export class DetailsController  {
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
         type: 'datepicker', valKey: 'endTime',
-        clas: 'col-md-2', placeholder: '结束时间'
+        clas: 'col-md-2', placeholder: '结束时间',
+        setHours: '23'
       }, {
         type: 'buttons2', search: 'vm.search',
         clas: 'col-md-2', reset: 'vm.reset'
@@ -49,18 +50,18 @@ export class DetailsController  {
 
     // 监听搜索条件, 绑定响应的逻辑- -
     $scope.$watch('sobj.queryTimeType', (type) => {
-      if (type && type-0 !== -1) {
+      if (type && type-0 !== -1 && type !== 'SELF_DEF') {
         delete $scope.sobj.endTime;
         delete $scope.sobj.startTime;
       }
     });
     $scope.$watch('sobj.startTime', (date) => {
       if (!date) { return; }
-      delete $scope.sobj.queryTimeType;
+      $scope.sobj.queryTimeType = 'SELF_DEF';
     });
     $scope.$watch('sobj.endTime', (date) => {
       if (!date) { return; }
-      delete $scope.sobj.queryTimeType;
+      $scope.sobj.queryTimeType = 'SELF_DEF';
     });
 
     $scope.$on('adstatsSearch', (e, paging) => {

@@ -6,15 +6,17 @@ import { Options } from '../main/model';
 import { BusinessFactory } from '../main/business.factory';
 
 export class ActivityService extends BusinessFactory {
-  constructor(toastr, $q, $rootScope, dialogService, statusService,dataTableService, productService, activityFactory) {
+  constructor(toastr, $q, $rootScope, dialogService, statusService, dataTableService, machineService, machineGroupService, productService, activityFactory) {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, activityFactory);
     this.statusService = statusService;
+    this.machineService = machineService;
     this.productService = productService;
     this.activityFactory = activityFactory;
     this.dataTableColumns = dataTableColumns;
     this.dataTableService = dataTableService;
+    this.machineGroupService = machineGroupService;
   }
 
   columns() {
@@ -37,13 +39,15 @@ export class ActivityService extends BusinessFactory {
 
     let binding = {
       a: this.activityFactory.create(),
+      activitys: [new Options(1, '一分钱喝')],
       productx: this.productService.getCombobox().then((ary) => {
         // 非编辑下默认一项
         if (!code) { scope.a.productCodes = [ary[0].value]; }
         return ary;
       }),
+      machines: this.machineService.getCombobox(), // checkbox
       enables: this.statusService.getCombobox('flag'),
-      activitys: [new Options(1, '一分钱喝')]
+      machineGroups: this.machineGroupService.getCombobox()
       // new Options(2, 'app推广')
     };
 
@@ -88,6 +92,12 @@ activity.activityBeginTime = new Date(activity.activityBeginTime);
        source: 'enables', def: '请选择状态标识'},
       {name: '活动类型', model: 'a.activityType', type: 'select',
        source: 'activitys', def: '请选择活动类型'},
+      {name: '售货机', type: 'tabs', inputs: [
+        {name: '机器关联', model: 'a.machineCodes', type: 'checkbox',
+          source: 'machines'},
+        {name: '分组关联', model: 'a.codes', type: 'checkbox',
+          source: 'machineGroups'}
+      ]},
       {name: '公众号介绍', model: 'a.activityRemark', type:'textarea',
         required: true}
     ];
@@ -98,9 +108,20 @@ scope.delProduct = (index) => { scope.a.productCodes.splice(index, 1); };
     super.openEditDialog(title, inputs, binding, scope, true)
       .then(({a, uploadFn, files}) => {
         let key = a.activityCode ? 'upd' : 'add';
+
 delete a.products;
 delete a.createDate;
 delete a.modifyDate;
+
+// 有codes就为分组提交
+if (a.codes && a.codes.length) {
+  a.type = 1; // 分组提交- -
+} else {
+  a.type = 0; // 机器提交
+  a.codes = a.machineCodes;
+}
+delete a.machineCodes;
+
         if (files && files.length) { // 上传
           _this[key](a, uploadFn);
         } else {

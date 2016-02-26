@@ -10,13 +10,13 @@ export class AisleService extends BusinessFactory {
     $rootScope,
     dialogService,
     aisleFactory,
-    productService) {
+    productFactory) {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, aisleFactory);
     this.machineCode = null;
     this.aisleFactory = aisleFactory;
-    this.productService = productService;
+    this.productFactory = productFactory;
 
     this.dataTableColumns = dataTableColumns;
   }
@@ -26,9 +26,15 @@ export class AisleService extends BusinessFactory {
     let _this = this;
     let title = '增加货道';
 
+    // 商品区分参数, 必须要添加机器code
+    let productP = {
+      code: this.machineCode,
+      pageAction: 'MAINTAIN_AISLE'
+    };
+
     let binding = {
       'aisle': {},
-      'products': this.productService.getCombobox()
+      'products': this.productFactory.getCombobox(productP)
     };
 
     // 存在code即识别为编辑状态

@@ -23,11 +23,12 @@ let _requestMapping = {
 };
 
 export class DataService {
-  constructor($q, $http, $cookies, $window, errorService) {
+  constructor($q, $http, $filter, $cookies, $window, errorService) {
     'ngInject';
 
     _$q = $q;
     this[_$http] = $http;
+    this.$filter = $filter;
     this[_$window] = $window;
     this.$cookies = $cookies;
     _errorService = errorService;
@@ -62,8 +63,16 @@ export class DataService {
    * @return {Promise}        返回响应的承诺
    */
   get(aim, action, params) {
+    let copy = angular.copy(params);
+
+    for (let key in copy) {
+      if (copy[key] instanceof Date) {
+        copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+      }
+    }
+
     let url = _createRequestUrl(aim, action);
-    let config = { params: params };
+    let config = { params: copy };
 
     return this[_$http].get(url, config)
       .then(_completeCallBack)
@@ -96,6 +105,13 @@ export class DataService {
         // return str.join("&");
       }
     };
+
+    let copy = angular.copy(data);
+    for (let key in copy) {
+      if (copy[key] instanceof Date) {
+        copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+      }
+    }
 
     return this[_$http].post(url, data, config)
       .then(_completeCallBack)

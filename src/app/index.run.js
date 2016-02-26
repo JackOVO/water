@@ -84,13 +84,14 @@ export function runBlock($log, dataService, menuService) {
       prefix: 'machineProductLog',
       list: 'srv_machine_goods_replenish_log'
     },
-    // 统计
+    // 销售统计
     statistics: {
       prefix: 'salestats',
-      byProduct: 'getOfftake',
-      byMachine: 'getOrderCountPage',
-      byPDdownload: 'download_1',
-      byMDownload: 'download_2'
+      list: 'stats'
+      // byProduct: 'getOfftake',
+      // byMachine: 'getOrderCountPage',
+      // byPDdownload: 'download_1',
+      // byMDownload: 'download_2'
     },
     // 点位
     store: {
@@ -127,7 +128,9 @@ export function runBlock($log, dataService, menuService) {
     },
     // 广告历史
     adhistory: {
-      prefix: 'adSysPlan/history'
+      prefix: 'adPlanHistory',
+      findMchines: 'findMchines',
+      details: 'findPageDetails'
     },
     // 广告统计
     adstats: {

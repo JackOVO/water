@@ -39,7 +39,10 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
       resolve: { stateParams: ($stateParams) => $stateParams },
       templateUrl: (stateParams) => {
         // XXX 临时更改?
-        if (stateParams.pAim === 'machine' && stateParams.aim === 'adplan') {
+        if ((stateParams.pAim === 'machine' && stateParams.aim === 'adplan') ||
+            (stateParams.pAim === 'adhistory' && stateParams.aim === 'details')) {
+
+          // 广告跳转类页面
           return 'app/template/adplan.html';
         }
         return 'app/template/child-datatable.html';
@@ -55,11 +58,22 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
 function createControllerName(stateParams) {
   let aim = stateParams.aim,
       controllerName = null,
+      paim = stateParams.pAim,
       sary = [...stateParams.aim];
 
   switch(aim) {
     case 'baseInfo':
       controllerName = 'AdminController';
+      break;
+    case 'details':
+
+      // 广告历史详情特殊处理
+      if (paim === 'adhistory') {
+        controllerName = 'AdhistoryDetailsController';
+      } else {
+        controllerName = 'DetailsController';
+      }
+
       break;
     default:
       sary[0] = sary[0].charAt(0).toUpperCase();

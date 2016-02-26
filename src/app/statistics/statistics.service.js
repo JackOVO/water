@@ -10,71 +10,32 @@ export class StatisticsService extends BusinessFactory {
 
     super(toastr, $rootScope, dialogService, statisticsFactory);
     this.searchObj = {};
-    this.stype = 'byProduct'; // byProduct, byMachine
+    this.dataTableColumns = dataTableColumns;
     this.statisticsFactory = statisticsFactory;
   }
 
   // 获取列定义
-  columns(stype) {
-    if (stype === 'byProduct') {
-      return dataTableColumnsMachine;
-    } else if (stype === 'byMachine') {
-      return dataTableColumnsProduct;
-    } else {
-      return [];
-    }
+  columns() {
+    return this.dataTableColumns;
   }
 
-  // 路由初始化接口
-  init() {
-    this.search(1, undefined, this.stype, {});
-  }
-
-  // 下载
-  download() {
-    return this.statisticsFactory.download(this.stype, this.searchObj);
-  }
-
-  // 搜索包装
-  search(page, size = this.size, type = this.stype, params = this.searchObj) {
-    let _this = this;
+  // 搜索添加封装
+  search(page, size = this.size, params = this.searchObj) {
     this.searchObj = params;
-
-    this.stype = type;
-    return this.statisticsFactory.search(page, size, type, params)
-      .then((paging) => {
-// console.info(paging);
-      return paging;
-    }).then((paging) => {
-      _this.globalNotice('search', paging);
-    });
+    return super.search(page, size, params);
   }
 }
 
 // 售货机
-let dataTableColumnsMachine = [
+let dataTableColumns = [
   {data: 'serNum', title: '售货机编号'},
-  {data: 'name', title: '售货机名称'},
+  {data: 'machineName', title: '售货机名称'},
   {data: 'aPennyCount', title: '一分钱喝商品销售数量'},
-  {data: 'aPennyAmount', title: '一分钱喝销售金额'},
+  {data: 'aPennyAmounts', title: '一分钱喝商品销售金额'},
   {data: 'giftCount', title: '礼品券兑换数量'},
-  {data: 'giftAmount', title: '礼品券金额'},
-  {data: 'saleCount', title: '零售销售数量'},
-  {data: 'saleAmount', title: '零售销售金额'},
+  {data: 'giftAmounts', title: '礼品券金额'},
+  {data: 'saleCount', title: '零售数量'},
+  {data: 'saleAmounts', title: '零售金额'},
   {data: 'totalCount', title: '商品销售总数量'},
-  {data: 'totalAmount', title: '销售总金额'}
-];
-
-// 商品
-let dataTableColumnsProduct = [
-  {data: 'productSn', title: '商品编码'},
-  {data: 'productName', title: '商品名称'},
-  {data: 'aPennyCount', title: '一分钱喝商品销售数量'},
-  {data: 'aPennyAmount', title: '一分钱喝销售金额'},
-  {data: 'giftCount', title: '礼品券兑换数量'},
-  {data: 'giftAmount', title: '礼品券金额'},
-  {data: 'saleCount', title: '零售销售数量'},
-  {data: 'saleAmount', title: '零售销售金额'},
-  {data: 'totalCount', title: '商品销售总数量'},
-  {data: 'totalAmount', title: '销售总金额'}
+  {data: 'totalAmounts', title: '销售总金额'}
 ];

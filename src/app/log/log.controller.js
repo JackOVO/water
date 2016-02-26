@@ -13,6 +13,7 @@ export class LogController {
     this.columns = logService.dataTableColumns; // 数据列定义
 
     // 搜索配置
+    this.aisles = null; // 货到列表
     this.products = null;
 
     // 回调监听
@@ -20,9 +21,11 @@ export class LogController {
       this.paging = paging;
 
       // 获取货道查询条件
-      logService.getAisleCombobox().then((array) => {
-        this.aisles = array;
-      });
+      if (!this.aisles) {
+        logService.getAisleCombobox().then((array) => {
+          this.aisles = array;
+        });
+      }
     });
 
     // 搜索工具条配置
@@ -38,7 +41,8 @@ export class LogController {
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
         type: 'datepicker', valKey: 'supplyEndDate',
-        clas: 'col-md-2', placeholder: '结束时间'
+        clas: 'col-md-2', placeholder: '结束时间',
+        setHours: '23'
       }, {
         type: 'search', valKey: 'createdBy',
         reset: 'vm.reset', search: 'vm.search',
@@ -46,6 +50,7 @@ export class LogController {
         placeholder: '按补货人查询'
       }]
     };
+
 
     this.turn = (params) => {
       let page = params.page;
@@ -68,14 +73,6 @@ export class LogController {
   search(sobj) {
     sobj = angular.extend({}, sobj);
     // sobj.searchProperty = 'created_by';
-    let fmt = 'yyyy-MM-dd';
-    if(sobj.supplyEndDate){
-      sobj.supplyEndDate =sobj.supplyEndDate.format(fmt);
-    }
-    if(sobj.supplyStartDate){
-      sobj.supplyStartDate = sobj.supplyStartDate.format(fmt);
-    }
-console.info(sobj);
     this.logService.search(undefined, 1, undefined, sobj);
   }
 }

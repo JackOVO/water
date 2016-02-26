@@ -36,7 +36,8 @@ export class OrderController {
         clas: 'col-md-2', placeholder: '开始时间'
       }, {
         type: 'datepicker', valKey: 'endDate',
-        clas: 'col-md-2', placeholder: '结束时间'
+        clas: 'col-md-2', placeholder: '结束时间',
+        setHours: '23'
       }, {
         type: 'select', valKey: 'orderStatus', source: 'vm.status',
         clas: 'col-md-2', placeholder: '选择订单状态'

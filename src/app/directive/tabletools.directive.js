@@ -27,6 +27,19 @@ export function TableBoolsDirective($compile) {
           if (angular.isFunction(fn)) { fn(scope.$search); }
           scope.$search = {};
         };
+        // 时间过滤处理
+        scope.selectDate = (date, parameter) => {
+          let p = [23, 59, 59, 999];
+          let sary = parameter.split(',');
+          // 如果第一位为数字采用诸位替换, 其他情况用默认值
+          if (!isNaN(sary[0])) {
+            p[0] = sary[0] || 59;
+            p[1] = sary[1] || 59;
+            p[2] = sary[2] || 59;
+            p[3] = sary[3] || 999;
+          }
+date.setHours(p[0], p[1], p[2], p[3]);
+        };
 
         let html = createInputsHtml(conf.inputs);
         html = $compile(html)(scope);
@@ -90,13 +103,23 @@ export function TableBoolsDirective($compile) {
           </div>`;
         break;
         case 'datepicker':
+          let ngChangeStr = '';
+          if (item.setHours) {
+            ngChangeStr = `ng-change="selectDate($search.${valKey}, '${item.setHours}')"`;
+          }
+
           input = `<p class="input-group" ng-init="dt${index}">
               <input type="text" class="form-control" placeholder="${pholder}"
                 ng-model="$search.${valKey}"
                 uib-datepicker-popup
                 format-day-title="yyyy - MM"
                 alt-input-formats="yyyy-MM-dd"
-                is-open="dt${index}.isOpen"/>
+                is-open="dt${index}.isOpen"
+                ${ngChangeStr}
+
+                close-text="关闭"
+                current-text="今天"
+                clear-text="清除"/>
               <span class="input-group-btn">
                 <button type="button" class="btn btn-default"
                   ng-click="dt${index}.isOpen = !dt${index}.isOpen">
