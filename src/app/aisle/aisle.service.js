@@ -8,9 +8,11 @@ export class AisleService extends BusinessFactory {
   constructor(
     toastr,
     $rootScope,
-    dialogService,
     aisleFactory,
-    productFactory) {
+    dialogService,
+    statusService,
+    productFactory,
+    dataTableService) {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, aisleFactory);
@@ -18,7 +20,14 @@ export class AisleService extends BusinessFactory {
     this.aisleFactory = aisleFactory;
     this.productFactory = productFactory;
 
+    this.statusService = statusService;
+    this.dataTableService = dataTableService;
     this.dataTableColumns = dataTableColumns;
+  }
+
+  columns() {
+    this.dataTableColumns[4].render = this.dataTableService.aisleFlagRender;
+    return this.dataTableColumns;
   }
 
   // 打开编辑页添加依赖数据
@@ -33,7 +42,8 @@ export class AisleService extends BusinessFactory {
     };
 
     let binding = {
-      'aisle': {},
+      'aisle': {enableFlag: '1'},
+      'flags': this.statusService.getCombobox('aisleFlag'),
       'products': this.productFactory.getCombobox(productP)
     };
 
@@ -54,7 +64,9 @@ export class AisleService extends BusinessFactory {
       {name: '商品名称', model: 'aisle.productCode', type: 'select',
        source: 'products', m2: 'aisle.productName', def: '请选择货道商品'},
       {name: '货道容量', model: 'aisle.amount', type:'number', required: true},
-      {name: '商品价格', model: 'aisle.price', type:'number', required: true}];
+      {name: '启用状态', model: 'aisle.enableFlag', type: 'select',
+       source: 'flags', def: '其选择启用状态'},
+      {name: '商品价格', model: 'aisle.price', type:'number'}];
 
     super.openEditDialog(title, inputs, binding).then(({aisle}) => {
       aisle.machineCode = _this.machineCode;
@@ -112,6 +124,7 @@ let dataTableColumns = [
   {data: 'machineName', title: '机器名称'},
   {data: 'aisleCode', title: '货道编号'},
   {data: 'aisleProblem', title: '货道状态'},
+  {data: 'enableFlag', title: '启用状态'},
   {data: 'productName', title: '商品名称'},
   {data: 'price', title: '商品价格'},
   {data: 'amount', title: '货道容量'},

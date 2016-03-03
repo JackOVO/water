@@ -37,7 +37,7 @@ export class AdminService extends BusinessFactory {
         this.dataService.setLocal('admin', that.admin);
         return that.admin;
       } else {
-        return that.$q.reject(msg.content);
+        return that.$q.reject(msg.message);
       }
     });
   }

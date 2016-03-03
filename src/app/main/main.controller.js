@@ -3,7 +3,7 @@
  */
 
 export class MainController {
-  constructor($scope, $state, adminService, globalService) {
+  constructor($scope, $state, toastr, adminService, globalService) {
     'ngInject';
 
     let _this = this;
@@ -14,6 +14,7 @@ export class MainController {
     $scope.signout = () => {
       adminService.signout();
     };
+
 
     // 登录监听
 //     $scope.$watch('admin', (admin) => {
@@ -53,6 +54,7 @@ console.info('menuKey----->', key);
       case 'role':
       case 'adplan':
       case 'adstats':
+      case 'activity':
       case 'resource':
       case 'baseInfo':
       case 'machinegroup':
@@ -66,7 +68,6 @@ console.info('menuKey----->', key);
       case 'machine':
       case 'product':
       case 'subject':
-      case 'activity':
       case 'adhistory':
       case 'adresource':
       case 'statistics':

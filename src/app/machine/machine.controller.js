@@ -24,8 +24,13 @@ export class MachineController {
 
     // 按钮配置
     this.btns = [{
+      name: '正常运营', icon: 'fa-male', click: this.on
+    }, {
+      name: '平台维护', icon: 'fa-hotel', click: this.off
+    }, {
       name: '新增机器', icon: 'fa-plus', click: this.add
     }];
+    // platformMaintain
 
     // 分页监听
     $scope.$on('machineSearch', (e, paging) => {
@@ -39,6 +44,14 @@ export class MachineController {
         $state.go('.', {page: page}, {notify: false});
       });
     };
+  }
+
+  on(vm) {
+    vm.machineService.tooglePlatformStatus(true);
+  }
+
+  off(vm) {
+    vm.machineService.tooglePlatformStatus(false);
   }
 
   // 详情
@@ -56,5 +69,5 @@ export class MachineController {
 
   del(code, name) {
     this.machineService.del(code, name);
-  } 
+  }
 }

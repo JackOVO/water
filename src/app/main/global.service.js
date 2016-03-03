@@ -64,6 +64,7 @@ export class GlobalService {
       case 'adstats': this.adstats.init(); break;
       case 'resource': this.resource.init(); break;
       case 'baseInfo': this.admin.getBaseInfo(); break;
+      case 'activity': this.activity.search(1); break;
       case 'machinegroup': this.machinegroup.init(); break;
     }
   }
@@ -78,12 +79,11 @@ export class GlobalService {
       case 'app': this.app.search(page); break;
       case 'order': this.order.init(page); break;
       case 'store': this.store.search(page); break;
-      // case 'adplan': this.adplan.search(page); break;
+// case 'adplan': this.adplan.search(page); break;
       case 'operate': this.operate.init(page); break;
       case 'machine': this.machine.search(page); break;
       case 'product': this.product.search(page); break;
       case 'subject': this.subject.search(page); break;
-      case 'activity': this.activity.search(page); break;
       case 'adhistory': this.adhistory.search(page); break;
       case 'statistics': this.statistics.search(page); break;
       case 'adresource': this.adresource.search(page); break;

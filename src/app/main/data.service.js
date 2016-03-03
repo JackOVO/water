@@ -63,13 +63,13 @@ export class DataService {
    * @return {Promise}        返回响应的承诺
    */
   get(aim, action, params) {
-    let copy = angular.copy(params);
 
-    for (let key in copy) {
-      if (copy[key] instanceof Date) {
-        copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
-      }
-    }
+let copy = angular.copy(params);
+for (let key in copy) {
+  if (copy[key] instanceof Date) {
+    copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+  }
+}
 
     let url = _createRequestUrl(aim, action);
     let config = { params: copy };
@@ -106,14 +106,14 @@ export class DataService {
       }
     };
 
-    let copy = angular.copy(data);
-    for (let key in copy) {
-      if (copy[key] instanceof Date) {
-        copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
-      }
-    }
+let copy = angular.copy(data);
+for (let key in copy) {
+  if (copy[key] instanceof Date) {
+    copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+  }
+}
 
-    return this[_$http].post(url, data, config)
+    return this[_$http].post(url, copy, config)
       .then(_completeCallBack)
       .catch(_failedCallBack);
   }
@@ -128,7 +128,15 @@ export class DataService {
    */
   upload(aim, action, data, uploadFn) {
     let url = _createRequestUrl(aim, action);
-    return uploadFn(url, data);
+
+let copy = angular.copy(data);
+for (let key in copy) {
+  if (copy[key] instanceof Date) {
+    copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+  }
+}
+
+    return uploadFn(url, copy);
   }
 
   /**
@@ -139,7 +147,15 @@ export class DataService {
    * @return {[type]}        [description]
    */
   download(aim, action, params) {
-    let z = $.param(params);
+
+let copy = angular.copy(params);
+for (let key in copy) {
+  if (copy[key] instanceof Date) {
+    copy[key] = this.$filter('date')(copy[key], 'yyyy-MM-dd HH:mm:ss');
+  }
+}
+
+    let z = $.param(copy);
     let url = _createRequestUrl(aim, action);
     url = url + (z ? '?' + z : z);
 

@@ -10,6 +10,7 @@ export class ActivityController {
     this.sp = $scope;
     this.paging = null;
     this.title = '推广列表';
+    this.children = null;
     this.columns = activityService.columns();
 
     // 按钮配置
@@ -32,10 +33,26 @@ export class ActivityController {
       this.paging = paging;
     });
 
+    // 机器列表
+    $scope.$on('activityToggleMachines', (e, data) => {
+      this.children = data;
+    });
+
+    // 翻页请求
+    this.turn = (params) => {
+      let page = params.page;
+      activityService.search(page);
+    };
+
     // 跳转用户
     this.goUser = (i) => {
       $state.go('home.child', {pAim: 'activity', aim: 'stats', id: i});
     };
+
+        // 表格点击相应, 通知权限更新权限树
+    this.onTableClick = ({activityCode}) => {
+      activityService.getMachines(activityCode);
+    }
   }
 
   add(vm) {

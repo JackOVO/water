@@ -82,6 +82,7 @@ export class OrderController {
 
   // 搜索
   search(sobj) {
+    // this.loading = true;
     this.orderService.search(1, undefined, sobj);
   }
 

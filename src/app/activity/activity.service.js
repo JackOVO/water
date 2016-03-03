@@ -32,6 +32,15 @@ export class ActivityService extends BusinessFactory {
     return this.dataTableColumns;
   }
 
+  // 在封装
+  getById(code) {
+    return this.activityFactory.getById(code).then((res) => {
+      let activity = res[0], selMachineCodes = res[1];
+      activity.machineCodes = selMachineCodes;
+      return activity;
+    });
+  }
+
   // 打开编辑页添加依赖数据
   openEditPage(scope, code) {
     let _this = this;
@@ -54,13 +63,18 @@ export class ActivityService extends BusinessFactory {
     // 存在code即识别为编辑状态
     if (code) {
       title = '修改活动';
-      binding.a = this.activityFactory.getById(code).then((activity) => {
+      binding.a = this.getById(code).then((activity) => {
 activity.productCodes = [];
 for (let index in activity.products) {
   activity.productCodes.push(activity.products[index].sn);
 }
 activity.activityEndTime = new Date(activity.activityEndTime);
 activity.activityBeginTime = new Date(activity.activityBeginTime);
+
+activity.codes = activity.codes || [];
+activity.machineCodes = activity.machineCodes || [];
+
+// console.info(activity);
         return activity;
       });
     }
@@ -159,17 +173,25 @@ delete a.machineCodes;
       return super.del(activityCode);
     });
   }
+
+  // Hjsdlfjslfjksjdfk
+  getMachines(code) {
+    let _this = this;
+    return this.activityFactory.getMachines(code).then((children) => {
+      return _this.globalNotice('toggleMachines', children);
+    });
+  }
 }
 
 function formData(entity) {
-  let btimeKey = 'activityBeginTime',
-      etimeKey = 'activityEndTime';
-  if (entity[btimeKey]) {
-    entity[btimeKey] = new Date(entity[btimeKey]).format('yyyy-MM-dd');
-  }
-  if (entity[etimeKey]) {
-    entity[etimeKey] = new Date(entity[etimeKey]).format('yyyy-MM-dd');
-  }
+  // let btimeKey = 'activityBeginTime',
+  //     etimeKey = 'activityEndTime';
+  // if (entity[btimeKey]) {
+  //   entity[btimeKey] = new Date(entity[btimeKey]).format('yyyy-MM-dd');
+  // }
+  // if (entity[etimeKey]) {
+  //   entity[etimeKey] = new Date(entity[etimeKey]).format('yyyy-MM-dd');
+  // }
   return entity;
 }
 

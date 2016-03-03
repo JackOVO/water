@@ -23,6 +23,15 @@ export class MachineFactory extends EntityFactory {
     super('machine', Machine, 'machineCode', dataService);
   }
 
+  // 置平台状态
+  togglePlatformStatus(pwd, on) {
+    let entity = {password: pwd};
+    if (on === true) { entity.type = 1; }
+     else { entity.type = 2; }
+
+    return super.query(entity, 'platformMaintain');
+  }
+
   // 根据用户code获取tree
   getTreeByUserCode(code) {
     let entity = {userCode: code};

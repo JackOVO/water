@@ -2,7 +2,7 @@
  * 上传指令
  */
 
-export function UploadDirective ($q) {
+export function UploadDirective ($q, dialogService, toastr) {
   'ngInject';
 
   let directive = {
@@ -16,10 +16,11 @@ export function UploadDirective ($q) {
                 </span>
               </div>`,
     scope: {
-      'val': '=',
-      'files': '=',
-      'group': '=',
-      'setUploadFn': '&'
+      val: '=',
+      files: '=',
+      group: '=',
+      setUploadFn: '&',
+      verification: '&'
     },
     link: function(scope, element, attrs) {
       let input = element.find('.form-control');
@@ -36,6 +37,21 @@ export function UploadDirective ($q) {
         let data = file[0];
         let numFiles = file[0].files ? file[0].files.length : 1;
         let label = file.val().replace(/\\/g, '/').replace(/.*\//, '');
+
+
+        let countSize = 0;
+        for (var index = 0, ilen = file[0].files.length; index < ilen; index++) {
+          let fileObject = file[0].files[index];
+          countSize += fileObject.size;
+        }
+
+        if (scope.verification()) {
+          let msg = scope.verification()(file[0].files, countSize);
+          if (msg !== true) {
+            toastr.error(msg, '验证提示');
+            return;
+          }
+        }
 
         file.trigger('fileselect', [numFiles, label]);
         input.val(label);
@@ -57,14 +73,37 @@ export function UploadDirective ($q) {
         scope.$apply();
         // console.info(scope.group);
         // console.info(scope.files);
+          // maxFileSize: 50000000,
+          // acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
       });
 
       if (scope.setUploadFn()) {
         scope.setUploadFn()((url, formData) => {
             let deferred = $q.defer();
 
+let title = '上传中请稍后';
+let html = `<div class="progress progress-sm active">
+  <div class="progress-bar progress-bar-success progress-bar-striped">
+    <span class="sr-only"></span>
+  </div>
+</div>`;
+var msg = toastr.info(html, title, {timeOut: 0, closeButton: false});
+
+
             // 初始化
-            file.fileupload({autoUpload: false});
+            file.fileupload({utoUpload: false});
+            file.fileupload('option', {
+              progressall: function (e, data) {
+
+                  var speed = parseInt(data.bitrate / 1024, 10);
+                  var progress = parseInt(data.loaded / data.total * 100, 10);
+                  msg.el.find('.progress-bar-striped').width(progress + '%');
+                  msg.el.find('.toast-title').html(title + '&nbsp;' + speed + 'kb/s');
+
+                  if (progress) { msg.el.mouseout(); }
+              }
+            });
+
             file.fileupload('send', {
               url: url,
               type: 'POST',
@@ -76,6 +115,12 @@ export function UploadDirective ($q) {
             }).success((result) => {
               deferred.resolve(result);
             });
+
+//             file.bind('fileuploadprogress', function (e, data) {
+//     // Log the current bitrate for this upload:
+//     console.log(data, data.total);
+//     console.log(data.bitrate);
+// });
 
           return deferred.promise;
         })

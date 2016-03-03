@@ -13,6 +13,7 @@ export function DataTableDirective($compile) {
       'defs': '=', // 针对列动作配置, 以及操作列控制
       'paging': '=',
       'columns': '=',
+      'loading': '=',
       'checkeds': '=', // 多选选中关联
       'draughtRequest': '&', // 渲染请求
       'rowClickNotice': '&'
@@ -21,12 +22,20 @@ export function DataTableDirective($compile) {
                 '<table class="table table-bordered table-hover"></table>'+
               '</div>',
     link: function(scope, element, attrs) {
+      let otable = null;
 
       let isFirst = true; // 是否为第一加载
       let table = element.children('.table');
       let columns = scope.columns || [{'data': null, 'title': '囧rz'}];
       let tableChangeCallBack = null; // 从ajax方法中得出的变更表格回调
       rowCallbackEventArray = [];
+
+      scope.$watch('loading', (loading) => {
+        if (loading === true) {
+let api = otable.dataTable().api();
+api.draw();
+        }
+      });
 
       // 监听数据变化, 通过ajax回调改变数据, 额.
       scope.$watch('paging', (paging) => {
@@ -67,6 +76,7 @@ export function DataTableDirective($compile) {
         columns: columns,
         searching: false,
         autoWidth: false,
+        processing: true,
         language: language,
         lengthChange: false,
         info: attrs.info !== 'false',
@@ -75,6 +85,7 @@ export function DataTableDirective($compile) {
 
         rowCallback: rowCallback,
         ajax: (data, callback) => {
+
           tableChangeCallBack = callback;
           if(!isFirst && typeof scope.draughtRequest() !== 'undefined') {
             // 求页码
@@ -82,7 +93,12 @@ export function DataTableDirective($compile) {
             let page = parseInt(count / data.length) + (count % data.length);
 
             data.page = page;
-            scope.draughtRequest()(data, page); // 绘制请求
+            if (scope.loading === true) {
+              scope.loading = false;
+            } else {
+              scope.draughtRequest()(data, page); // 绘制请求
+            }
+            
           }
         }
       };
@@ -178,7 +194,7 @@ export function DataTableDirective($compile) {
       });
 
       // 初始化操作
-      let otable = table.dataTable(setting);
+      otable = table.dataTable(setting);
       isFirst = false;
       return otable;
     }

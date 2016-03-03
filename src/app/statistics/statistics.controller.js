@@ -79,14 +79,32 @@ export class StatisticsController {
     this.reset = () => {
       return this.statisticsService.search(1, undefined, {});
     };
+
+    // 监听搜索条件, 绑定响应的逻辑- -
+    $scope.$watch('sobj.statsTimeScopeType', (type) => {
+
+      if (type && type-0 !== -1 && type !== 'SELF_DEF') {
+        delete $scope.sobj.endDate;
+        delete $scope.sobj.startDate;
+      }
+    });
+    $scope.$watch('sobj.startDate', (date) => {
+      if (!date) { return; }
+      $scope.sobj.statsTimeScopeType = 'SELF_DEF';
+    });
+    $scope.$watch('sobj.endDate', (date) => {
+      if (!date) { return; }
+      $scope.sobj.statsTimeScopeType = 'SELF_DEF';
+    });
   }
 
   download(vm) {
-    // vm.statisticsService.download();
+    vm.statisticsService.download();
   }
 
   // 搜索
   search(sobj) {
+    this.loading = true;
     return this.statisticsService.search(1, undefined, sobj);
   }
 }

@@ -48,6 +48,16 @@ export class DataTableService {
     return (data === 'Enable' ? '启用' : '禁用');
   }
 
+  // 货道启用状态
+  aisleFlagRender(data) {
+    return {'0': '禁用', '1': '启用', '2': '停售'}[data];
+  }
+
+  // 机器状态
+  machineFlagRender(type) {
+    return {Enable: '启用', NotEnable: '禁用', MACHINE_MAINTAIN: '机器维护状态', PLATFORM_MAINTAIN: '云平台维护状态'}[type];
+  }
+
   // 删除状态渲染(商品)
   delFlagRender(data) {
     return (data == 1 ? '已删除' : '未删除');

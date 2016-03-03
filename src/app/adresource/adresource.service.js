@@ -30,7 +30,17 @@ export class AdresourceService extends BusinessFactory {
       let binding = {
         resource: this.adresourceFactory.create(),
         enables: this.statusService.getCombobox('flag'),
-        mediaTypes: this.statusService.getCombobox('media')
+        mediaTypes: this.statusService.getCombobox('media'),
+        uploadAddVerification: (files, countSize) => {
+
+          if (binding.resource.type === 'PICTURE') {
+            return countSize < 10000000 || '资源类型为图片时, 文件大小不能大于10!';
+          } else if(binding.resource.type === 'VIDEO') {
+            return countSize < 50000000 || '资源类型为视频时, 文件大小不能大于50!';
+          } else {
+            return '请先选择资源类型, 在添加文件!';
+          }
+        }
       };
 
       // 存在code即识别为编辑状态
@@ -48,7 +58,7 @@ export class AdresourceService extends BusinessFactory {
         {name: '资源类型', model: 'resource.type', type: 'select',
          source: 'mediaTypes', def: '请选择资源类型'},
         {name: '上传文件', model: 'resource.resourceUrl', type: 'upload',
-         upName: 'img'},
+         upName: 'img', verification: 'uploadAddVerification'},
         {name: '备注', model: 'resource.remark', type: 'textarea'}
       ];
 

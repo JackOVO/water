@@ -27,7 +27,7 @@ export class MachineService extends BusinessFactory {
   // 附加列处理
   columns() {
     this.dataTableColumns[6].render = this.dataTableService.machineType;
-    this.dataTableColumns[7].render = this.dataTableService.enableflagRender;
+    this.dataTableColumns[7].render = this.dataTableService.machineFlagRender;
     return this.dataTableColumns;
   }
 
@@ -42,6 +42,21 @@ export class MachineService extends BusinessFactory {
   // 获取广告计划选中
   getCheckByAd(code) {
     return this.machineFactory.getCheckByAd(code);
+  }
+
+  // 置为运用或维护
+  tooglePlatformStatus(on) {
+    let _this = this;
+    let title = '密码确认';
+    let inputs = [{name: '输入密码', model: 'password', type: 'password'}];
+
+
+    super.openEditDialog(title, inputs, {})
+      .then(({password}) => {
+        _this.machineFactory.togglePlatformStatus(password, on).then((msg) => {
+          super.showToastr(msg.content, msg.success === true ? 'success' : 'error');
+        });
+    });
   }
 
   // 打开详情页
@@ -99,7 +114,7 @@ machine.enableFlag = _this.dataTableService.enableflagRender(machine.enableFlag)
         return subjects;
       }),
       types: this.statusService.getCombobox('mType'),
-      enables: this.statusService.getCombobox('flag')
+      enables: this.statusService.getCombobox('machineFlag')
     };
 
     // 存在code即识别为编辑状态

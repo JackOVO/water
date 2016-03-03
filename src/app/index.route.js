@@ -22,6 +22,12 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
       url: ':aim',
       resolve: { stateParams: ($stateParams) => $stateParams },
       templateUrl: (stateParams) => {
+
+        // XXX 活动推广机器列表选中
+        if (stateParams.aim === 'activity') {
+          // 广告跳转类页面
+          return 'app/template/adplan.html';
+        }
         return `app/template/${stateParams.aim}.html`;
       },
       controllerProvider: createControllerName,

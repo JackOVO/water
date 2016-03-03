@@ -99,8 +99,8 @@ plan.codes = [];
 
     super.openEditDialog(title, inputs, binding).then(({plan}) => {
 
-plan.startTime = plan.startTime.format('yyyy-MM-dd');
-plan.endTime = plan.endTime.format('yyyy-MM-dd');
+// plan.startTime = plan.startTime.format('yyyy-MM-dd');
+// plan.endTime = plan.endTime.format('yyyy-MM-dd');
 delete plan.createDate;
 delete plan.updateDate;
 delete plan.createBy;

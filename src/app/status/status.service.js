@@ -16,6 +16,17 @@ export class StatusService {
         combobox.push(new Options('Enable', '启用'));
         combobox.push(new Options('NotEnable', '禁用'));
         break;
+      case 'aisleFlag':
+        combobox.push(new Options('0', '禁用'));
+        combobox.push(new Options('1', '启用'));
+        combobox.push(new Options('2', '停售'));
+        break;
+      case 'machineFlag':
+        combobox.push(new Options('Enable', '启用'));
+        combobox.push(new Options('NotEnable', '禁用'));
+        combobox.push(new Options('MACHINE_MAINTAIN', '机器维护状态'));
+        combobox.push(new Options('PLATFORM_MAINTAIN', '云平台维护状态'));
+        break;
       case 'menu':
         combobox.push(new Options('Menu', '菜单类型'));
         combobox.push(new Options('Button', '按钮类型'));

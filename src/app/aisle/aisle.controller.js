@@ -9,7 +9,7 @@ export class AisleController {
     this.aisleService = aisleService;
 
     this.paging = null;
-    this.columns = aisleService.dataTableColumns;
+    this.columns = aisleService.columns();
     this.defs = {
       ctrlScope: $scope,
       buttons: [

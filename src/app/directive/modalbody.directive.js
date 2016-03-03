@@ -157,10 +157,12 @@ function getHtml(inputs) {
       case 'upload':
         let upName = inputs[i].upName;
         let gstr = inputs[i].group?'group='+inputs[i].group:'';
+        let verification = inputs[i].verification;
         inputHtml = `<div class="form-group">
           <label class="col-sm-${lw} control-label">${name}</label>
           <div class="col-sm-${cw}">
-            <upload files="files" val="${model}" name="${upName}" set-upload-fn="setUploadFn" ${gstr}></upload>
+            <upload files="files"
+             verification="${verification}" val="${model}" name="${upName}" set-upload-fn="setUploadFn" ${gstr}></upload>
           </div>
         </div>`;
         break;

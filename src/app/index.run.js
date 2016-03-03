@@ -47,6 +47,7 @@ export function runBlock($log, dataService, menuService) {
       prefix: 'vendingmachine',
       treeByUserCode: 'listTreeVM',
       combobox: 'findVendingMachineAll',
+      platformMaintain: 'platformMaintain',
       byAdPlanCode: 'findMachineByAdUserPlanId'
     },
     // 权限
@@ -87,7 +88,8 @@ export function runBlock($log, dataService, menuService) {
     // 销售统计
     statistics: {
       prefix: 'salestats',
-      list: 'stats'
+      list: 'stats',
+      download: 'download'
       // byProduct: 'getOfftake',
       // byMachine: 'getOrderCountPage',
       // byPDdownload: 'download_1',
@@ -104,7 +106,9 @@ export function runBlock($log, dataService, menuService) {
     },
     // 活动推广
     activity: {
-      prefix: 'promotion/wechat'
+      prefix: 'promotion/wechat',
+      findMachines: 'findMachines',
+      byActivityCode: 'findMachinesByActivityCode'
     },
     // 推广统计
     stats: {

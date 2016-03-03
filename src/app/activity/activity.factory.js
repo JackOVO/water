@@ -8,6 +8,8 @@ import { EntityFactory } from '../main/entity.factory';
 class Activity {
   constructor() {
     this.activityType = 1;
+    this.codes = [];
+    this.machineCodes = [];
     this.activityBeginTime = new Date();
     this.activityEndTime = new Date();
   }
@@ -17,10 +19,11 @@ Activity.futility = [];
 Activity.create =  createObjectFn(Activity);
 
 export class ActivityFactory extends EntityFactory {
-  constructor(dataService) {
+  constructor($q, dataService) {
     'ngInject';
 
     super('activity', Activity, 'activityCode', dataService);
+    this.$q = $q;
     this.dataService = dataService;
   }
 
@@ -46,5 +49,19 @@ export class ActivityFactory extends EntityFactory {
           return new Message(success, message);
       });
     }
+  }
+
+  // 并且获取选中的机器数据选中数组
+  getById(code) {
+    let entity = {'activityCode': code};
+    let machineDef = super.query(entity, 'findMachines', obj => obj);
+    let activityDef = super.getById(code);
+    return this.$q.all([activityDef, machineDef]);
+  }
+
+  // 获取选中机器的数据
+  getMachines(code) {
+    let params = {'activityCode': code};
+    return super.query(params, 'byActivityCode', 'packArray');
   }
 }

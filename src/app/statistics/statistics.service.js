@@ -24,6 +24,10 @@ export class StatisticsService extends BusinessFactory {
     this.searchObj = params;
     return super.search(page, size, params);
   }
+
+  download() {
+    return this.statisticsFactory.download(this.searchObj);
+  }
 }
 
 // 售货机
