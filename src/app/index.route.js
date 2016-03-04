@@ -18,6 +18,23 @@ export function routerConfig($stateProvider, $urlRouterProvider) {
       controller: 'LoginController',
       controllerAs: 'loginVM'
     })
+    .state('home.chart', {
+          url: 'chart/:aim',
+          resolve: { stateParams: ($stateParams) => $stateParams },
+          templateUrl: () => {
+            return 'app/template/chart.html';
+          },
+          controllerProvider: (stateParams) => {
+            let aim = stateParams.aim || '',
+                controllerName = null,
+                sary = [...aim];
+
+            sary[0] = sary[0].charAt(0).toUpperCase();
+            controllerName = sary.join('') + 'Chart' + 'Controller';
+            return controllerName;
+          },
+          controllerAs: 'cvm'
+    })
     .state('home.single', {
       url: ':aim',
       resolve: { stateParams: ($stateParams) => $stateParams },

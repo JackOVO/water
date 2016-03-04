@@ -47,6 +47,20 @@ export class StatisticsFactory extends EntityFactory {
     });
   }
 
+  // 根据商品
+  byProduct(params) {
+    return this.dataService.get(this.aim, 'byProduct', params).then((res) => {
+      return res;
+    });
+  }
+
+  // 根据售货机
+  byMachine(params) {
+    return this.dataService.get(this.aim, 'byMachine', params).then((res) => {
+      return res;
+    });
+  }
+
   // 下载表格
   download(params) {
     return this.dataService.download(this.aim, 'download', params);

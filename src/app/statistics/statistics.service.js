@@ -25,6 +25,62 @@ export class StatisticsService extends BusinessFactory {
     return super.search(page, size, params);
   }
 
+  // 商品统计根据机器
+  byMachine(params = {}) {
+    let _this = this;
+    return this.statisticsFactory.byMachine(params).then((data) => {
+      data.series = [];
+      data.legend = [];
+
+      for (let index in data.statsProducts) {
+        let productData = [];
+        let machine = data.statsProducts[index];
+
+        // 数据多维度集合
+        for (let i in machine.orderStats) {
+          let stats = machine.orderStats[i];
+          productData.push(stats['totalAmounts']);
+        }
+
+        let seriesItem = {type: 'line', data: productData, name: machine.productName };
+        data.series.push(seriesItem);
+        data.legend.push(machine.productName);
+      }
+
+      data.title = '商品销售总额';
+      _this.globalNotice('byMachine', data);
+    });
+  }
+
+  // 机器统计根据商品
+  byProduct(params = {}) {
+    let _this = this;
+
+    return this.statisticsFactory.byProduct(params).then((data) => {
+      data.series = [];
+      data.legend = [];
+
+      for (let index in data.statsMachines) {
+        let machineData = [];
+        let machine = data.statsMachines[index];
+
+        // 数据多维度集合
+        for (let i in machine.orderStats) {
+          let stats = machine.orderStats[i];
+          machineData.push(stats['totalAmounts']);
+        }
+
+        let seriesItem = {type: 'line', data: machineData, name: machine.machineName };
+        data.series.push(seriesItem);
+        data.legend.push(machine.machineName);
+      }
+
+      data.title = '机器销售总额';
+      _this.globalNotice('byProduct', data);
+      return data;
+    });
+  }
+
   download() {
     return this.statisticsFactory.download(this.searchObj);
   }

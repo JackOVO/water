@@ -37,6 +37,9 @@ export class MainController {
       } else if ($state.is('home.child')) {
         let {pAim, aim, id} = params;
         globalService.refreshChildListByAction(pAim, aim, id);
+      } else if ($state.is('home.chart')) {
+        let {aim} = params;
+        globalService.initChartByAction(aim);
       }
     });
   }

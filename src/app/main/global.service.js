@@ -70,6 +70,19 @@ export class GlobalService {
   }
 
   /**
+   * 初始化图表数据
+   * @param  {String} aim 目标
+   */
+  initChartByAction(aim) {
+    switch(aim) {
+      case 'statistics':
+        let params = {statsTimeScopeType: 'TRELVE_MONTH'};
+        this.statistics.byProduct(params);
+      break;
+    }
+  }
+
+  /**
    * 刷新列表类数据
    * @param  {String} aim  目标
    * @param  {String} id   查询的唯一属性值

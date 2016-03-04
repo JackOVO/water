@@ -167,6 +167,15 @@ table.uib-daypicker .btn-default{
 table.uib-daypicker .btn-default.active {
   background-color: #ddd;
 }
+
+/**自定义分割线**/
+.dividing {
+  margin-left: -10px;
+  margin-right: -10px;
+  height: 12px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #f4f4f4;
+}
 /**
  *  Do not remove the comments below. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

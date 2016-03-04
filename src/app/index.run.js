@@ -87,13 +87,11 @@ export function runBlock($log, dataService, menuService) {
     },
     // 销售统计
     statistics: {
-      prefix: 'salestats',
       list: 'stats',
-      download: 'download'
-      // byProduct: 'getOfftake',
-      // byMachine: 'getOrderCountPage',
-      // byPDdownload: 'download_1',
-      // byMDownload: 'download_2'
+      prefix: 'salestats',
+      download: 'download',
+      byProduct: 'saleStatsByProduct',
+      byMachine: 'saleStatsByMachine'
     },
     // 点位
     store: {
@@ -143,6 +141,7 @@ export function runBlock($log, dataService, menuService) {
       download: 'downLoadAdResourceStatsCount',
       detailDownload: 'downLoadAdResourceStatsFindPage'
     },
+    // 机器分组
     machinegroup: {
       prefix: 'machinegroup',
       combobox: 'listGroups',

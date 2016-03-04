@@ -5,12 +5,13 @@
 import { BusinessFactory } from '../main/business.factory';
 
 export class OrderService extends BusinessFactory {
-  constructor(toastr, $rootScope, dialogService, orderFactory) {
+  constructor(toastr, $rootScope, dialogService, dataTableService, orderFactory) {
     'ngInject';
 
     super(toastr, $rootScope, dialogService, orderFactory);
     this.searchObject = {};
     this.orderFactory = orderFactory;
+    this.dataTableService = dataTableService;
     this.dataTableColumns = dataTableColumns;
   }
 
@@ -21,6 +22,7 @@ export class OrderService extends BusinessFactory {
 
   // 列定义
   column() {
+    this.dataTableColumns[7].render = this.dataTableService.timeRender;
     return this.dataTableColumns;
   }
 
